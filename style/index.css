@@ -1,0 +1,256 @@
+body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #1A1A1A;
+  color: white;
+  font-family: 'Inter', 'Comic sans', Courier, monospace;
+  /* Sí, comic sans, no soy psicotapa btw */
+  scroll-behavior: smooth;
+}
+
+.v-hidden {
+  visibility: hidden;
+}
+.v-visible {
+  visibility: visible;
+}
+
+
+/* Navigator */
+
+.header {
+  position: relative;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 1.4em 0;
+  background: #0F0F0F;
+  z-index: 8000;
+}
+  .nav {
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav--logo {
+    position: relative;
+    cursor: pointer;
+    z-index: 9000;
+  }
+  .menu--checkbox {
+    display: none;
+  }
+  .menu--label-toopen {
+    position: relative;
+    display: flex;
+    cursor: pointer;
+    z-index: 9000;
+  }
+  .menu--label-toclose {
+    display: none;
+    position: relative;
+    cursor: pointer;
+    z-index: 9000;
+  }
+
+  .menu--checkbox:checked ~ .menu {
+    transform: translateY(0px);
+    transition: all 0.6s;
+    opacity: 0.95;
+  }
+  .menu--checkbox:checked + .menu--label-toopen {
+    display: none;
+  }
+  .menu--checkbox:checked ~ .menu--label-toclose {
+    display: flex;
+  }
+
+  /* Menu Mobile */
+  .menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.4em 0;
+    background-color: #0F0F0F;
+    transform: translateY(-150%);
+    transition: all 1s;
+    z-index: 500;
+  }
+    .menu--li {
+      display: flex;
+      width: 90%;
+      justify-content: center;
+      margin: .8em 0;
+      text-align: center;
+    }
+    .menu--link {
+      width: 100%;
+      color: white;
+      font-size: 2rem;
+      font-weight: 700;
+      padding: .4em .8em;
+    }
+    .menu--link:hover {
+      width: 100%;
+      background-color: white;
+      color: black;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .menu--link:active {
+      background-color: gray;
+    }
+
+
+/* main */
+
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.article {
+  display: flex;
+  width: 100%;
+  margin: 4em 0;
+  flex-direction: column;
+  align-items: center;
+}
+  .article--title {
+    margin: 1.4rem 0;
+    font-size: 4rem;
+    font-weight: 900;
+  }
+  .article--svg {
+    display: flex;
+    justify-content: center;
+    margin: 1.4em 0;
+  }
+  .article--img {
+    display: flex;
+    width: 90%;
+    max-width: 400px;
+    margin: 3em 0;
+    justify-content: center;
+    filter: grayscale(100%);
+  }
+  .article--description {
+    margin: 1.4rem 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    color: #B0B0B0;
+  }
+  .anchor {
+    padding: .6em 1.3em;
+    border-radius: 4px;
+    font-size: 1.5rem;
+    font-weight: 900;
+  }
+  .see-more {
+    margin-top: 5rem;
+    color: #191919;
+    background-color: white;
+  }
+  .see-more:active {
+    background-color: gray;
+  }
+
+  /* form */
+  .news-letter {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 4rem 0;
+  }
+  .label-email {
+    margin-top: 1.4rem;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  .input {
+    width: 60%;
+    max-width: 250px;
+    padding: .6em 1.3em;
+    margin: 1.4rem 0;
+    color: white;
+    font-size: 1.8rem;
+    background-color: #0F0F0F;
+    border: 1px solid white;
+    border-radius: 4px;
+  }
+  .successful-message {
+    font-size: 1.8rem;
+    color: green;
+  }
+  .invalid-message {
+    font-size: 1.8rem;
+    color: red;
+  }
+  .btn {
+    padding: .6em 1.3em;
+    border-radius: 4px;
+    font-size: 1.5rem;
+    font-weight: 900;
+  }
+  .btn--subscribe {
+    width: 60%;
+    max-width: 280px;
+    margin: 1.4rem 0;
+    background-color: white;
+    font-size: 1.8rem;
+    border: none;
+  }
+/* footer */
+
+.footer {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 2em 0;
+  background-color: #0F0F0F;
+}
+
+  .footer--container {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+  }
+  .footer--details {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+
+  @media (min-width: 1280px) {
+
+
+    /* header */
+    .menu--label-toopen {
+      display: none;
+    }
+    .menu {
+      position: static;
+      display: flex;
+      flex-direction: row;
+      transform: translateY(0);
+      padding: 0;
+    }
+    .menu--li {
+      width: 20%;
+      margin: 0;
+    }
+
+  }
