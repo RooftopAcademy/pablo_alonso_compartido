@@ -13,8 +13,8 @@ class Catalogue {
   }
 
   getById(id) {
-    const result = this.products.filter(p => p.id === id)
-    return result[0]
+    const result = this.products.filter(p => p.id === id)[0]
+    return result
   }
 
   getByCategory(category) {

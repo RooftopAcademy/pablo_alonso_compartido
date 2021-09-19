@@ -33,12 +33,10 @@ function isHalfPage() {
 
 function setDisplayFlex(node) {
   if (node.classList.contains('d-none')) return node.classList.replace('d-none', 'd-flex');
-  return
 };
 
 function setDisplayNone(node) {
   if (node.classList.contains('d-flex')) return node.classList.replace('d-flex', 'd-none');
-  return
 };
 
 window.addEventListener('scroll', () => {
@@ -51,12 +49,22 @@ window.addEventListener('scroll', () => {
 // Ejercicio: Clase 16/09/2021
 // Representamos la tienda con Shop, los productos estan dentro de catalogo y este a su vez en Shop
 const shop = new Shop
-
+const cartToggle = document.getElementById('cart-toggle')
+const cartList = document.getElementById('cart-list')
 // Emulamos una llamada a una API para conseguir los datos y crear productos.
 shop.fetchProduct()
 
 renderProductsList()
-addCartListener()
+addListenerAddCart()
+addListenerDisplayCart()
+
+
+function addListenerDisplayCart() {
+  cartToggle.addEventListener('click', function () {
+    if (cartList.classList.contains('d-none')) return setDisplayFlex(cartList)
+    return setDisplayNone(cartList)
+  })
+}
 
 function renderProductsList() {
   // Injecta todos los nft sin filtros
@@ -74,14 +82,39 @@ function renderProductsList() {
   shop.catalogue.getByCategory('strange').forEach(product => strangeNfts.innerHTML += productItem(product))
 }
 
-function addCartListener() {
+// Injecta los productos en el Cart en el DOM
+function renderProductCart() {
+  shop.getCart().getAll().forEach(product => cartList.innerHTML += cartItem(product))
+}
+
+
+function addListenerAddCart() {
   // Boton comprar - Agrega al carrito el producto.
   const buyBtn = Array.from(document.getElementsByClassName('js-add-to-cart'))
   buyBtn.forEach(btn => {
     btn.addEventListener('click', function () {
       const productToAdd = shop.getCatalogue().getById(this.dataset.productId)
       shop.getCart().add(productToAdd)
-      return
+      renderProductCart()
+
+      // Ejecuto ahora la funcion addListenerCartRemove() ya que antes no existia el boton de remover en el DOM
+      addListenerCartRemove()
+    })
+  })
+}
+
+
+function addListenerCartRemove() {
+  const removeBtn = Array.from(document.getElementsByClassName('js-remove-from-cart'))
+
+  removeBtn.forEach(btn => {
+    btn.addEventListener('click', function () {
+      const productToRemove = shop.getCart().getById(this.dataset.productId)
+      const indexProductToRemove = shop.getCart().getAll().indexOf(productToRemove)
+      shop.getCart().removeByIndex(indexProductToRemove)
+
+      // Para eliminar el nodo que contiene al boton en el DOM:
+      this.parentElement.remove()
     })
   })
 }
