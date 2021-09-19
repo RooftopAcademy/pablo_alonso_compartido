@@ -2,12 +2,12 @@
 
 addSoldOutListener()
 
-function toggleDisplayTemporarily(node) {
+function toggleDisplayTemporarily(node, time) {
   if (node.classList.contains('d-none')) {
     node.classList.replace('d-none', 'd-flex');
     setTimeout(function() {
       node.classList.replace('d-flex', 'd-none');
-    }, 3000)
+    }, time)
   }
 };
 
@@ -16,7 +16,7 @@ function addSoldOutListener() {
   const notAvaliable = document.getElementById('not-avaliable');
 
   soldOut.forEach(el => el.addEventListener('click', function() {
-    toggleDisplayTemporarily(notAvaliable)
+    toggleDisplayTemporarily(notAvaliable, 3000)
   }));
 }
 
@@ -51,6 +51,7 @@ window.addEventListener('scroll', () => {
 const shop = new Shop
 const cartToggle = document.getElementById('cart-toggle')
 const cartList = document.getElementById('cart-list')
+const addedToCartMessage = document.getElementById('added-to-cart')
 // Emulamos una llamada a una API para conseguir los datos y crear productos.
 shop.fetchProduct()
 
@@ -91,11 +92,14 @@ function renderProductCart() {
 function addListenerAddCart() {
   // Boton comprar - Agrega al carrito el producto.
   const buyBtn = Array.from(document.getElementsByClassName('js-add-to-cart'))
+
   buyBtn.forEach(btn => {
     btn.addEventListener('click', function () {
       const productToAdd = shop.getCatalogue().getById(this.dataset.productId)
       shop.getCart().add(productToAdd)
       renderProductCart()
+      toggleDisplayTemporarily(addedToCartMessage, 4000)
+      setDisplayFlex(cartList)
 
       // Ejecuto ahora la funcion addListenerCartRemove() ya que antes no existia el boton de remover en el DOM
       addListenerCartRemove()

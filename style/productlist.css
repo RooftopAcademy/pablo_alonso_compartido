@@ -16,6 +16,22 @@ body {
   display: flex;
 }
 
+.anchor {
+  padding: .6rem 1.3rem;
+  border-radius: 4px;
+}
+.see-cart:link {
+  color: #0F0F0F;
+}
+.see-cart:visited {
+  color: #0F0F0F;
+}
+.btn {
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
 .message {
   position: fixed;
   align-self: center;
@@ -30,6 +46,13 @@ body {
 }
 .message--text {
   padding-left: 1em;
+}
+.see-cart {
+  background-color: white;
+  font-size: 1.4rem;
+  font-weight: 900;
+  padding: .6rem;
+  margin-left: 1.4rem;
 }
 
 /* Navigator */
@@ -264,18 +287,9 @@ body {
     display: flex;
     justify-content: space-between;
   }
-  .anchor {
-    padding: .6rem 1.3rem;
+  .details {
     font-size: 1.5rem;
     font-weight: 900;
-    border-radius: 4px;
-  }
-  .btn {
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-  }
-  .details {
     background-color: #333333;
     color: white;
   }
