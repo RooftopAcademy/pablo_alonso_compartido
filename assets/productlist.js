@@ -58,6 +58,7 @@ shop.fetchProduct()
 renderProductsList()
 addListenerAddCart()
 addListenerDisplayCart()
+addListenerSeeCart()
 
 
 function addListenerDisplayCart() {
@@ -99,7 +100,6 @@ function addListenerAddCart() {
       shop.getCart().add(productToAdd)
       renderProductCart()
       toggleDisplayTemporarily(addedToCartMessage, 4000)
-      setDisplayFlex(cartList)
 
       // Ejecuto ahora la funcion addListenerCartRemove() ya que antes no existia el boton de remover en el DOM
       addListenerCartRemove()
@@ -120,5 +120,13 @@ function addListenerCartRemove() {
       // Para eliminar el nodo que contiene al boton en el DOM:
       this.parentElement.remove()
     })
+  })
+}
+
+// Abre la lista de menu cuando toca el anchor del mensaje al añadir al carrito
+function addListenerSeeCart() {
+  const seeCart = document.getElementById('see-cart')
+  seeCart.addEventListener('click', function () {
+    setDisplayFlex(cartList)
   })
 }
