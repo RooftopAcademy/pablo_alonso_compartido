@@ -31,3 +31,6 @@ figure,h1,p,ul {
   -webkit-padding-start:0;
   padding-inline-start:0;
 }
+button {
+  font-family : inherit;
+}

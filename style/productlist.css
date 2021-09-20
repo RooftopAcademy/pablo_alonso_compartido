@@ -16,6 +16,22 @@ body {
   display: flex;
 }
 
+.anchor {
+  padding: .6rem 1.3rem;
+  border-radius: 4px;
+}
+.see-cart:link {
+  color: #0F0F0F;
+}
+.see-cart:visited {
+  color: #0F0F0F;
+}
+.btn {
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
 .message {
   position: fixed;
   align-self: center;
@@ -30,6 +46,13 @@ body {
 }
 .message--text {
   padding-left: 1em;
+}
+.see-cart {
+  background-color: white;
+  font-size: 1.4rem;
+  font-weight: 900;
+  padding: .6rem;
+  margin-left: 1.4rem;
 }
 
 /* Navigator */
@@ -47,10 +70,11 @@ body {
   .nav {
     display: flex;
     width: 90%;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
   }
   .nav--logo {
+    margin-right: auto;
     position: relative;
     cursor: pointer;
     z-index: 9000;
@@ -59,8 +83,10 @@ body {
     display: none;
   }
   .menu--label-toopen {
+
     position: relative;
     display: flex;
+    justify-self: flex-end;
     cursor: pointer;
     z-index: 9000;
   }
@@ -81,6 +107,63 @@ body {
   }
   .menu--checkbox:checked ~ .menu--label-toclose {
     display: flex;
+  }
+  .cart {
+    position: relative;
+    margin-left: 2em;
+    justify-self: flex-end;
+    background-color: transparent;
+    border: none;
+    z-index: 9000;
+    cursor: pointer;
+  }
+
+  /* Cart List */
+  .cart-list {
+    width: 90%;
+    max-width: 400px;
+    position: absolute;
+    flex-direction: column;
+    box-sizing: border-box;
+    top: 60px;
+    right: 0;
+    background-color: #0F0F0F;
+    border-radius: 0 0 4px 4px;
+    padding: 1.4rem;
+  }
+  .cart-item {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid #333333;
+  }
+  .cart-thumbnail {
+    flex-grow: 2;
+    max-width: 80px;
+    object-fit: contain;
+  }
+  .cart-text {
+    min-width: 100px;
+    padding: 0 1rem;
+  }
+  .cart-title {
+    font-size: 1.4rem;
+    font-weight: 900;
+  }
+  .cart-author {
+    font-size: 1.2rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cart-remove-item {
+    padding: .6rem;
+    background-color: white;
+    font-size: 1.2rem;
+    font-weight: 900;
   }
 
   /* Menu Mobile */
@@ -178,8 +261,14 @@ body {
   background-color: #0F0F0F;
   border-radius: 4px;
 }
+  .nft--img {
+    width: 256px;
+    height: 256px;
+    object-fit: cover;
+  }
   .nft--title {
-    margin: 1.4rem 0;
+    margin: auto 0;
+    padding-top: 1.4rem;
     align-self: flex-start;
     font-size: 2rem;
     font-weight: 700;
@@ -194,29 +283,23 @@ body {
     word-wrap: break-word;
   }
   .nft--anchors {
-    margin-top: auto;
+    margin-top: 1.4rem;
     width: 100%;
     display: flex;
     justify-content: space-between;
   }
-  .anchor {
-    padding: .6rem 1.3rem;
+  .details {
     font-size: 1.5rem;
     font-weight: 900;
-    border-radius: 4px;
-  }
-  .details {
     background-color: #333333;
     color: white;
   }
   .buy-now {
+    padding: .6rem 1.3rem;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: black;
     background-color: white;
-  }
-  .buy-now:link {
-    color: black;
-  }
-  .buy-now:visited {
-    color: black;
   }
   .sold-out {
     padding: .6rem 1.4rem;
