@@ -25,8 +25,10 @@ class Cart {
     this.products.splice(index)
   }
 
+  // Marca a todos los productos como no disponibles para futuras compras
+  // Vacia el carrito.
   buyCart() {
     this.products.map(p => p.notAvaliable())
-    this.products = []
+    this.removeAll()
   }
 }
