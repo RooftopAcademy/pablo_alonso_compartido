@@ -1,12 +1,15 @@
 
-fetchComment().then(comments => {
-  const commentsList = document.getElementById('comments-list')
-  if (comments === undefined) return commentsList.innerHTML = `<p>There was an error loading the comments :(</p>`
-  comments.forEach(comment => {
-    commentsList.innerHTML += commentItem(comment)
-  })
-})
+renderCommentsList()
 
+function renderCommentsList() {
+  fetchComment().then(comments => {
+    const commentsList = document.getElementById('comments-list')
+    if (comments === undefined) return commentsList.innerHTML = `<p>There was an error loading the comments :(</p>`
+    comments.forEach(comment => {
+      commentsList.innerHTML += commentItem(comment)
+    })
+  })
+}
 
 async function fetchComment() {
   // const URL = 'Foo' // To emulate a bad fetch and test the error message.
