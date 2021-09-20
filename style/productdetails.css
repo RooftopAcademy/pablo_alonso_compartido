@@ -175,6 +175,53 @@ body {
   color: black;
 }
 
+
+/* comments */
+.comments {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #0F0F0F;
+  border-bottom: 1px solid #1A1A1A;
+  padding: 2rem;
+}
+.comments-title {
+  font-size: 2rem;
+  margin: 2rem 0;
+}
+  .comments-item {
+    display: flex;
+    padding: 2rem 0;
+    border-top: 1px solid #1A1A1A;
+  }
+  .comments-pic {
+    flex-grow: 1;
+  }
+  .comments-content {
+    flex-grow: 20;
+    display: flex;
+    flex-direction: column;
+    margin-left: 2rem;
+  }
+  .comments-header {
+    display: flex;
+    align-items: center;
+  }
+    .comments-user {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+    .comments-since {
+      margin-left: .6rem;
+    }
+  .comments-comment {
+    margin-top: .6rem;
+    font-size: 1.2rem;
+    word-break: break-all;
+  }
+
+
 /* footer */
 
 .footer {
