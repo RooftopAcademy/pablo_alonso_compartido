@@ -196,10 +196,8 @@ body {
     border-top: 1px solid #1A1A1A;
   }
   .comments-pic {
-    flex-grow: 1;
   }
   .comments-content {
-    flex-grow: 20;
     display: flex;
     flex-direction: column;
     margin-left: 2rem;
