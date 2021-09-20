@@ -14,8 +14,7 @@ class Cart {
   }
 
   getById(id) {
-    const result = this.products.filter(p => p.id === id)[0]
-    return result
+    return this.products.find(p => p.id === id)
   }
 
   removeAll() {
