@@ -267,7 +267,8 @@ body {
     object-fit: cover;
   }
   .nft--title {
-    margin: 1.4rem 0;
+    margin: auto 0;
+    padding-top: 1.4rem;
     align-self: flex-start;
     font-size: 2rem;
     font-weight: 700;
@@ -282,7 +283,7 @@ body {
     word-wrap: break-word;
   }
   .nft--anchors {
-    margin-top: auto;
+    margin-top: 1.4rem;
     width: 100%;
     display: flex;
     justify-content: space-between;
