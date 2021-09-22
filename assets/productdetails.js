@@ -1,26 +1,18 @@
 
-renderCommentsList()
+const shop = new Shop
 
-function renderCommentsList() {
-  fetchComment().then(comments => {
-    const commentsList = document.getElementById('comments-list')
-    if (comments === undefined) return commentsList.innerHTML = `<p>There was an error loading the comments :(</p>`
-    comments.forEach(comment => {
-      commentsList.innerHTML += commentItem(comment)
-    })
-  })
+fetchProduct()
+
+async function fetchProduct() {
+  const URL = 'https://my-json-server.typicode.com/Alonso-Pablo/api-nft/products'
+  await fetchData(URL).then(data => {
+    if (data === undefined) throw new Error('Fetch error')
+    shop.loadProduct(data)
+  }).catch(err => console.log(err))
+  renderCommentsList()
 }
 
-async function fetchComment() {
-  // const URL = 'Foo' // To emulate a bad fetch and test the error message.
-  const URL = 'https://jsonplaceholder.typicode.com/users'
-  const response = await fetch(URL)
-    .then(res => res.ok ?res :undefined)
-    .catch(err => {
-      console.error(err)
-      return undefined
-    })
-  if (response === undefined) return undefined
-  const data = response.json()
-  return data
+function renderCommentsList() {
+  const comments = shop.getCatalogue().getById('CdeG4by6YE826o0RegX1').comment
+  return injectArrayInDOM(comments, document.getElementById('comments-list'), commentItem)
 }
