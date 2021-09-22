@@ -34,6 +34,8 @@ body {
 
 .message {
   position: fixed;
+  top: 75px;
+  left: calc(53% - 260px);
   align-self: center;
   justify-content: center;
   align-items: center;
