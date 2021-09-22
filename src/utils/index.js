@@ -9,9 +9,22 @@ async function fetchData(url) {
   return data
 }
 
-// Thing = Que cosa injectamos;
+// arr = Que cosa injectamos;
 // Where = Donde lo injectamos;
 // Who = Con que funcion injectamos
-function injectArrayInDOM(thing, where, who) {
-  thing.forEach(item => where.innerHTML += who(item))
+function injectArrayInDOM(arr, where, who) {
+  arr.forEach(item => where.innerHTML += who(item))
+}
+
+function injectSingleInDOM(thing, where, who) {
+  where.innerHTML += who(thing)
+}
+
+function differenceDays(timeAgo) {
+  const datePast = new Date(timeAgo)
+  const dateNow = new Date()
+
+  const difference = Math.abs(dateNow-datePast)
+  const daysAgo = Math.ceil(difference/(1000 * 3600 * 24))
+  return daysAgo
 }

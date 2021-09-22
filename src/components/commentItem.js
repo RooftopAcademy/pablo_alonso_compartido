@@ -1,10 +1,7 @@
 function commentItem(comment) {
-  if (!comment) return `<p>There was an error loading the comments :(</p>`
-  const datePast = new Date(comment.date)
-  const dateNow = new Date()
+  if (!comment) return `<h3>There was an error loading the comments :(</h3>`
 
-  const difference = Math.abs(dateNow-datePast)
-  const daysAgo = Math.ceil(difference/(1000 * 3600 * 24))
+  const daysAgo = differenceDays(comment.date)
   return `
   <li class="comments-item">
     <div class="comments-pic">
