@@ -58,7 +58,7 @@ async function fetchProduct() {
   await fetchData(URL).then(data => {
     if (data === undefined) throw new Error('Fetch error')
     shop.loadProduct(data)
-  })
+  }).catch(err => console.log(err))
 
   renderProductsList()
   // Listener para el boton "Buy now"
@@ -70,6 +70,12 @@ async function fetchProduct() {
 }
 
 function renderProductsList() {
+  if (!shop.getCatalogue().products.length) { 
+    injectSingleInDOM(undefined, document.getElementById('all-nfts'), productItem)
+    injectSingleInDOM(undefined, document.getElementById('most-valuable-nft'), productItem)
+    injectSingleInDOM(undefined, document.getElementById('colorful-nfts'), productItem)
+    injectSingleInDOM(undefined, document.getElementById('strange-nfts'), productItem)
+  }
   // Injecta todos los nft sin filtros
   injectArrayInDOM(shop.getCatalogue().getAll(), document.getElementById('all-nfts'), productItem)
 
