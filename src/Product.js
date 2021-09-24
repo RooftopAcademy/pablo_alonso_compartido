@@ -7,6 +7,7 @@ class Product {
     this._author = String
     this._description = String
     this._price = Number
+    this._comment = Array
     this._category = Array
     this._isAvaliable = Boolean
   }
@@ -56,6 +57,13 @@ class Product {
   }
   get price() {
     return this._price
+  }
+
+  set comment(comment) {
+    this._comment = comment
+  }
+  get comment() {
+    return this._comment
   }
 
 

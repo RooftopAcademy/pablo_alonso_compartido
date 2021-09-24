@@ -28,6 +28,7 @@ const emailsBanned = [
   'armando_estebanquito@gmail.com',
   'example@gmail.com',
   'example@yahoo.com',
+  'example@hotmail.com',
   'malapalabra@gmail.com'
   ]
 newsLetter.addEventListener('submit', function(e) {

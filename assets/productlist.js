@@ -1,5 +1,4 @@
 // Ejercicio: Clase 14/09/2021 (2/3)
-
 addSoldOutListener()
 
 function toggleDisplayTemporarily(node, time) {
@@ -49,64 +48,47 @@ window.addEventListener('scroll', () => {
 // Ejercicio: Clase 16/09/2021
 // Representamos la tienda con Shop, los productos estan dentro de catalogo y este a su vez en Shop
 const shop = new Shop
-const cartToggle = document.getElementById('cart-toggle')
+
 const cartList = document.getElementById('cart-list')
-const addedToCartMessage = document.getElementById('added-to-cart')
-// Emulamos una llamada a una API para conseguir los datos y crear productos.
-shop.fetchProduct()
 
-renderProductsList()
-addListenerAddCart()
-addListenerDisplayCart()
-addListenerSeeCart()
+fetchProduct()
 
+async function fetchProduct() {
+  const URL = 'https://my-json-server.typicode.com/Alonso-Pablo/api-nft/products'
+  await fetchData(URL).then(data => {
+    if (data === undefined) throw new Error('Fetch error')
+    shop.loadProduct(data)
+  }).catch(err => console.log(err))
 
-function addListenerDisplayCart() {
-  cartToggle.addEventListener('click', function () {
-    if (cartList.classList.contains('d-none')) return setDisplayFlex(cartList)
-    return setDisplayNone(cartList)
-  })
+  renderProductsList()
+  // Listener para el boton "Buy now"
+  addListenerAddCart()
+  // Listener para el icono de Carrito, abre o cierra la lista.
+  addListenerDisplayCart()
+  // Listener para Abrir la lista de menu cuando toca el anchor del mensaje al añadir algo al carrito.
+  addListenerSeeCart()
 }
 
 function renderProductsList() {
+  if (!shop.getCatalogue().products.length) { 
+    injectSingleInDOM(undefined, document.getElementById('all-nfts'), productItem)
+    injectSingleInDOM(undefined, document.getElementById('most-valuable-nft'), productItem)
+    injectSingleInDOM(undefined, document.getElementById('colorful-nfts'), productItem)
+    injectSingleInDOM(undefined, document.getElementById('strange-nfts'), productItem)
+  }
   // Injecta todos los nft sin filtros
-  const allNfts = document.getElementById('all-nfts')
-  shop.catalogue.getAll().forEach(product => allNfts.innerHTML += productItem(product))
+  injectArrayInDOM(shop.getCatalogue().getAll(), document.getElementById('all-nfts'), productItem)
 
   // Injecta en el DOM todos los productos filtrados por su categoria.
-  const mostValuableNfts = document.getElementById('most-valuable-nft')
-  shop.catalogue.getByCategory('most-valuable').forEach(product => mostValuableNfts.innerHTML += productItem(product))
-
-  const colorfulNfts = document.getElementById('colorful-nfts')
-  shop.catalogue.getByCategory('colorful').forEach(product => colorfulNfts.innerHTML += productItem(product))
-
-  const strangeNfts = document.getElementById('strange-nfts')
-  shop.catalogue.getByCategory('strange').forEach(product => strangeNfts.innerHTML += productItem(product))
+  injectArrayInDOM(shop.getCatalogue().getByCategory('most-valuable'), document.getElementById('most-valuable-nft'), productItem)
+  injectArrayInDOM(shop.getCatalogue().getByCategory('colorful'), document.getElementById('colorful-nfts'), productItem)
+  injectArrayInDOM(shop.getCatalogue().getByCategory('strange'), document.getElementById('strange-nfts'), productItem)
 }
 
-// Injecta los productos en el Cart en el DOM
+// Injecta los productos en el carrito
 function renderProductCart() {
-  shop.getCart().getAll().forEach(product => cartList.innerHTML += cartItem(product))
+  injectArrayInDOM(shop.getCart().getAll(), cartList, cartItem)
 }
-
-
-function addListenerAddCart() {
-  // Boton comprar - Agrega al carrito el producto.
-  const buyBtn = Array.from(document.getElementsByClassName('js-add-to-cart'))
-
-  buyBtn.forEach(btn => {
-    btn.addEventListener('click', function () {
-      const productToAdd = shop.getCatalogue().getById(this.dataset.productId)
-      shop.getCart().add(productToAdd)
-      renderProductCart()
-      toggleDisplayTemporarily(addedToCartMessage, 4000)
-
-      // Ejecuto ahora la funcion addListenerCartRemove() ya que antes no existia el boton de remover en el DOM
-      addListenerCartRemove()
-    })
-  })
-}
-
 
 function addListenerCartRemove() {
   const removeBtn = Array.from(document.getElementsByClassName('js-remove-from-cart'))
@@ -123,7 +105,31 @@ function addListenerCartRemove() {
   })
 }
 
-// Abre la lista de menu cuando toca el anchor del mensaje al añadir al carrito
+function addListenerAddCart() {
+  const buyBtn = Array.from(document.getElementsByClassName('js-add-to-cart'))
+  const addedToCartMessage = document.getElementById('added-to-cart')
+
+  buyBtn.forEach(btn => {
+    btn.addEventListener('click', function () {
+      const productToAdd = shop.getCatalogue().getById(this.dataset.productId)
+      shop.getCart().add(productToAdd)
+      renderProductCart()
+      toggleDisplayTemporarily(addedToCartMessage, 4000)
+
+      // Ejecuto ahora la funcion ya que antes no existia el boton de remover en el DOM
+      addListenerCartRemove()
+    })
+  })
+}
+
+function addListenerDisplayCart() {
+  const cartToggle = document.getElementById('cart-toggle')
+  cartToggle.addEventListener('click', function () {
+    if (cartList.classList.contains('d-none')) return setDisplayFlex(cartList)
+    return setDisplayNone(cartList)
+  })
+}
+
 function addListenerSeeCart() {
   const seeCart = document.getElementById('see-cart')
   seeCart.addEventListener('click', function () {
