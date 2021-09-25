@@ -1,11 +1,15 @@
 import { DataProduct } from "../ts/types";
 
 export function setDisplayFlex(node: HTMLElement): void {
-  if (node.classList.contains('d-none')) return node.classList.replace('d-none', 'd-flex');
+  if (node.classList.contains('d-none')) {
+    node.classList.replace('d-none', 'd-flex');
+  }
 }
 
 export function setDisplayNone(node: HTMLElement): void {
-  if (node.classList.contains('d-flex')) return node.classList.replace('d-flex', 'd-none');
+  if (node.classList.contains('d-flex')) {
+    node.classList.replace('d-flex', 'd-none');
+  }
 }
 
 export function toggleDisplayTemporarily(node: HTMLElement, time: number): void {
