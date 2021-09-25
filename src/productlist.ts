@@ -14,7 +14,7 @@ import Shop from './Shop'
 import Product from './Product'
 import { DataProduct } from './ts/types'
 
-  function productList(): void {
+function productList(): void {
   // Ejercicio: Clase 14/09/2021 (2/3)
   addSoldOutListener()
 
@@ -33,20 +33,19 @@ import { DataProduct } from './ts/types'
 
   // Ejercicio: Clase 14/09/2021 (3/3)
   // Verificamos que si el usuario scrollea debajo de mitad de pagina
-  const goUp: HTMLElement | null = document.getElementById('go-up')
+  const goUp: (HTMLElement | null) = document.getElementById('go-up')
+
+  window.addEventListener('scroll', function (): void {
+    if (!goUp) return
+    if (isHalfPage()) return setDisplayFlex(goUp)
+    return setDisplayNone(goUp)
+  })
 
   function isHalfPage(): Boolean {
     const halfPage: number = document.body.clientHeight / 2;
     if (window.scrollY > halfPage) return true
     return false
   };
-
-  window.addEventListener('scroll', (): void => {
-    if (!goUp) return
-    if (isHalfPage()) return setDisplayFlex(goUp)
-    return setDisplayNone(goUp)
-  })
-
 
   // Ejercicio: Clase 16/09/2021
   // Representamos la tienda con Shop, los productos estan dentro de catalogo y este a su vez en Shop
@@ -62,15 +61,20 @@ import { DataProduct } from './ts/types'
     shop.loadProduct(data)
 
     renderProductsList()
+
     // Listener para el boton "Buy now"
     addListenerAddCart()
+
     // Listener para el icono de Carrito, abre o cierra la lista.
     addListenerDisplayCart()
+    
     // Listener para Abrir la lista de menu cuando toca el anchor del mensaje al añadir algo al carrito.
     addListenerSeeCart()
   }
 
+
   function renderProductsList(): void {
+    // secciones por categoria
     const allNfts = document.getElementById('all-nfts') as HTMLElement
     const mostValuableNfts = document.getElementById('most-valuable-nfts') as HTMLElement
     const colorfulNfts = document.getElementById('colorful-nfts') as HTMLElement
@@ -91,6 +95,29 @@ import { DataProduct } from './ts/types'
     injectArrayInDOM(shop.getCatalogue().getByCategory('most-valuable'), mostValuableNfts, productItem)
     injectArrayInDOM(shop.getCatalogue().getByCategory('colorful'), colorfulNfts, productItem)
     injectArrayInDOM(shop.getCatalogue().getByCategory('strange'), strangeNfts, productItem)
+  }
+
+
+  function addListenerAddCart(): void {
+    const buyBtn = Array.from(document.getElementsByClassName('js-add-to-cart')) as HTMLElement[]
+    const addedToCartMessage: HTMLElement | null = document.getElementById('added-to-cart')
+
+    buyBtn.forEach(function (btn: HTMLElement): void {
+      btn.addEventListener('click', function (): void {
+        if (!btn.dataset.productId) return
+        const productToAdd: Product | undefined = shop.getCatalogue().getById(btn.dataset.productId)
+
+        if (!productToAdd) return
+        shop.getCart().add(productToAdd)
+        renderProductCart()
+
+        if (!addedToCartMessage) return
+        toggleDisplayTemporarily(addedToCartMessage, 4000)
+
+        // Ejecuto ahora la funcion ya que antes no existia el boton de remover en el DOM
+        addListenerCartRemove()
+      })
+    })
   }
 
   // Injecta los productos en el carrito
@@ -117,27 +144,6 @@ import { DataProduct } from './ts/types'
     })
   }
 
-  function addListenerAddCart(): void {
-    const buyBtn = Array.from(document.getElementsByClassName('js-add-to-cart')) as HTMLElement[]
-    const addedToCartMessage: HTMLElement | null = document.getElementById('added-to-cart')
-
-    buyBtn.forEach(function (btn: HTMLElement): void {
-      btn.addEventListener('click', function (): void {
-        if (!btn.dataset.productId) return
-        const productToAdd: Product | undefined = shop.getCatalogue().getById(btn.dataset.productId)
-
-        if (!productToAdd) return
-        shop.getCart().add(productToAdd)
-        renderProductCart()
-
-        if (!addedToCartMessage) return
-        toggleDisplayTemporarily(addedToCartMessage, 4000)
-
-        // Ejecuto ahora la funcion ya que antes no existia el boton de remover en el DOM
-        addListenerCartRemove()
-      })
-    })
-  }
 
   function addListenerDisplayCart(): void {
     const cartToggle = document.getElementById('cart-toggle') as HTMLElement
@@ -147,6 +153,7 @@ import { DataProduct } from './ts/types'
       return setDisplayNone(cartList)
     })
   }
+
 
   function addListenerSeeCart(): void {
     const seeCart = document.getElementById('see-cart') as HTMLElement
