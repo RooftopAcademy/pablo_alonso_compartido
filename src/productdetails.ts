@@ -5,6 +5,7 @@ import {
   
 import { CommentProduct, DataProduct } from './ts/types'
 
+import productDetail from './components/productDetail'
 import commentItem from './components/commentItem'
 import Shop from './Shop'
 import Product from './Product'
@@ -18,13 +19,30 @@ function productDetails(): void {
 
   function renderStep(data: DataProduct[]): void {
     shop.loadProduct(data)
-    renderCommentsList()
+
+    const idProduct = getProductIdQuery()
+
+    renderProductDetails(idProduct)
+    renderCommentsList(idProduct)
   }
 
-  function renderCommentsList(): void {
+  function getProductIdQuery(): string {
+    let searchQuery: string = window.location.search;
+    const searchTerm: string = '='
+    const idProduct: string = searchQuery.slice(searchQuery.indexOf(searchTerm)).replace(searchTerm, '')
+    return idProduct
+  }
+
+  function renderProductDetails(idProduct: string): void {
+    const nftContainer = document.getElementById('nft') as HTMLElement
+    const product: (Product | undefined) = shop.getCatalogue().getById(idProduct)
+    injectSingleInDOM(product, nftContainer, productDetail)
+  }
+
+  function renderCommentsList(idProduct: string): void {
     const commentList = document.getElementById('comments-list') as HTMLElement
-    const product: (Product | undefined) = shop.getCatalogue().getById('CdeG4by6YE826o0RegX1')
-    // Si no existe el producto se injecta un mensaje de error para el usuario al DOM.
+    const product: (Product | undefined) = shop.getCatalogue().getById(idProduct)
+    // Si el producto es 'undefined' se injecta un mensaje de error para el usuario al DOM.
     if (!product) return injectSingleInDOM(product, commentList, commentItem)
     // Si existe el producto se injecta el/los comentarios al DOM.
     const comments: CommentProduct[] = product.comment
