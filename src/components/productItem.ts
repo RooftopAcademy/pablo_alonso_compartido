@@ -2,7 +2,7 @@ import Product from "../Product"
 
 function productItem(product: Product | undefined): string {
   // Si product es undefined injecta un mensaje de error
-  if (!product) return `<article class="nft"><h3>There was an error loading the comments :(</h3></article>`
+  if (!product) return `<article class="nft"><h3>There was an error loading the products :(</h3></article>`
 
   return `
   <article class="nft">
