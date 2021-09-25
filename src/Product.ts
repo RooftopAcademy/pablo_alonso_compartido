@@ -11,77 +11,77 @@ export default class Product {
   private _category: string[] = []
   private _isAvaliable: boolean = true
 
-  set id(id: string) {
+  public set id(id: string) {
     this._id = id
   }
-  get id(): string {
+  public get id(): string {
     return this._id
   }
 
 
-  set picture(picture: string) {
+  public set picture(picture: string) {
     this._picture = picture
   }
-  get picture(): string {
+  public get picture(): string {
     return this._picture
   }
 
 
-  set title(title: string) {
+  public set title(title: string) {
     this._title = title
   }
-  get title(): string {
+  public get title(): string {
     return this._title
   }
 
 
-  set author(author: string) {
+  public set author(author: string) {
     this._author = author
   }
-  get author(): string {
+  public get author(): string {
     return this._author
   }
 
 
-  set description(description: string) {
+  public set description(description: string) {
     this._description = description
   }
-  get description(): string {
+  public get description(): string {
     return this._description
   }
 
 
-  set price(price: number) {
+  public set price(price: number) {
     this._price = price
   }
-  get price(): number {
+  public get price(): number {
     return this._price
   }
 
-  set comment(comment: CommentProduct[]) {
+  public set comment(comment: CommentProduct[]) {
     this._comment = comment
   }
-  get comment(): CommentProduct[] {
+  public get comment(): CommentProduct[] {
     return this._comment
   }
 
 
-  set category(category: string[]) {
+  public set category(category: string[]) {
     this._category = category
   }
-  get category(): string[] {
+  public get category(): string[] {
     return this._category
   }
 
-  set isAvaliable(isAvaliable: boolean) {
+  public set isAvaliable(isAvaliable: boolean) {
     this._isAvaliable = isAvaliable
   }
-  get isAvaliable(): boolean {
+  public get isAvaliable(): boolean {
     return this._isAvaliable
   }
 
 
-  notAvaliable(): void {
+  public notAvaliable(): void {
     this._isAvaliable = false
   }
 }

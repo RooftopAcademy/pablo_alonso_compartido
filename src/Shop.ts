@@ -5,18 +5,18 @@ import Product from './Product'
 import { DataProduct } from './ts/types'
 
 export default class Shop {
-  cart: Cart = new Cart
-  catalogue: Catalogue = new Catalogue
+  private cart: Cart = new Cart
+  private catalogue: Catalogue = new Catalogue
 
-  getCart(): Cart {
+  public getCart(): Cart {
     return this.cart
   }
 
-  getCatalogue(): Catalogue {
+  public getCatalogue(): Catalogue {
     return this.catalogue
   }
 
-  loadProduct(data: DataProduct[]): void {
+  public loadProduct(data: DataProduct[]): void {
     if (data) return data.forEach(item => {
       const product = new Product
       product.id = item.id
