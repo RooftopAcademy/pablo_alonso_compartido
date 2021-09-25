@@ -13,6 +13,7 @@
 
     /* Emit */
     "removeComments": true,                           /* Disable emitting comments. */
+    "outDir": "./dist/",
 
     /* Interop Constraints */
     "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */
@@ -27,5 +28,5 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "exclude": ["node_modules"],
-  "include": ["**/*.ts"]
+  "include": ["src/index.ts", "src/productlist.ts", "src/productdetails.ts"]
 }
