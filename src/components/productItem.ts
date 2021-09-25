@@ -1,6 +1,9 @@
-function productItem(product) {
+import Product from "../Product"
+
+function productItem(product: Product | undefined): string {
   // Si product es undefined injecta un mensaje de error
   if (!product) return `<article class="nft"><h3>There was an error loading the comments :(</h3></article>`
+
   return `
   <article class="nft">
     <img class="nft--img" src="${product.picture}" alt="${product.title} of ${product.author}">
@@ -13,3 +16,5 @@ function productItem(product) {
   </article>
   `
 }
+
+export default productItem

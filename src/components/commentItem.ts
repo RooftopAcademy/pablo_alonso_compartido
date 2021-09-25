@@ -1,7 +1,11 @@
-function commentItem(comment) {
+import { CommentProduct } from '../ts/types'
+import { differenceDays } from '../utils/utils'
+
+function commentItem(comment: CommentProduct): string {
   if (!comment) return `<h3>There was an error loading the comments :(</h3>`
 
-  const daysAgo = differenceDays(comment.date)
+  const daysAgo: number = differenceDays(comment.date)
+
   return `
   <li class="comments-item">
     <div class="comments-pic">
@@ -21,3 +25,5 @@ function commentItem(comment) {
   </li>
   `
 }
+
+export default commentItem

@@ -1,4 +1,6 @@
-function cartItem(product) {
+import Product from "../Product"
+
+function cartItem(product: Product): string {
   return `
   <li class="cart-item" id="${product.id}">
     <img class="cart-thumbnail" src="${product.picture}" alt="${product.title}< by ${product.author}">
@@ -19,3 +21,5 @@ function cartItem(product) {
   </li>
   `
 }
+
+export default cartItem
