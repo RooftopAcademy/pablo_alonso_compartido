@@ -6,7 +6,7 @@ function productItem(product: Product | undefined): string {
 
   return `
   <article class="nft">
-    <img class="nft--img" src="${product.picture}" alt="${product.title} of ${product.author}">
+    <img class="nft--img" src="${product.picture}" alt="${product.title} by ${product.author}">
     <h2 class="nft--title">${product.title}</h2>
     <p class="nft--author">${product.author}</p>
     <div class="nft--anchors">
