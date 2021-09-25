@@ -1,23 +1,35 @@
+import {
+  fetchProduct,
+  injectArrayInDOM,
+  injectSingleInDOM } from './utils/utils'
+  
+import { CommentProduct, DataProduct } from './ts/types'
 
-const shop = new Shop
+import commentItem from './components/commentItem'
+import Shop from './Shop'
+import Product from './Product'
 
-fetchProduct()
-
-async function fetchProduct() {
+function productDetails(): void {
+  const shop: Shop = new Shop
   // const URL = 'https://wrongurl.com/' // To test the error message to the client
-  const URL = 'https://my-json-server.typicode.com/Alonso-Pablo/api-nft/products'
-  await fetchData(URL).then(data => {
-    if (data === undefined) throw new Error('Fetch error')
+  const apiURL: string = 'https://my-json-server.typicode.com/Alonso-Pablo/api-nft/products'
+
+  fetchProduct(apiURL, renderStep)
+
+  function renderStep(data: DataProduct[]): void {
     shop.loadProduct(data)
-  }).catch(err => console.log(err))
-  renderCommentsList()
+    renderCommentsList()
+  }
+
+  function renderCommentsList(): void {
+    const commentList = document.getElementById('comments-list') as HTMLElement
+    const product: (Product | undefined) = shop.getCatalogue().getById('CdeG4by6YE826o0RegX1')
+    // Si no existe el producto se injecta un mensaje de error para el usuario al DOM.
+    if (!product) return injectSingleInDOM(product, commentList, commentItem)
+    // Si existe el producto se injecta el/los comentarios al DOM.
+    const comments: CommentProduct[] = product.comment
+    return injectArrayInDOM(comments, commentList, commentItem)
+  }
 }
 
-function renderCommentsList() {
-  const product = shop.getCatalogue().getById('CdeG4by6YE826o0RegX1')
-  // Si no existe el producto se injecta un mensaje de error para el usuario al DOM.
-  if (!product) return injectSingleInDOM(product, document.getElementById('comments-list'), commentItem)
-  // Si existe el producto se injecta el/los comentarios al DOM.
-  const comments = product.comment
-  return injectArrayInDOM(comments, document.getElementById('comments-list'), commentItem)
-}
+export default productDetails

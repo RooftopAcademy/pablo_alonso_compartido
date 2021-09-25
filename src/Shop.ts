@@ -1,19 +1,22 @@
-class Shop {
-  
-  constructor() {
-    this.cart = new Cart
-    this.catalogue = new Catalogue
-  }
+import Cart from './Cart'
+import Catalogue from './Catalogue'
+import Product from './Product'
 
-  getCart() {
+import { DataProduct } from './ts/types'
+
+export default class Shop {
+  cart: Cart = new Cart
+  catalogue: Catalogue = new Catalogue
+
+  getCart(): Cart {
     return this.cart
   }
 
-  getCatalogue() {
+  getCatalogue(): Catalogue {
     return this.catalogue
   }
 
-  loadProduct(data) {
+  loadProduct(data: DataProduct[]): void {
     if (data) return data.forEach(item => {
       const product = new Product
       product.id = item.id
@@ -25,7 +28,8 @@ class Shop {
       product.comment = item.comments
       product.category = item.category
       product.isAvaliable = item.isAvaliable
-      this.getCatalogue().add(product)
+      this.catalogue.add(product)
     })
+    return
   }
 }

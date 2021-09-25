@@ -1,33 +1,32 @@
-class Cart {
-  constructor() {
-    this.products = []
+import Product from "./Product"
+export default class Cart {
+  products: Product[] = []
+
+
+  add(p: Product): void {
+    if (this.getAll().length > 0) throw new Error('Only one product is allowed in the cart.')
+    this.products.push(p)
   }
 
-  add(p) {
-    if (!(p instanceof Product)) throw new Error('Solo se permite añadir entidades tipo Product.')
-    if (shop.getCart().products.length >= 1) throw new Error('Solo se permite un producto en el carrito.')
-    return this.products.push(p)
-  }
-
-  getAll() {
+  getAll(): Product[] {
     return this.products
   }
 
-  getById(id) {
+  getById(id: string): (Product | undefined) {
     return this.products.find(p => p.id === id)
   }
 
-  removeAll() {
+  removeAll(): void {
     this.products = []
   }
 
-  removeByIndex(index) {
+  removeByIndex(index: number): void {
     this.products.splice(index)
   }
 
   // Marca a todos los productos como no disponibles para futuras compras
-  // Vacia el carrito.
-  buyCart() {
+  // Y vacia el carrito.
+  buyCart(): void {
     this.products.map(p => p.notAvaliable())
     this.removeAll()
   }

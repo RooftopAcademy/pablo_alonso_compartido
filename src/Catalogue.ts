@@ -1,22 +1,21 @@
-class Catalogue {
+import Product from "./Product"
 
-  constructor() {
-    this.products = []
-  }
+export default class Catalogue {
+  products: Product[] = []
 
-  add(p) {
+  add(p: Product): void {
     this.products.push(p)
   }
 
-  getAll() {
+  getAll(): Product[] {
     return this.products
   }
 
-  getById(id) {
+  getById(id: string): (Product | undefined) {
     return this.products.find(p => p.id == id)
   }
 
-  getByCategory(category) {
+  getByCategory(category: string): Product[] {
     return this.products.filter(p => p.category.includes(category))
   }
 }

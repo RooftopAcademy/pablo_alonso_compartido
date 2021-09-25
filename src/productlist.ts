@@ -1,138 +1,160 @@
-// Ejercicio: Clase 14/09/2021 (2/3)
-addSoldOutListener()
+import {
+  toggleDisplayTemporarily,
+  setDisplayNone,
+  fetchProduct,
+  setDisplayFlex,
+  injectArrayInDOM,
+  injectSingleInDOM
+} from './utils/utils'
 
-function toggleDisplayTemporarily(node, time) {
-  if (node.classList.contains('d-none')) {
-    node.classList.replace('d-none', 'd-flex');
-    setTimeout(function() {
-      node.classList.replace('d-flex', 'd-none');
-    }, time)
+import productItem from './components/productItem'
+import cartItem from './components/cartItem'
+
+import Shop from './Shop'
+import Product from './Product'
+import { DataProduct } from './ts/types'
+
+  function productList(): void {
+  // Ejercicio: Clase 14/09/2021 (2/3)
+  addSoldOutListener()
+
+  function addSoldOutListener(): void {
+    const soldOut: NodeListOf<HTMLElement> = document.querySelectorAll('.sold-out')
+    const notAvaliable: HTMLElement | null = document.getElementById('not-avaliable')
+
+    // Verificamos que existan las entidades
+    if (!(soldOut.length > 0 && notAvaliable)) return
+
+    soldOut.forEach((el: HTMLElement): void => el.addEventListener('click', function(): void {
+      toggleDisplayTemporarily(notAvaliable, 3000)
+    }));
   }
-};
-
-function addSoldOutListener() {
-  const soldOut = document.querySelectorAll('.sold-out');
-  const notAvaliable = document.getElementById('not-avaliable');
-
-  soldOut.forEach(el => el.addEventListener('click', function() {
-    toggleDisplayTemporarily(notAvaliable, 3000)
-  }));
-}
 
 
-// Ejercicio: Clase 14/09/2021 (3/3)
-// Verificamos que si el usuario scrollea debajo de mitad de pagina 
-const goUp = document.getElementById('go-up');
-const halfPage = document.body.clientHeight / 2;
+  // Ejercicio: Clase 14/09/2021 (3/3)
+  // Verificamos que si el usuario scrollea debajo de mitad de pagina
+  const goUp: HTMLElement | null = document.getElementById('go-up')
 
-function isHalfPage() {
-  if (window.scrollY > halfPage) return true
-  return false
-};
+  function isHalfPage(): Boolean {
+    const halfPage: number = document.body.clientHeight / 2;
+    if (window.scrollY > halfPage) return true
+    return false
+  };
 
-function setDisplayFlex(node) {
-  if (node.classList.contains('d-none')) return node.classList.replace('d-none', 'd-flex');
-};
-
-function setDisplayNone(node) {
-  if (node.classList.contains('d-flex')) return node.classList.replace('d-flex', 'd-none');
-};
-
-window.addEventListener('scroll', () => {
-  if (isHalfPage()) return setDisplayFlex(goUp)
-  return setDisplayNone(goUp)
-})
+  window.addEventListener('scroll', (): void => {
+    if (!goUp) return
+    if (isHalfPage()) return setDisplayFlex(goUp)
+    return setDisplayNone(goUp)
+  })
 
 
+  // Ejercicio: Clase 16/09/2021
+  // Representamos la tienda con Shop, los productos estan dentro de catalogo y este a su vez en Shop
+  const shop: Shop = new Shop
 
-// Ejercicio: Clase 16/09/2021
-// Representamos la tienda con Shop, los productos estan dentro de catalogo y este a su vez en Shop
-const shop = new Shop
+  const cartList: HTMLElement | null = document.getElementById('cart-list')
 
-const cartList = document.getElementById('cart-list')
+  const apiURL: string = 'https://my-json-server.typicode.com/Alonso-Pablo/api-nft/products'
 
-fetchProduct()
+  fetchProduct(apiURL, renderStep)
 
-async function fetchProduct() {
-  const URL = 'https://my-json-server.typicode.com/Alonso-Pablo/api-nft/products'
-  await fetchData(URL).then(data => {
-    if (data === undefined) throw new Error('Fetch error')
+  function renderStep(data: DataProduct[]): void {
     shop.loadProduct(data)
-  }).catch(err => console.log(err))
 
-  renderProductsList()
-  // Listener para el boton "Buy now"
-  addListenerAddCart()
-  // Listener para el icono de Carrito, abre o cierra la lista.
-  addListenerDisplayCart()
-  // Listener para Abrir la lista de menu cuando toca el anchor del mensaje al añadir algo al carrito.
-  addListenerSeeCart()
-}
-
-function renderProductsList() {
-  if (!shop.getCatalogue().products.length) { 
-    injectSingleInDOM(undefined, document.getElementById('all-nfts'), productItem)
-    injectSingleInDOM(undefined, document.getElementById('most-valuable-nft'), productItem)
-    injectSingleInDOM(undefined, document.getElementById('colorful-nfts'), productItem)
-    injectSingleInDOM(undefined, document.getElementById('strange-nfts'), productItem)
+    renderProductsList()
+    // Listener para el boton "Buy now"
+    addListenerAddCart()
+    // Listener para el icono de Carrito, abre o cierra la lista.
+    addListenerDisplayCart()
+    // Listener para Abrir la lista de menu cuando toca el anchor del mensaje al añadir algo al carrito.
+    addListenerSeeCart()
   }
-  // Injecta todos los nft sin filtros
-  injectArrayInDOM(shop.getCatalogue().getAll(), document.getElementById('all-nfts'), productItem)
 
-  // Injecta en el DOM todos los productos filtrados por su categoria.
-  injectArrayInDOM(shop.getCatalogue().getByCategory('most-valuable'), document.getElementById('most-valuable-nft'), productItem)
-  injectArrayInDOM(shop.getCatalogue().getByCategory('colorful'), document.getElementById('colorful-nfts'), productItem)
-  injectArrayInDOM(shop.getCatalogue().getByCategory('strange'), document.getElementById('strange-nfts'), productItem)
-}
+  function renderProductsList(): void {
+    const allNfts = document.getElementById('all-nfts') as HTMLElement
+    const mostValuableNfts = document.getElementById('most-valuable-nfts') as HTMLElement
+    const colorfulNfts = document.getElementById('colorful-nfts') as HTMLElement
+    const strangeNfts = document.getElementById('strange-nfts') as HTMLElement
 
-// Injecta los productos en el carrito
-function renderProductCart() {
-  injectArrayInDOM(shop.getCart().getAll(), cartList, cartItem)
-}
+    // Si no hay productos en el catalogo se renderiza un mensaje de error.
+    if (!shop.getCatalogue().products.length) {
+      if (allNfts) injectSingleInDOM(undefined, allNfts, productItem)
+      if (mostValuableNfts) injectSingleInDOM(undefined, mostValuableNfts, productItem)
+      if (colorfulNfts) injectSingleInDOM(undefined, colorfulNfts, productItem)
+      if (strangeNfts) injectSingleInDOM(undefined, strangeNfts, productItem)
+    }
 
-function addListenerCartRemove() {
-  const removeBtn = Array.from(document.getElementsByClassName('js-remove-from-cart'))
+    // Injecta todos los nft sin filtros.
+    injectArrayInDOM(shop.getCatalogue().getAll(), allNfts, productItem)
 
-  removeBtn.forEach(btn => {
-    btn.addEventListener('click', function () {
-      const productToRemove = shop.getCart().getById(this.dataset.productId)
-      const indexProductToRemove = shop.getCart().getAll().indexOf(productToRemove)
-      shop.getCart().removeByIndex(indexProductToRemove)
+    // Injecta en el DOM todos los productos filtrados por su categoria.
+    injectArrayInDOM(shop.getCatalogue().getByCategory('most-valuable'), mostValuableNfts, productItem)
+    injectArrayInDOM(shop.getCatalogue().getByCategory('colorful'), colorfulNfts, productItem)
+    injectArrayInDOM(shop.getCatalogue().getByCategory('strange'), strangeNfts, productItem)
+  }
 
-      // Para eliminar el nodo que contiene al boton en el DOM:
-      this.parentElement.remove()
+  // Injecta los productos en el carrito
+  function renderProductCart(): void {
+    if (!cartList) return
+    injectArrayInDOM(shop.getCart().getAll(), cartList, cartItem)
+  }
+
+  function addListenerCartRemove(): void {
+    const removeBtn = Array.from(document.getElementsByClassName('js-remove-from-cart')) as HTMLElement[]
+
+    removeBtn.forEach((btn: HTMLElement) => {
+      btn.addEventListener('click', function (): void {
+        if (!btn.dataset.productId) return
+        const productToRemove: (Product | undefined) = shop.getCart().getById(btn.dataset.productId)
+
+        if (!productToRemove) return
+        const indexProductToRemove: number = shop.getCart().getAll().indexOf(productToRemove)
+        shop.getCart().removeByIndex(indexProductToRemove)
+
+        // Para eliminar el nodo que contiene al boton en el DOM:
+        if (btn.parentElement) btn.parentElement.remove()
+      })
     })
-  })
-}
+  }
 
-function addListenerAddCart() {
-  const buyBtn = Array.from(document.getElementsByClassName('js-add-to-cart'))
-  const addedToCartMessage = document.getElementById('added-to-cart')
+  function addListenerAddCart(): void {
+    const buyBtn = Array.from(document.getElementsByClassName('js-add-to-cart')) as HTMLElement[]
+    const addedToCartMessage: HTMLElement | null = document.getElementById('added-to-cart')
 
-  buyBtn.forEach(btn => {
-    btn.addEventListener('click', function () {
-      const productToAdd = shop.getCatalogue().getById(this.dataset.productId)
-      shop.getCart().add(productToAdd)
-      renderProductCart()
-      toggleDisplayTemporarily(addedToCartMessage, 4000)
+    buyBtn.forEach(function (btn: HTMLElement): void {
+      btn.addEventListener('click', function (): void {
+        if (!btn.dataset.productId) return
+        const productToAdd: Product | undefined = shop.getCatalogue().getById(btn.dataset.productId)
 
-      // Ejecuto ahora la funcion ya que antes no existia el boton de remover en el DOM
-      addListenerCartRemove()
+        if (!productToAdd) return
+        shop.getCart().add(productToAdd)
+        renderProductCart()
+
+        if (!addedToCartMessage) return
+        toggleDisplayTemporarily(addedToCartMessage, 4000)
+
+        // Ejecuto ahora la funcion ya que antes no existia el boton de remover en el DOM
+        addListenerCartRemove()
+      })
     })
-  })
+  }
+
+  function addListenerDisplayCart(): void {
+    const cartToggle = document.getElementById('cart-toggle') as HTMLElement
+    cartToggle.addEventListener('click', function () {
+      if (!cartList) return
+      if (cartList.classList.contains('d-none')) return setDisplayFlex(cartList)
+      return setDisplayNone(cartList)
+    })
+  }
+
+  function addListenerSeeCart(): void {
+    const seeCart = document.getElementById('see-cart') as HTMLElement
+    seeCart.addEventListener('click', function (): void {
+      if (!cartList) return
+      setDisplayFlex(cartList)
+    })
+  }
 }
 
-function addListenerDisplayCart() {
-  const cartToggle = document.getElementById('cart-toggle')
-  cartToggle.addEventListener('click', function () {
-    if (cartList.classList.contains('d-none')) return setDisplayFlex(cartList)
-    return setDisplayNone(cartList)
-  })
-}
-
-function addListenerSeeCart() {
-  const seeCart = document.getElementById('see-cart')
-  seeCart.addEventListener('click', function () {
-    setDisplayFlex(cartList)
-  })
-}
+export default productList
