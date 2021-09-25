@@ -77,7 +77,7 @@ import { DataProduct } from './ts/types'
     const strangeNfts = document.getElementById('strange-nfts') as HTMLElement
 
     // Si no hay productos en el catalogo se renderiza un mensaje de error.
-    if (!shop.getCatalogue().products.length) {
+    if (!shop.getCatalogue().getAll().length) {
       if (allNfts) injectSingleInDOM(undefined, allNfts, productItem)
       if (mostValuableNfts) injectSingleInDOM(undefined, mostValuableNfts, productItem)
       if (colorfulNfts) injectSingleInDOM(undefined, colorfulNfts, productItem)
