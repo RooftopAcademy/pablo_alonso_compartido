@@ -11,8 +11,8 @@ import {
   import commentItem from './components/commentItem'
   import cartItem from './components/cartItem'
 
-  import Shop from './Shop'
-  import Product from './Product'
+  import Shop from './classes/Shop'
+  import Product from './classes/Product'
   import { ProductComment, ProductData } from './ts/types'
 
 function productDetails(): void {
