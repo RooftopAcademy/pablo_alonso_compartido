@@ -1,4 +1,4 @@
-import Product from "../Product"
+import Product from "../classes/Product"
 
 function productItem(product: Product | undefined): string {
   // Si product es undefined injecta un mensaje de error

@@ -1,4 +1,4 @@
-import Product from "../Product"
+import Product from "../classes/Product"
 
 function cartItem(product: Product): string {
   return `

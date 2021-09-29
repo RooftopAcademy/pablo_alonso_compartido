@@ -1,7 +1,9 @@
 import Product from "./Product"
 
 export default class Catalogue {
+
   private products: Product[] = []
+
 
   public add(p: Product): void {
     this.products.push(p)
