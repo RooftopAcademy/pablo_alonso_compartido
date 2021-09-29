@@ -6,14 +6,14 @@ import {
   injectArrayInDOM,
   injectSingleInDOM,
   isHalfPage
-} from './utils/utils'
+} from '../utils/utils'
 
-import productItem from './components/productItem'
-import cartItem from './components/cartItem'
+import productItem from '../components/productItem'
+import cartItem from '../components/cartItem'
 
-import Shop from './classes/Shop'
-import Product from './classes/Product'
-import { ProductData } from './ts/types'
+import Shop from '../classes/Shop'
+import Product from '../classes/Product'
+import { ProductData } from '../ts/types'
 
 function productList(): void {
   // Ejercicio: Clase 14/09/2021 (2/3)
