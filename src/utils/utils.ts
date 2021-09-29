@@ -63,3 +63,9 @@ export function differenceDays(timeAgo: string): number {
   const daysAgo: number = Math.ceil(difference/(1000 * 3600 * 24))
   return daysAgo
 }
+
+export function isHalfPage(): Boolean {
+  const halfPage: number = document.body.clientHeight / 2;
+  if (window.scrollY > halfPage) return true
+  return false
+};
