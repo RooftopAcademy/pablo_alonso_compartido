@@ -64,8 +64,12 @@ export function differenceDays(timeAgo: string): number {
   return daysAgo
 }
 
-export function isHalfPage(): Boolean {
+export function isHalfPage(): boolean {
   const halfPage: number = document.body.clientHeight / 2;
   if (window.scrollY > halfPage) return true
   return false
 };
+
+export function isEqualString(a: string, b: string): boolean {
+  return a === b ?true :false
+}

@@ -40,13 +40,11 @@ export default class Shop {
   public logInUser(data: LogData): boolean {
     const found: (RegisteredUser | undefined) = this.members
       .getAll()
-      .find((user: RegisteredUser) => user.email === data.email && user.password === data.email)
+      .find((user: RegisteredUser) => (user.email === data.email) && (user.password === data.email))
 
-    if (found) {
-      this.user = found
-      return true
-    }
-    return false
+    if (!found) return false
+    this.user = found
+    return true
   }
 
   public isLoged(): boolean {
@@ -63,17 +61,43 @@ export default class Shop {
 
   public isRegistered(email: string): boolean {
     return !!this.members.getAll()
-      .find(user => user.email === email)
+      // .find(user =>{ console.log(user.email), user.email === email})
+      .find((user: RegisteredUser) => user.email === email)
   }
 
   public saveMembers(): void {
-    localStorage.setItem('regdUsers', JSON.stringify(this.members))
+    if (localStorage.regdUsers) {
+      const regdUsers: RegisteredUser[] = this.members.getAll()
+      const prevData: RegisteredUser[] = JSON.parse(localStorage.regdUsers)
+      // console.log('prevData')
+      // console.log(prevData)
+      // console.log(typeof prevData)
+      // prevData.forEach(user => console.log(user.email)) // undefined
+
+      // console.log('todoslosmiembros')
+      // console.log(RegdUsers)
+      localStorage.setItem('regdUsers', JSON.stringify(
+        regdUsers.concat(prevData)
+      ))
+    }
+    localStorage.setItem('regdUsers', JSON.stringify(
+      this.members.getAll()
+    ))
   }
   public loadMembers(): void {
-    if (localStorage.regdUsers){
-      const data: RegisteredUser[] = JSON.parse(localStorage.regdUsers)
-      data.forEach((member: RegisteredUser) => this.members.add(member))
-    }
+    if (!localStorage.regdUsers) return
+    const data: any[] = JSON.parse(localStorage.regdUsers)
+    data.forEach((regdUser): void => {
+      const newRegdUser = new RegisteredUser;
+      newRegdUser.id = regdUser._id
+      newRegdUser.name = regdUser._name
+      newRegdUser.email = regdUser._email
+      newRegdUser.password = regdUser._password
+      newRegdUser.productsInCart = regdUser._productsInCart
+      newRegdUser.purchasedProducts = regdUser._purchasedProducts
+
+      if (!this.isRegistered(newRegdUser.email)) return this.members.add(newRegdUser)
+    })
   }
 
   public saveUser(): void {

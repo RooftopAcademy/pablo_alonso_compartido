@@ -1,7 +1,9 @@
+import Shop from '../classes/Shop';
 import {
   toggleVisibilityTemporarily,
   setDisplayFlex,
-  setDisplayNone
+  setDisplayNone,
+  isEqualString
 } from '../utils/utils'
 
 function index(): void {
@@ -17,6 +19,10 @@ function index(): void {
     // Reemplazo el dato en el elemento.
     anchor.innerText = data;
   }
+
+  const shop = new Shop
+  // Carga los usuarios guardados en localstorage para que esté actualizado.
+  shop.loadMembers()
 
   // Al clickear el icono menu 'hambuguesa' baja o sube el menu
   menuToggle()
@@ -49,6 +55,7 @@ function index(): void {
     const registerCloser = document.getElementById('register-closer') as HTMLElement
     const registerMenu = document.getElementById('register-menu') as HTMLElement
     const loginMenu = document.getElementById('login-menu') as HTMLElement
+
     registerCloser.addEventListener('click', function (e: Event): void {
       e.preventDefault()
       setDisplayNone(registerMenu)
@@ -72,6 +79,7 @@ function index(): void {
     const loginCloser = document.getElementById('login-closer') as HTMLElement
     const loginMenu = document.getElementById('login-menu') as HTMLElement
     const registerMenu = document.getElementById('register-menu') as HTMLElement
+
     loginCloser.addEventListener('click', function (e: Event): void {
       e.preventDefault()
       setDisplayNone(loginMenu)
@@ -80,12 +88,73 @@ function index(): void {
   }
 
 
+  addListenerRegister()
+  function addListenerRegister() {
+    const signUpForm = document.getElementById('sign-up-form') as HTMLFormElement
+    const inputUsername = document.getElementById('reg-user-name') as HTMLInputElement
+    const inputEmail = document.getElementById('reg-user-email') as HTMLInputElement
+    const inputPassword = document.getElementById('reg-user-password') as HTMLInputElement
+    const inputConfirmPassword = document.getElementById('reg-user-confirm-password') as HTMLInputElement
+    const alertContainer = document.getElementById('register-alert') as HTMLElement
+    const confirmContainer = document.getElementById('register-confirm') as HTMLElement
+
+    signUpForm.addEventListener('submit', function(e: Event): void {
+      e.preventDefault()
+      // Vacia el texto de confirmacion si es que hay.
+      confirmContainer.innerHTML = ''
+
+      const username: string = inputUsername.value.trim()
+      const email: string = inputEmail.value.trim()
+      const password: string = inputPassword.value.trim()
+      const confirmPasword: string = inputConfirmPassword.value.trim()
+
+      const okPass = validatePassword(password, confirmPasword, alertContainer)
+      const okEmail = validateEmail(email, alertContainer)
+
+      if (okPass && okEmail) {
+        confirmContainer.innerHTML = `Account created successfully!`
+        shop.registerUser({
+          name: username,
+          email: email,
+          password: password
+        })
+        shop.saveMembers()
+      }
+    })
+
+  }
+
+  function validatePassword(passA: string, passB: string, where: HTMLElement): boolean {
+    if (!isEqualString(passA, passB)) {
+      where.innerHTML = `Passwords don't match!`
+      return false
+    }
+    where.innerHTML = ``
+    return true
+  }
+
+  function validateEmail(email: string, where: HTMLElement): boolean {
+    if (shop.isRegistered(email)) {
+      where.innerHTML += `The email entered is already used.`
+      return false
+    }
+    return true
+  }
+
+
+  addListenerLogin()
+  function addListenerLogin() {
+
+  }
+
+
 
   // Ejercicio: Clase 14/09/2021 (1/3)
   // Validación de entrada de datos en un formulario
-  addListenerForm()
-  function addListenerForm (): void {
-    const newsLetter = document.getElementById('news-letter') as HTMLElement
+  addListenerSuscribe()
+  function addListenerSuscribe (): void {
+    const newsLetter = document.getElementById('news-letter') as HTMLFormElement
+    const inputEmail = newsLetter.querySelector('input[name=email]') as HTMLInputElement
     const invalidMessage = document.getElementById('invalid-message') as HTMLElement
     const successfulMessage = document.getElementById('successful-message') as HTMLElement
 
@@ -102,10 +171,8 @@ function index(): void {
 
     newsLetter.addEventListener('submit', function(e: Event): void {
       e.preventDefault()
-      console.log('Dentro del boton')
-      const inputEmail = newsLetter.querySelector('input[name=email]') as HTMLInputElement
       const email: string = inputEmail.value
-    
+
       if (emailsBanned.includes(email)) return toggleVisibilityTemporarily(invalidMessage, 3000)
       return toggleVisibilityTemporarily(successfulMessage, 3000)
     })

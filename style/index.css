@@ -233,6 +233,17 @@ body {
   background-color: transparent;
   color: white
 }
+.sign-alert {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: red;
+}
+.sign-confirm {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: green;
+}
+
 .notice {
   width: 90%;
   margin: 1.6rem 0;
