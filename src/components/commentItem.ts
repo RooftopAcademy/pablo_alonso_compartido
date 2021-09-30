@@ -1,7 +1,7 @@
-import { CommentProduct } from '../ts/types'
+import { ProductComment } from '../ts/types'
 import { differenceDays } from '../utils/utils'
 
-function commentItem(comment: CommentProduct): string {
+function commentItem(comment: ProductComment): string {
   if (!comment) return `<h3>There was an error loading the comments :(</h3>`
 
   const daysAgo: number = differenceDays(comment.date)

@@ -3,7 +3,6 @@ export default class Cart {
   private products: Product[] = []
 
   public add(p: Product): void {
-    if (this.getAll().length > 0) throw new Error('Only one product is allowed in the cart.')
     this.products.push(p)
   }
 

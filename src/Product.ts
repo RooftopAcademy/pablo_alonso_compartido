@@ -1,4 +1,4 @@
-import { CommentProduct } from './ts/types'
+import { ProductComment } from './ts/types'
 
 export default class Product {
   private _id: string = ''
@@ -7,7 +7,7 @@ export default class Product {
   private _author: string = ''
   private _description: string = ''
   private _price: number = 0
-  private _comment: CommentProduct[] = []
+  private _comment: ProductComment[] = []
   private _category: string[] = []
   private _isAvaliable: boolean = true
 
@@ -58,10 +58,10 @@ export default class Product {
     return this._price
   }
 
-  public set comment(comment: CommentProduct[]) {
+  public set comment(comment: ProductComment[]) {
     this._comment = comment
   }
-  public get comment(): CommentProduct[] {
+  public get comment(): ProductComment[] {
     return this._comment
   }
 

@@ -12,7 +12,7 @@ import cartItem from './components/cartItem'
 
 import Shop from './Shop'
 import Product from './Product'
-import { DataProduct } from './ts/types'
+import { ProductData } from './ts/types'
 
 function productList(): void {
   // Ejercicio: Clase 14/09/2021 (2/3)
@@ -57,7 +57,7 @@ function productList(): void {
 
   fetchProduct(apiURL, renderStep)
 
-  function renderStep(data: DataProduct[]): void {
+  function renderStep(data: ProductData[]): void {
     shop.loadProduct(data)
 
     renderProductsList()

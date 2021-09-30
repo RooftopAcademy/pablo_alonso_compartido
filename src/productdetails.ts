@@ -13,7 +13,7 @@ import {
 
   import Shop from './Shop'
   import Product from './Product'
-  import { CommentProduct, DataProduct } from './ts/types'
+  import { ProductComment, ProductData } from './ts/types'
 
 function productDetails(): void {
 
@@ -25,7 +25,7 @@ function productDetails(): void {
 
   fetchProduct(apiURL, renderStep)
 
-  function renderStep(data: DataProduct[]): void {
+  function renderStep(data: ProductData[]): void {
     shop.loadProduct(data)
 
     const productID = getProductIDQuery()
@@ -140,7 +140,7 @@ function productDetails(): void {
     // Si el producto es 'undefined' se injecta un mensaje de error para el usuario al DOM.
     if (!product) return injectSingleInDOM(product, commentList, commentItem)
     // Si existe el producto se injecta el/los comentarios al DOM.
-    const comments: CommentProduct[] = product.comment
+    const comments: ProductComment[] = product.comment
     return injectArrayInDOM(comments, commentList, commentItem)
   }
 }
