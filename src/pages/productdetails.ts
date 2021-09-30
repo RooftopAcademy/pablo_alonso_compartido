@@ -5,15 +5,15 @@ import {
   fetchProduct,
   injectArrayInDOM,
   injectSingleInDOM
-} from './utils/utils'
+} from '../utils/utils'
 
-  import productDetail from './components/productDetail'
-  import commentItem from './components/commentItem'
-  import cartItem from './components/cartItem'
+  import productDetail from '../components/productDetail'
+  import commentItem from '../components/commentItem'
+  import cartItem from '../components/cartItem'
 
-  import Shop from './Shop'
-  import Product from './Product'
-  import { ProductComment, ProductData } from './ts/types'
+  import Shop from '../classes/Shop'
+  import Product from '../classes/Product'
+  import { ProductComment, ProductData } from '../ts/types'
 
 function productDetails(): void {
 
@@ -31,10 +31,10 @@ function productDetails(): void {
     const productID = getProductIDQuery()
 
     if (isValidID(productID)) {
-
+      // Render de un producto.
       renderProduct(productID)
 
-      // Listener para el boton "Buy now"
+      // Listener para el boton "Buy now".
       addListenerAddCart()
 
       // Listener para el icono de Carrito, abre o cierra la lista.
@@ -46,7 +46,7 @@ function productDetails(): void {
       renderCommentsList(productID)
       return
     }
-    // Si no se encuentra el id se redirige a la pagina notfound
+    // Si no se encuentra el producto se redirige a la pagina notfound.
     window.location.replace('notfound.html')
     return
   }
@@ -79,6 +79,7 @@ function productDetails(): void {
 
         if (!productToAdd) return
         shop.getCart().add(productToAdd)
+        // "refresca" la lista del cart
         renderProductCart()
 
         if (!addedToCartMessage) return
@@ -108,7 +109,7 @@ function productDetails(): void {
         const indexProductToRemove: number = shop.getCart().getAll().indexOf(productToRemove)
         shop.getCart().removeByIndex(indexProductToRemove)
 
-        // Para eliminar el nodo que contiene al boton en el DOM:
+        // Para eliminar el <li> de la lista del carro (<ul>)
         if (btn.parentElement) btn.parentElement.remove()
       })
     })
@@ -128,8 +129,7 @@ function productDetails(): void {
   function addListenerSeeCart(): void {
     const seeCart = document.getElementById('see-cart') as HTMLElement
     seeCart.addEventListener('click', function (): void {
-      if (!cartList) return
-      setDisplayFlex(cartList)
+      if (cartList) setDisplayFlex(cartList)
     })
   }
 

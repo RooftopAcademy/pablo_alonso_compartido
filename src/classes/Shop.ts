@@ -10,13 +10,15 @@ import {
   LogData,
   ProductData,
   UserData
-} from './ts/types'
+} from '../ts/types'
 
 export default class Shop {
+
   private cart: Cart = new Cart
   private catalogue: Catalogue = new Catalogue
   private members: Members = new Members
   private user: (InvitedUser | RegisteredUser) = new InvitedUser
+
 
   public getCart(): Cart {
     return this.cart
@@ -36,11 +38,13 @@ export default class Shop {
 
 
   public logInUser(data: LogData): boolean {
-    const found: (RegisteredUser | undefined) = this.members.getAll()
+    const found: (RegisteredUser | undefined) = this.members
+      .getAll()
       .find((user: RegisteredUser) => user.email === data.email && user.password === data.email)
+
     if (found) {
-        this.user = found
-        return true
+      this.user = found
+      return true
     }
     return false
   }

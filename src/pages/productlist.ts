@@ -4,15 +4,16 @@ import {
   fetchProduct,
   setDisplayFlex,
   injectArrayInDOM,
-  injectSingleInDOM
-} from './utils/utils'
+  injectSingleInDOM,
+  isHalfPage
+} from '../utils/utils'
 
-import productItem from './components/productItem'
-import cartItem from './components/cartItem'
+import productItem from '../components/productItem'
+import cartItem from '../components/cartItem'
 
-import Shop from './Shop'
-import Product from './Product'
-import { ProductData } from './ts/types'
+import Shop from '../classes/Shop'
+import Product from '../classes/Product'
+import { ProductData } from '../ts/types'
 
 function productList(): void {
   // Ejercicio: Clase 14/09/2021 (2/3)
@@ -33,20 +34,17 @@ function productList(): void {
 
   // Ejercicio: Clase 14/09/2021 (3/3)
   // Verificamos que si el usuario scrollea debajo de mitad de pagina
-  const goUp: (HTMLElement | null) = document.getElementById('go-up')
+  addGoUpListener()
 
-  window.addEventListener('scroll', function (): void {
-    if (!goUp) return
-    if (isHalfPage()) return setDisplayFlex(goUp)
-    return setDisplayNone(goUp)
-  })
+  function addGoUpListener(): void {
+    const goUp: (HTMLElement | null) = document.getElementById('go-up')
 
-  function isHalfPage(): Boolean {
-    const halfPage: number = document.body.clientHeight / 2;
-    if (window.scrollY > halfPage) return true
-    return false
-  };
-
+    window.addEventListener('scroll', function (): void {
+      if (!goUp) return
+      if (isHalfPage()) return setDisplayFlex(goUp)
+      return setDisplayNone(goUp)
+    })
+  }
   // Ejercicio: Clase 16/09/2021
   // Representamos la tienda con Shop, los productos estan dentro de catalogo y este a su vez en Shop
   const shop: Shop = new Shop
@@ -90,7 +88,6 @@ function productList(): void {
 
     // Injecta todos los nft sin filtros.
     injectArrayInDOM(shop.getCatalogue().getAll(), allNfts, productItem)
-
     // Injecta en el DOM todos los productos filtrados por su categoria.
     injectArrayInDOM(shop.getCatalogue().getByCategory('most-valuable'), mostValuableNfts, productItem)
     injectArrayInDOM(shop.getCatalogue().getByCategory('colorful'), colorfulNfts, productItem)

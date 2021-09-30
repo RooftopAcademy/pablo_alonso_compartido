@@ -1,19 +1,19 @@
-
 import User from './User'
 import Product from './Product'
 import { v4 as uuidv4 } from 'uuid'
 
 export default class RegisteredUser extends User {
+
+  readonly _id: string = uuidv4()
   private _name: string = ''
   private _email: string = ''
   private _password: string = ''
   private _productsInCart: Product[] = []
   private _purchasedProducts: Product[] = []
-  
-  readonly _id: string = uuidv4()
-  // como esta registrado puede commentar y comprar
+
   readonly _canBuy: boolean = true
   readonly _canComment: boolean = true
+
 
   public set name(name: string) {
     this._name = name

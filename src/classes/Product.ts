@@ -1,6 +1,7 @@
-import { ProductComment } from './ts/types'
+import { ProductComment } from '../ts/types'
 
 export default class Product {
+
   private _id: string = ''
   private _picture: string = ''
   private _title: string = ''
@@ -10,6 +11,7 @@ export default class Product {
   private _comment: ProductComment[] = []
   private _category: string[] = []
   private _isAvaliable: boolean = true
+
 
   public set id(id: string) {
     this._id = id
@@ -72,6 +74,7 @@ export default class Product {
   public get category(): string[] {
     return this._category
   }
+
 
   public set isAvaliable(isAvaliable: boolean) {
     this._isAvaliable = isAvaliable

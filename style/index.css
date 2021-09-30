@@ -1,7 +1,9 @@
 body {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: 100%;
+  height: 100%;
   background-color: #1A1A1A;
   color: white;
   font-family: 'Inter', 'Comic sans', Courier, monospace;
@@ -9,13 +11,40 @@ body {
   scroll-behavior: smooth;
 }
 
+.d-none {
+  display: none;
+}
+.d-flex {
+  display: flex;
+}
 .v-hidden {
   visibility: hidden;
 }
 .v-visible {
   visibility: visible;
 }
+.anchor {
+  padding: .6em 1.3em;
+  border-radius: 4px;
 
+}
+.btn {
+  padding: .6rem 1.3rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+.input {
+  width: 60%;
+  max-width: 250px;
+  padding: .6em 1.3em;
+  margin: 1.4rem 0;
+  color: white;
+  font-size: 1.8rem;
+  background-color: #0F0F0F;
+  border: 1px solid white;
+  border-radius: 4px;
+}
 
 /* Navigator */
 
@@ -32,10 +61,11 @@ body {
   .nav {
     display: flex;
     width: 90%;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
   }
   .nav--logo {
+    margin-right: auto;
     position: relative;
     cursor: pointer;
     z-index: 9000;
@@ -46,6 +76,7 @@ body {
   .menu--label-toopen {
     position: relative;
     display: flex;
+    justify-self: flex-end;
     cursor: pointer;
     z-index: 9000;
   }
@@ -55,12 +86,6 @@ body {
     cursor: pointer;
     z-index: 9000;
   }
-
-  .menu--checkbox:checked ~ .menu {
-    transform: translateY(0px);
-    transition: all 0.6s;
-    opacity: 0.95;
-  }
   .menu--checkbox:checked + .menu--label-toopen {
     display: none;
   }
@@ -69,10 +94,10 @@ body {
   }
 
   /* Menu Mobile */
-  .menu {
+  .menu-closed {
     position: absolute;
     top: 60px;
-    right: 0;
+    right: 0%;
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -81,6 +106,21 @@ body {
     padding: 1.4em 0;
     background-color: #0F0F0F;
     transform: translateY(-150%);
+    transition: all 1s;
+    z-index: 500;
+  }
+  .menu-opened {
+    position: absolute;
+    top: 60px;
+    right: 0%;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.4em 0;
+    background-color: #0F0F0F;
+    transform: translateY(0%);
     transition: all 1s;
     z-index: 500;
   }
@@ -109,6 +149,32 @@ body {
       background-color: gray;
     }
 
+  /* user-menu */
+  .user-toggle-menu {
+    position: relative;
+    margin-left: 2rem;
+    z-index: 500;
+  }
+  .login {
+    position: relative;
+    margin-right: 1.6rem;
+    font-size: 1.5rem;
+    font-weight: 900;
+    background-color: #1A1A1A;
+    border: 1px solid white;
+    color: white;
+    white-space:nowrap;
+    z-index: 500;
+  }
+  .register {
+    position: relative;
+    margin-right: 1.6rem;
+    font-size: 1.5rem;
+    font-weight: 900;
+    white-space:nowrap;
+    z-index: 500;
+  }
+
 
 /* main */
 
@@ -116,6 +182,61 @@ body {
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+
+/* register menu */
+
+.sign-menu {
+  position: fixed;
+  top: 4%;
+  justify-self: center;
+  align-self: center;
+  width: 90%;
+  height: 90%;
+  background-color: #0F0F0F;
+  border: 1px solid white;
+  border-radius: 4px;
+  z-index: 90000;
+}
+.sign-form {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+}
+.sign-closer {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: transparent;
+  border: none;
+}
+.sign-title {
+  font-size: 2.6rem;
+  margin: 4rem 0;
+  padding-top: 10rem;
+}
+.sign-label {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.sign-btn {
+  margin-top: 2rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.already-account {
+  background-color: transparent;
+  color: white
+}
+.notice {
+  width: 90%;
+  margin: 1.6rem 0;
+  color: gray;
 }
 
 .article {
@@ -129,6 +250,7 @@ body {
     margin: 1.4rem 0;
     font-size: 4rem;
     font-weight: 900;
+    text-align: center;
   }
   .article--svg {
     display: flex;
@@ -150,16 +272,12 @@ body {
     text-align: center;
     color: #B0B0B0;
   }
-  .anchor {
-    padding: .6em 1.3em;
-    border-radius: 4px;
-    font-size: 1.5rem;
-    font-weight: 900;
-  }
   .see-more {
     margin-top: 5rem;
     color: #191919;
     background-color: white;
+    font-size: 1.5rem;
+    font-weight: 900;
   }
   .see-more:active {
     background-color: gray;
@@ -179,17 +297,6 @@ body {
     font-size: 2rem;
     font-weight: 700;
   }
-  .input {
-    width: 60%;
-    max-width: 250px;
-    padding: .6em 1.3em;
-    margin: 1.4rem 0;
-    color: white;
-    font-size: 1.8rem;
-    background-color: #0F0F0F;
-    border: 1px solid white;
-    border-radius: 4px;
-  }
   .successful-message {
     font-size: 1.8rem;
     color: green;
@@ -198,18 +305,13 @@ body {
     font-size: 1.8rem;
     color: red;
   }
-  .btn {
-    padding: .6em 1.3em;
-    border-radius: 4px;
-    font-size: 1.5rem;
-    font-weight: 900;
-  }
-  .btn--subscribe {
+  .subscribe {
     width: 60%;
     max-width: 280px;
     margin: 1.4rem 0;
     background-color: white;
     font-size: 1.8rem;
+    font-weight: 700;
     border: none;
   }
 /* footer */
@@ -241,7 +343,14 @@ body {
     .menu--label-toopen {
       display: none;
     }
-    .menu {
+    .menu-opened {
+      position: static;
+      display: flex;
+      flex-direction: row;
+      transform: translateY(0);
+      padding: 0;
+    }
+    .menu-closed {
       position: static;
       display: flex;
       flex-direction: row;
@@ -251,6 +360,9 @@ body {
     .menu--li {
       width: 20%;
       margin: 0;
+      white-space: nowrap;
     }
-
+    .menu--checkbox:checked ~ .menu--label-toclose {
+      display: none;
+    }
   }
