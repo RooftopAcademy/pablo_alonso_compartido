@@ -1,6 +1,6 @@
-import index from './pages/index'
-import productList from './pages/productlist'
-import productDetails from './pages/productdetails'
+import index from './pages/indexPage'
+import productList from './pages/productlistPage'
+import productDetails from './pages/productdetailsPage'
 
 const PATH: string = window.location.pathname;
 
