@@ -37,16 +37,12 @@ export default class Shop {
   }
 
 
-  public logInUser(data: LogData): boolean {
+  public logInUser(data: LogData): void {
     const found: (RegisteredUser | undefined) = this.members
       .getAll()
-      .find((user: RegisteredUser) => user.email === data.email && user.password === data.email)
-
-    if (found) {
-      this.user = found
-      return true
-    }
-    return false
+      .find((user: RegisteredUser) => (user.email == data.email) && (user.password == data.password))
+    if (!found) return
+    this.user = found
   }
 
   public isLoged(): boolean {
@@ -63,17 +59,32 @@ export default class Shop {
 
   public isRegistered(email: string): boolean {
     return !!this.members.getAll()
-      .find(user => user.email === email)
+      // .find(user =>{ console.log(user.email), user.email === email})
+      .find((user: RegisteredUser) => user.email === email)
   }
 
   public saveMembers(): void {
-    localStorage.setItem('regdUsers', JSON.stringify(this.members))
+    if (localStorage.regdUsers) {
+      const regdUsers: RegisteredUser[] = this.members.getAll()
+      const prevData: RegisteredUser[] = JSON.parse(localStorage.regdUsers)
+
+      localStorage.setItem('regdUsers', JSON.stringify(regdUsers.concat(prevData)))
+    }
+    localStorage.setItem('regdUsers', JSON.stringify(this.members.getAll()))
   }
   public loadMembers(): void {
-    if (localStorage.regdUsers){
-      const data: RegisteredUser[] = JSON.parse(localStorage.regdUsers)
-      data.forEach((member: RegisteredUser) => this.members.add(member))
-    }
+    if (!localStorage.regdUsers) return
+    const data: any[] = JSON.parse(localStorage.regdUsers)
+    data.forEach((regdUser): void => {
+      const newRegdUser = new RegisteredUser;
+      newRegdUser.id = regdUser._id
+      newRegdUser.name = regdUser._name
+      newRegdUser.email = regdUser._email
+      newRegdUser.password = regdUser._password
+      newRegdUser.productsInCart = regdUser._productsInCart
+      newRegdUser.purchasedProducts = regdUser._purchasedProducts
+      if (!this.isRegistered(newRegdUser.email)) return this.members.add(newRegdUser)
+    })
   }
 
   public saveUser(): void {
@@ -84,6 +95,12 @@ export default class Shop {
       const data: RegisteredUser = JSON.parse(localStorage.logedUser)
       this.user = data
     }
+  }
+  public logOut(): void {
+    if (localStorage.logedUser) {
+      localStorage.removeItem('logedUser')
+    }
+    this.user = new InvitedUser
   }
 
   public loadProduct(data: ProductData[]): void {

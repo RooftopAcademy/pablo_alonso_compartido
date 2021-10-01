@@ -49,7 +49,7 @@
         Sign Up
       </button>
 
-      <button class="d-none user-toggle-menu">
+      <button class="d-flex btn user-toggle-menu" id="user-toggle-menu">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 40 40" fill="none">
           <rect width="40" height="40" rx="4" fill="white"/>
           <path d="M31.6799 30.9823C32.3471 33.5185 30.4341 36 27.8115 36L12.1885 36C9.56591 36 7.65286 33.5185 8.32015 30.9823L9.96522 24.7295C10.2814 23.5278 11.138 22.5413 12.2835 22.0598L16.4398 20.3126C16.9305 20.1063 17.4563 20 17.9887 20C19.2853 20 21.7938 20 22.8167 20C23.7319 20 26.2943 21.1925 27.9764 22.0275C28.9755 22.5235 29.6947 23.4369 29.9785 24.5156L31.6799 30.9823Z" fill="black"/>
@@ -81,8 +81,14 @@
 
   <main class="main">
 
+    <section>
+      <ul>
+        <li>Sign out</li>
+      </ul>
+    </section>
+
     <section class="d-none sign-menu" id="register-menu">
-      <form class="sign-form" id="sign-up-form">
+      <form class="sign-form" id="signup-form">
 
         <button class="sign-closer" id="register-closer">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 19 19" fill="none">
@@ -129,13 +135,16 @@
           placeholder="Confirm password"
         >
 
+        <div class="sign-alert" id="register-alert">
+          <!-- Inject code here -->
+        </div>
+        <div class="sign-confirm" id="register-confirm">
+          <!-- Inject code here -->
+        </div>
+
         <button class="btn sign-btn" type="submit">Create account</button>
 
         <button class="btn sign-btn already-account">I already have an account</button>
-
-        <div id="register-alert">
-          <!-- Inject code here -->
-        </div>
 
         <p class="notice">
           By creating an account, you agree to the Terms of Service. For more information about NFT Shop's privacy practices, see the NFT Shop Privacy Statement. We'll occasionally send you account-related emails.
@@ -145,7 +154,7 @@
 
 
     <section class="d-none sign-menu" id="login-menu">
-      <form class="sign-form" id="sign-in-form">
+      <form class="sign-form" id="signin-form">
 
         <button class="sign-closer" id="login-closer">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 19 19" fill="none">
@@ -174,13 +183,18 @@
           placeholder="Password"
         >
 
+        <div class="sign-alert" id="login-alert">
+          <!-- Inject code here -->
+        </div>
+        <div class="sign-confirm" id="login-confirm">
+          <!-- Inject code here -->
+        </div>
+
         <button class="btn sign-btn" type="submit">Sign in</button>
 
         <button class="btn sign-btn already-account">I do not have an account</button>
 
-        <div id="login-alert">
-          <!-- Inject code here -->
-        </div>
+
 
         <p class="notice">
           By creating an account, you agree to the Terms of Service. For more information about NFT Shop's privacy practices, see the NFT Shop Privacy Statement. We'll occasionally send you account-related emails.

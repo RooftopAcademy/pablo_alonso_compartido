@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 export default class RegisteredUser extends User {
 
-  readonly _id: string = uuidv4()
+  private _id: string = uuidv4()
   private _name: string = ''
   private _email: string = ''
   private _password: string = ''
@@ -14,6 +14,13 @@ export default class RegisteredUser extends User {
   readonly _canBuy: boolean = true
   readonly _canComment: boolean = true
 
+  // Getters y Setters:
+  public set id(id: string) {
+    this._id = id
+  }
+  public get id(): string {
+    return this._id
+  }
 
   public set name(name: string) {
     this._name = name
@@ -36,7 +43,22 @@ export default class RegisteredUser extends User {
     return this._password
   }
 
+  public set productsInCart(productsInCart: Product[]) {
+    this._productsInCart = productsInCart
+  }
+  public get productsInCart(): Product[] {
+    return this._productsInCart
+  }
 
+  public set purchasedProducts(purchasedProducts: Product[]) {
+    this._purchasedProducts = purchasedProducts
+  }
+  public get purchasedProducts(): Product[] {
+    return this._purchasedProducts
+  }
+
+
+  // Metodos:
   public addProductsInCart(product: Product): void {
     this._productsInCart.push(product)
   }
