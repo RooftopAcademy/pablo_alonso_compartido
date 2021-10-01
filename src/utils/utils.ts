@@ -31,8 +31,8 @@ export function toggleVisibilityTemporarily(node: HTMLElement, time: number): vo
 
 export async function fetchData(url: string): Promise<[] | undefined> {
   const response: [] = await fetch(url)
-    .then(res => res.ok ?res.json() :Promise.reject())
-    .catch(err => console.error(err))
+    .then((res: Response) => res.ok ?res.json() :Promise.reject())
+    .catch((err: Error) => console.error(err))
 
   if (!response) return undefined
   return response
