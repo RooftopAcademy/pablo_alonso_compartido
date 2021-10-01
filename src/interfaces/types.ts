@@ -1,4 +1,4 @@
-export interface ProductData {
+export interface ProductInterface {
   id: string
   picture: string
   title: string

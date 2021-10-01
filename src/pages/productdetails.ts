@@ -13,7 +13,7 @@ import {
 
   import Shop from '../classes/Shop'
   import Product from '../classes/Product'
-  import { ProductComment, ProductData } from '../ts/types'
+  import { ProductComment, ProductInterface } from '../interfaces/types'
 
 function productDetails(): void {
 
@@ -25,7 +25,7 @@ function productDetails(): void {
 
   fetchProduct(apiURL, renderStep)
 
-  function renderStep(data: ProductData[]): void {
+  function renderStep(data: ProductInterface[]): void {
     shop.loadProduct(data)
 
     const productID = getProductIDQuery()

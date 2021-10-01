@@ -11,7 +11,7 @@ export default class RegisteredUser extends User {
   private _productsInCart: Product[] = []
   private _purchasedProducts: Product[] = []
 
-  readonly _canBuy: boolean = true
+  // readonly _canBuy: boolean = true
   readonly _canComment: boolean = true
 
   // Getters y Setters:
@@ -71,5 +71,13 @@ export default class RegisteredUser extends User {
   }
   public getAllPurchasedProduct(): Product[] {
     return this._purchasedProducts
+  }
+
+  public hasDebt() : boolean {
+    return true
+  }
+
+  public get canBuy(): boolean {
+    return !this.hasDebt()
   }
 }

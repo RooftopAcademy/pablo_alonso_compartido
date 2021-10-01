@@ -5,17 +5,19 @@ import User from './User'
 import InvitedUser from './InvitedUser'
 import RegisteredUser from './RegisteredUser'
 import Members from './Members'
+import ProductRepository from '../repositories/ProductRepository'
 
 import {
   LogData,
-  ProductData,
+  ProductInterface,
   UserData
-} from '../ts/types'
+} from '../interfaces/types'
 
 export default class Shop {
 
   private cart: Cart = new Cart
   private catalogue: Catalogue = new Catalogue
+  // usuarios registrados / users / registeredUsers
   private members: Members = new Members
   private user: (InvitedUser | RegisteredUser) = new InvitedUser
 
@@ -35,7 +37,6 @@ export default class Shop {
   public getUser(): User {
     return this.user
   }
-
 
   public logInUser(data: LogData): void {
     const found: (RegisteredUser | undefined) = this.members
@@ -72,6 +73,7 @@ export default class Shop {
     }
     localStorage.setItem('regdUsers', JSON.stringify(this.members.getAll()))
   }
+
   public loadMembers(): void {
     if (!localStorage.regdUsers) return
     const data: any[] = JSON.parse(localStorage.regdUsers)
@@ -90,12 +92,14 @@ export default class Shop {
   public saveUser(): void {
     localStorage.setItem('logedUser', JSON.stringify(this.user))
   }
+
   public loadUser(): void {
     if (localStorage.logedUser) {
       const data: RegisteredUser = JSON.parse(localStorage.logedUser)
       this.user = data
     }
   }
+
   public logOut(): void {
     if (localStorage.logedUser) {
       localStorage.removeItem('logedUser')
@@ -103,19 +107,7 @@ export default class Shop {
     this.user = new InvitedUser
   }
 
-  public loadProduct(data: ProductData[]): void {
-    data.forEach((item: ProductData) => {
-      const product: Product = new Product
-      product.id = item.id
-      product.picture = item.picture
-      product.title = item.title
-      product.author = item.author
-      product.description = item.description
-      product.price = item.price
-      product.comment = item.comments
-      product.category = item.category
-      product.isAvaliable = item.isAvaliable
-      this.catalogue.add(product)
-    })
+  public loadProduct(data: ProductInterface[]): void {
+
   }
 }
