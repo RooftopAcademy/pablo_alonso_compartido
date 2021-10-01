@@ -23,9 +23,29 @@ function index(): void {
   const shop = new Shop
   // Carga los usuarios guardados en localstorage para que esté actualizado.
   shop.loadMembers()
+  renderStep()
+
+  function renderStep() {
+    menuToggle()
+    addListenerSuscribe()
+    shop.loadUser()
+    if (!shop.isLoged()) {
+      registerToggle()
+      registerCloser()
+      loginToggle()
+      loginCloser()
+      addListenerRegisterForm()
+      addListenerLoginForm()
+    }
+    const userToggleMenu = document.getElementById('user-toggle-menu') as HTMLElement
+    setDisplayFlex(userToggleMenu)
+    const registerBtn = document.getElementById('register-btn') as HTMLElement
+    const loginBtn = document.getElementById('login-btn') as HTMLElement
+    setDisplayNone(registerBtn)
+    setDisplayNone(loginBtn)
+  }
 
   // Al clickear el icono menu 'hambuguesa' baja o sube el menu
-  menuToggle()
   function menuToggle(): void {
     const navMenu = document.getElementById('nav-menu') as HTMLElement
     const menuOpener = document.getElementById('menu-opener') as HTMLElement
@@ -40,7 +60,6 @@ function index(): void {
   }
 
   // Al clickear el boton 'Sign Up' muestra/oculta el form.
-  registerToggle()
   function registerToggle(): void {
     const registerBtn = document.getElementById('register-btn') as HTMLElement
     const registerMenu = document.getElementById('register-menu') as HTMLElement
@@ -50,7 +69,6 @@ function index(): void {
       return setDisplayNone(registerMenu)
     })
   }
-  registerCloser()
   function registerCloser(): void {
     const registerCloser = document.getElementById('register-closer') as HTMLElement
     const registerMenu = document.getElementById('register-menu') as HTMLElement
@@ -64,7 +82,6 @@ function index(): void {
   }
 
 
-  loginToggle()
   function loginToggle(): void {
     const loginBtn = document.getElementById('login-btn') as HTMLElement
     const loginMenu = document.getElementById('login-menu') as HTMLElement
@@ -74,7 +91,6 @@ function index(): void {
       return setDisplayNone(loginMenu)
     })
   }
-  loginCloser()
   function loginCloser(): void {
     const loginCloser = document.getElementById('login-closer') as HTMLElement
     const loginMenu = document.getElementById('login-menu') as HTMLElement
@@ -88,13 +104,13 @@ function index(): void {
   }
 
 
-  addListenerRegister()
-  function addListenerRegister() {
-    const signUpForm = document.getElementById('sign-up-form') as HTMLFormElement
+  function addListenerRegisterForm(): void {
+    const signUpForm = document.getElementById('signup-form') as HTMLFormElement
     const inputUsername = document.getElementById('reg-user-name') as HTMLInputElement
     const inputEmail = document.getElementById('reg-user-email') as HTMLInputElement
     const inputPassword = document.getElementById('reg-user-password') as HTMLInputElement
     const inputConfirmPassword = document.getElementById('reg-user-confirm-password') as HTMLInputElement
+
     const alertContainer = document.getElementById('register-alert') as HTMLElement
     const confirmContainer = document.getElementById('register-confirm') as HTMLElement
 
@@ -108,23 +124,23 @@ function index(): void {
       const password: string = inputPassword.value.trim()
       const confirmPasword: string = inputConfirmPassword.value.trim()
 
-      const okPass = validatePassword(password, confirmPasword, alertContainer)
-      const okEmail = validateEmail(email, alertContainer)
+      const okPass = isNotSamePassword(password, confirmPasword, alertContainer)
+      const okEmail = isRegisteredEmail(email, alertContainer)
 
-      if (okPass && okEmail) {
-        confirmContainer.innerHTML = `Account created successfully!`
-        shop.registerUser({
-          name: username,
-          email: email,
-          password: password
-        })
-        shop.saveMembers()
-      }
+      if (!okPass && okEmail) return
+
+      confirmContainer.innerHTML = `Account created successfully!`
+      shop.registerUser({
+        name: username,
+        email: email,
+        password: password
+      })
+      shop.saveMembers()
     })
 
   }
 
-  function validatePassword(passA: string, passB: string, where: HTMLElement): boolean {
+  function isNotSamePassword(passA: string, passB: string, where: HTMLElement): boolean {
     if (!isEqualString(passA, passB)) {
       where.innerHTML = `Passwords don't match!`
       return false
@@ -133,7 +149,7 @@ function index(): void {
     return true
   }
 
-  function validateEmail(email: string, where: HTMLElement): boolean {
+  function isRegisteredEmail(email: string, where: HTMLElement): boolean {
     if (shop.isRegistered(email)) {
       where.innerHTML += `The email entered is already used.`
       return false
@@ -142,16 +158,39 @@ function index(): void {
   }
 
 
-  addListenerLogin()
-  function addListenerLogin() {
+  function addListenerLoginForm(): void {
+    const singInForm = document.getElementById('signin-form') as HTMLFormElement
+    const inputEmail = document.getElementById('log-user-email') as HTMLInputElement
+    const inputPassword = document.getElementById('log-user-password') as HTMLInputElement
 
+    const alertContainer = document.getElementById('login-alert') as HTMLElement
+    const confirmcontainer = document.getElementById('login-confirm') as HTMLElement
+
+    singInForm.addEventListener('submit', function(e: Event): void {
+      e.preventDefault()
+      // Vacia el texto de confirmacion si es que hay.
+      confirmcontainer.innerHTML = ''
+      alertContainer.innerHTML = ''
+
+      const email: string = inputEmail.value.trim()
+      const password: string = inputPassword.value.trim()
+
+      shop.logInUser({email, password})
+
+      if (!shop.isLoged()) {
+        shop.saveUser()
+        alertContainer.innerHTML = `The email or password is not valid.`
+        return
+      }
+      confirmcontainer.innerHTML = `Successfully logged in`
+      return
+    })
   }
 
 
 
   // Ejercicio: Clase 14/09/2021 (1/3)
   // Validación de entrada de datos en un formulario
-  addListenerSuscribe()
   function addListenerSuscribe (): void {
     const newsLetter = document.getElementById('news-letter') as HTMLFormElement
     const inputEmail = newsLetter.querySelector('input[name=email]') as HTMLInputElement

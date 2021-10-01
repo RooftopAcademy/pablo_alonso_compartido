@@ -37,14 +37,12 @@ export default class Shop {
   }
 
 
-  public logInUser(data: LogData): boolean {
+  public logInUser(data: LogData): void {
     const found: (RegisteredUser | undefined) = this.members
       .getAll()
-      .find((user: RegisteredUser) => (user.email === data.email) && (user.password === data.email))
-
-    if (!found) return false
+      .find((user: RegisteredUser) => (user.email == data.email) && (user.password == data.password))
+    if (!found) return
     this.user = found
-    return true
   }
 
   public isLoged(): boolean {
@@ -69,20 +67,10 @@ export default class Shop {
     if (localStorage.regdUsers) {
       const regdUsers: RegisteredUser[] = this.members.getAll()
       const prevData: RegisteredUser[] = JSON.parse(localStorage.regdUsers)
-      // console.log('prevData')
-      // console.log(prevData)
-      // console.log(typeof prevData)
-      // prevData.forEach(user => console.log(user.email)) // undefined
 
-      // console.log('todoslosmiembros')
-      // console.log(RegdUsers)
-      localStorage.setItem('regdUsers', JSON.stringify(
-        regdUsers.concat(prevData)
-      ))
+      localStorage.setItem('regdUsers', JSON.stringify(regdUsers.concat(prevData)))
     }
-    localStorage.setItem('regdUsers', JSON.stringify(
-      this.members.getAll()
-    ))
+    localStorage.setItem('regdUsers', JSON.stringify(this.members.getAll()))
   }
   public loadMembers(): void {
     if (!localStorage.regdUsers) return
@@ -95,7 +83,6 @@ export default class Shop {
       newRegdUser.password = regdUser._password
       newRegdUser.productsInCart = regdUser._productsInCart
       newRegdUser.purchasedProducts = regdUser._purchasedProducts
-
       if (!this.isRegistered(newRegdUser.email)) return this.members.add(newRegdUser)
     })
   }
@@ -108,6 +95,12 @@ export default class Shop {
       const data: RegisteredUser = JSON.parse(localStorage.logedUser)
       this.user = data
     }
+  }
+  public logOut(): void {
+    if (localStorage.logedUser) {
+      localStorage.removeItem('logedUser')
+    }
+    this.user = new InvitedUser
   }
 
   public loadProduct(data: ProductData[]): void {
