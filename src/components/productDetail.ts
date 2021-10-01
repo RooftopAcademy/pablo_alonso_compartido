@@ -2,7 +2,7 @@ import Product from "../entities/Product"
 
 function productDetail(product: Product | undefined): string {
   // Si product es undefined injecta un mensaje de error
-  if (!product) return `<h3>There was an error loading the product details :(</h3>`
+  // if (!product) return `<h3>There was an error loading the product details :(</h3>`
 
   return `
     <img class="nft--img" src="${product.picture}" alt="${product.title} by ${product.author}">
