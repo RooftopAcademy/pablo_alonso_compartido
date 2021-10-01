@@ -1,4 +1,4 @@
-import { ProductComment } from '../ts/types'
+import { ProductComment } from '../interfaces/types'
 
 export default class Product {
 
