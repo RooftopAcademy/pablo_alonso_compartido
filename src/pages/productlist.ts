@@ -11,8 +11,8 @@ import {
 import productItem from '../components/productItem'
 import cartItem from '../components/cartItem'
 
-import Shop from '../classes/Shop'
-import Product from '../classes/Product'
+import Shop from '../entities/Shop'
+import Product from '../entities/Product'
 import { ProductInterface } from '../interfaces/types'
 
 function productList(): void {

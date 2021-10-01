@@ -1,4 +1,4 @@
-import { ProductComment } from '../ts/types'
+import { ProductComment } from '../interfaces/types'
 import { differenceDays } from '../utils/utils'
 
 function commentItem(comment: ProductComment): string {

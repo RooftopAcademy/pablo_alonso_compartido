@@ -8,6 +8,7 @@ class ProductRepository {
         this.items = data.map(item => ProductFactory.create(item))
     }
 
+
     public get() : ProductInterface[] {
         return this.items
     }

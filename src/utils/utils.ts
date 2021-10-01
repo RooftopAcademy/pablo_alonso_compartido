@@ -1,4 +1,4 @@
-import { ProductData } from "../ts/types";
+import { ProductInterface } from "../interfaces/types";
 
 export function setDisplayFlex(node: HTMLElement): void {
   if (node.classList.contains('d-none')) {
@@ -38,8 +38,8 @@ export async function fetchData(url: string): Promise<[] | undefined> {
   return response
 }
 
-export async function fetchProduct(url: string, cb: (data: ProductData[]) => void): Promise<void> {
-  const data: (ProductData[] | undefined | void) = await fetchData(url)
+export async function fetchProduct(url: string, cb: (data: ProductInterface[]) => void): Promise<void> {
+  const data: (ProductInterface[] | undefined | void) = await fetchData(url)
   if (!data) throw new Error('Fetch error')
   cb(data)
 }
