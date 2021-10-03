@@ -5,18 +5,19 @@ export interface ProductInterface {
   author: string
   description: string
   price: number
-  comments: ProductComment[]
+  comments: ProductCommentInterface[]
   category: string[]
   isAvaliable: boolean
+  notAvaliable(): void
 }
 
-export interface ProductComment {
+export interface ProductCommentInterface {
   date: string
   username: string
   message: string
 }
 
-export interface UserData {
+export interface UserInterface {
   name: string
   email: string
   password: string
