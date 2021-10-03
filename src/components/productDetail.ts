@@ -10,7 +10,7 @@ function productDetail(product: Product | undefined): string {
     <h2 class="nft--author">${product.author}</h2>
     <p class="nft--details">${product.description}</p>
     <h3 class="nft--price">$${product.price}</h3>
-    <button class="btn buy-now js-add-to-cart" data-product-id="${product.id}">Buy now</button>
+    <button class="btn buy-now" id="add-cart" data-product-id="${product.id}">Buy now</button>
   `
 }
 
