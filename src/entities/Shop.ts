@@ -1,4 +1,4 @@
-import Catalogue from './Catalogue'
+// import Catalogue from './Catalogue'
 import Product from './Product'
 import Cart from './Cart'
 import User from './User'
@@ -10,13 +10,13 @@ import ProductRepository from '../repositories/ProductRepository'
 import {
   LogData,
   ProductInterface,
-  UserData
+  UserInterface
 } from '../interfaces/types'
 
 export default class Shop {
 
   private cart: Cart = new Cart
-  private catalogue: Catalogue = new Catalogue
+  // private catalogue: Catalogue = new Catalogue
   // usuarios registrados / users / registeredUsers
   private members: Members = new Members
   private user: (InvitedUser | RegisteredUser) = new InvitedUser
@@ -26,9 +26,9 @@ export default class Shop {
     return this.cart
   }
 
-  public getCatalogue(): Catalogue {
-    return this.catalogue
-  }
+  // public getCatalogue(): Catalogue {
+  //   return this.catalogue
+  // }
 
   public getMembers(): Members {
     return this.members
@@ -50,7 +50,7 @@ export default class Shop {
     return (this.user instanceof InvitedUser) ?true :false
   }
 
-  public registerUser(data: UserData): void {
+  public registerUser(data: UserInterface): void {
     const user: RegisteredUser = new RegisteredUser
     user.name = data.name
     user.email = data.email
@@ -107,7 +107,7 @@ export default class Shop {
     this.user = new InvitedUser
   }
 
-  public loadProduct(data: ProductInterface[]): void {
+  // public loadProduct(data: ProductInterface[]): void {
 
-  }
+  // }
 }
