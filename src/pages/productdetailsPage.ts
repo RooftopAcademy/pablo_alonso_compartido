@@ -4,7 +4,8 @@ import {
   setDisplayNone,
   fetchProduct,
   injectArrayInDOM,
-  injectSingleInDOM
+  injectSingleInDOM,
+  getProductIDFromPath
 } from '../utils/utils'
 
   import productDetail from '../components/productDetail'
@@ -12,88 +13,91 @@ import {
   import cartItem from '../components/cartItem'
 
   import Shop from '../entities/Shop'
-  import Product from '../entities/Product'
-  import { ProductComment, ProductInterface } from '../interfaces/types'
+  import ProductRepository from '../repositories/ProductRepository'
+  import {ProductInterface, ProductCommentInterface } from '../interfaces/types'
 
 function productDetails(): void {
 
   const shop: Shop = new Shop
-  const cartList: HTMLElement | null = document.getElementById('cart-list')
+  const cartList = document.getElementById('cart-list') as HTMLElement
 
-  // const URL = 'https://wrongurl.com/' // To test the error message to the client
   const apiURL: string = 'https://my-json-server.typicode.com/Alonso-Pablo/api-nft/products'
 
+  /**
+   * FetchProduct trae los datos de la API y ejecuta un callback
+   * RenderStep son los pasos para que funcionen los eventos en la pagina
+   */
   fetchProduct(apiURL, renderStep)
 
   function renderStep(data: ProductInterface[]): void {
-    shop.loadProduct(data)
-
-    const productID = getProductIDQuery()
-
-    if (isValidID(productID)) {
-      // Render de un producto.
-      renderProduct(productID)
-
-      // Listener para el boton "Buy now".
-      addListenerAddCart()
-
-      // Listener para el icono de Carrito, abre o cierra la lista.
-      addListenerDisplayCart()
-
-      // Listener para Abrir la lista de menu cuando toca el anchor del mensaje al añadir algo al carrito.
-      addListenerSeeCart()
-
-      renderCommentsList(productID)
-      return
-    }
-    // Si no se encuentra el producto se redirige a la pagina notfound.
-    window.location.replace('notfound.html')
-    return
+    /**
+     * Guardamos el ID conseguido del path
+     * Luego creamos un repositorio para guardar los datos del fetch
+     * Finalmente buscamos el producto por el ID y lo guardamos
+     */
+    const productID: string = getProductIDFromPath(window.location.search)
+    const productsRepository: ProductRepository = new ProductRepository(data)
+    const productFound: ProductInterface = productsRepository.getById(productID)
+    /**
+     * Si no se encuentra el producto se redirige a la pagina notfound.
+     */
+    if (!productFound) return window.location.replace('notfound.html')
+    /**
+     * Render de un producto.
+     */
+    renderProduct(productFound)
+    /**
+     * Listener para el boton "Buy now".
+     */
+    addListenerAddCart(productFound)
+    /**
+     * Listener para el icono de Carrito, abre o cierra la lista.
+     */
+    addListenerDisplayCart()
+    /**
+     * Listener que abre la lista cuando se clickea en el boton del mensaje "se ha agregado al carrito"
+     */
+    addListenerSeeCart()
+    /**
+     * Renderiza los comentarios del producto.
+     */
+    renderCommentsList(productID, productsRepository)
   }
 
-  function getProductIDQuery(): string {
-    let searchQuery: string = window.location.search;
-    const searchTerm: string = '='
-    const productID: string = searchQuery.slice(searchQuery.indexOf(searchTerm)).replace(searchTerm, '')
-    return productID
-  }
 
-  function isValidID(productID: string): boolean {
-    return shop.getCatalogue().getById(productID) ?true :false
-  }
-
-  function renderProduct(productID: string): void {
+  function renderProduct(product: ProductInterface): void {
+    /**
+     * Se agrega el producto al DOM con sus detalles.
+     */
     const nftContainer = document.getElementById('nft') as HTMLElement
-    const product: (Product | undefined) = shop.getCatalogue().getById(productID)
     injectSingleInDOM(product, nftContainer, productDetail)
   }
   
-  function addListenerAddCart(): void {
-    const buyBtn = Array.from(document.getElementsByClassName('js-add-to-cart')) as HTMLElement[]
-    const addedToCartMessage: HTMLElement | null = document.getElementById('added-to-cart')
+  function addListenerAddCart(product: ProductInterface): void {
+    const buyBtn = document.getElementById('add-cart') as HTMLElement
+    const addedToCartMessage = document.getElementById('added-to-cart') as HTMLElement
 
-    buyBtn.forEach(function (btn: HTMLElement): void {
-      btn.addEventListener('click', function (): void {
-        if (!btn.dataset.productId) return
-        const productToAdd: Product | undefined = shop.getCatalogue().getById(btn.dataset.productId)
-
-        if (!productToAdd) return
-        shop.getCart().add(productToAdd)
-        // "refresca" la lista del cart
-        renderProductCart()
-
-        if (!addedToCartMessage) return
-        toggleDisplayTemporarily(addedToCartMessage, 4000)
-
-        // Ejecuto ahora la funcion ya que antes no existia el boton de remover en el DOM.
-        addListenerCartRemove()
-      })
+    buyBtn.addEventListener('click', function (): void {
+      /**
+       * Se agrega el producto al carrito.
+       */
+      shop.getCart().add(product)
+      /**
+       * Refresca la lista del carrito con lo que haya en Cart.
+       */
+      renderProductCart()
+      /**
+       * Muestra temporalmente el mensaje de "Se añadió al carrito".
+       */
+      toggleDisplayTemporarily(addedToCartMessage, 4000)
+      /**
+       * Ejecuto ahora la funcion ya que antes no existia el boton de remover en el DOM.
+       */
+      addListenerCartRemove()
     })
   }
 
-  // Injecta los productos en el carrito
   function renderProductCart(): void {
-    if (!cartList) return
     injectArrayInDOM(shop.getCart().getAll(), cartList, cartItem)
   }
 
@@ -102,14 +106,21 @@ function productDetails(): void {
 
     removeBtn.forEach((btn: HTMLElement) => {
       btn.addEventListener('click', function (): void {
-        if (!btn.dataset.productId) return
-        const productToRemove: (Product | undefined) = shop.getCart().getById(btn.dataset.productId)
-
-        if (!productToRemove) return
+        /**
+         * Toma el ID del producto dentro del boton y busca el producto
+         */
+        const productToRemove = shop.getCart().getById(btn.dataset.productId) as ProductInterface
+        /**
+         * Luego de encontrarlo buscamos el index donde se encuentra en el carrito.
+         */
         const indexProductToRemove: number = shop.getCart().getAll().indexOf(productToRemove)
+        /**
+         * Finalmente removemos el producto del carrito.
+         */
         shop.getCart().removeByIndex(indexProductToRemove)
-
-        // Para eliminar el <li> de la lista del carro (<ul>)
+        /**
+         * Removemos el item <li>...</li> de la lista del carrito.
+         */
         if (btn.parentElement) btn.parentElement.remove()
       })
     })
@@ -118,8 +129,8 @@ function productDetails(): void {
 
   function addListenerDisplayCart(): void {
     const cartToggle = document.getElementById('cart-toggle') as HTMLElement
+
     cartToggle.addEventListener('click', function () {
-      if (!cartList) return
       if (cartList.classList.contains('d-none')) return setDisplayFlex(cartList)
       return setDisplayNone(cartList)
     })
@@ -128,20 +139,25 @@ function productDetails(): void {
 
   function addListenerSeeCart(): void {
     const seeCart = document.getElementById('see-cart') as HTMLElement
+
     seeCart.addEventListener('click', function (): void {
-      if (cartList) setDisplayFlex(cartList)
+      setDisplayFlex(cartList)
     })
   }
 
 
-  function renderCommentsList(idProduct: string): void {
+  function renderCommentsList(ProductID: string, productsRepository: ProductRepository): void {
     const commentList = document.getElementById('comments-list') as HTMLElement
-    const product: (Product | undefined) = shop.getCatalogue().getById(idProduct)
-    // Si el producto es 'undefined' se injecta un mensaje de error para el usuario al DOM.
+    const product = productsRepository.getById(ProductID) as ProductInterface
+    /**
+     * Si el producto es 'undefined' se injecta un mensaje de error para el usuario al DOM.
+     */
     if (!product) return injectSingleInDOM(product, commentList, commentItem)
-    // Si existe el producto se injecta el/los comentarios al DOM.
-    const comments: ProductComment[] = product.comment
-    return injectArrayInDOM(comments, commentList, commentItem)
+    /**
+     * Si existe el producto se injecta el/los comentarios al DOM.
+     */
+    const comments: ProductCommentInterface[] = product.comments
+    injectArrayInDOM(comments, commentList, commentItem)
   }
 }
 
