@@ -24,44 +24,50 @@ function productDetails(): void {
   const apiURL: string = 'https://my-json-server.typicode.com/Alonso-Pablo/api-nft/products'
 
   /**
-   * FetchProduct trae los datos de la API y ejecuta un callback
-   * RenderStep son los pasos para que funcionen los eventos en la pagina
+   * - FetchProduct trae los datos de la API y ejecuta un callback
+   * - RenderStep son los pasos para que funcionen los eventos en la pagina
    */
   fetchProduct(apiURL, renderStep)
 
   function renderStep(data: ProductInterface[]): void {
     /**
-     * Guardamos el ID conseguido del path
-     * Luego creamos un repositorio para guardar los datos del fetch
-     * Finalmente buscamos el producto por el ID y lo guardamos
+     * - Guardamos el ID conseguido del path
+     * - Luego creamos un repositorio para guardar los datos del fetch
+     * - Finalmente buscamos el producto por el ID y lo guardamos
      */
     const productID: string = getProductIDFromPath(window.location.search)
-    const productsRepository: ProductRepository = new ProductRepository(data)
-    const productFound: ProductInterface = productsRepository.getById(productID)
+    const productRepository: ProductRepository = new ProductRepository(data)
+    const productFound: ProductInterface = productRepository.getById(productID)
+
     /**
      * Si no se encuentra el producto se redirige a la pagina notfound.
      */
     if (!productFound) return window.location.replace('notfound.html')
+
     /**
      * Render de un producto.
      */
     renderProduct(productFound)
+
     /**
      * Listener para el boton "Buy now".
      */
     addListenerAddCart(productFound)
+
     /**
      * Listener para el icono de Carrito, abre o cierra la lista.
      */
     addListenerDisplayCart()
+
     /**
      * Listener que abre la lista cuando se clickea en el boton del mensaje "se ha agregado al carrito"
      */
     addListenerSeeCart()
+
     /**
      * Renderiza los comentarios del producto.
      */
-    renderCommentsList(productID, productsRepository)
+    renderCommentsList(productFound)
   }
 
 
@@ -82,14 +88,17 @@ function productDetails(): void {
        * Se agrega el producto al carrito.
        */
       shop.getCart().add(product)
+
       /**
        * Refresca la lista del carrito con lo que haya en Cart.
        */
       renderProductCart()
+
       /**
        * Muestra temporalmente el mensaje de "Se añadió al carrito".
        */
       toggleDisplayTemporarily(addedToCartMessage, 4000)
+
       /**
        * Ejecuto ahora la funcion ya que antes no existia el boton de remover en el DOM.
        */
@@ -110,14 +119,17 @@ function productDetails(): void {
          * Toma el ID del producto dentro del boton y busca el producto
          */
         const productToRemove = shop.getCart().getById(btn.dataset.productId) as ProductInterface
+
         /**
          * Luego de encontrarlo buscamos el index donde se encuentra en el carrito.
          */
         const indexProductToRemove: number = shop.getCart().getAll().indexOf(productToRemove)
+
         /**
          * Finalmente removemos el producto del carrito.
          */
         shop.getCart().removeByIndex(indexProductToRemove)
+
         /**
          * Removemos el item <li>...</li> de la lista del carrito.
          */
@@ -146,13 +158,9 @@ function productDetails(): void {
   }
 
 
-  function renderCommentsList(ProductID: string, productsRepository: ProductRepository): void {
+  function renderCommentsList(product: ProductInterface): void {
     const commentList = document.getElementById('comments-list') as HTMLElement
-    const product = productsRepository.getById(ProductID) as ProductInterface
-    /**
-     * Si el producto es 'undefined' se injecta un mensaje de error para el usuario al DOM.
-     */
-    if (!product) return injectSingleInDOM(product, commentList, commentItem)
+
     /**
      * Si existe el producto se injecta el/los comentarios al DOM.
      */
