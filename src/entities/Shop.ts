@@ -26,10 +26,6 @@ export default class Shop {
     return this.cart
   }
 
-  // public getCatalogue(): Catalogue {
-  //   return this.catalogue
-  // }
-
   public getMembers(): Members {
     return this.members
   }
@@ -39,8 +35,7 @@ export default class Shop {
   }
 
   public logInUser(data: LogData): void {
-    const found: (RegisteredUser | undefined) = this.members
-      .getAll()
+    const found: (RegisteredUser | undefined) = this.members.getAll()
       .find((user: RegisteredUser) => (user.email == data.email) && (user.password == data.password))
     if (!found) return
     this.user = found
@@ -60,7 +55,6 @@ export default class Shop {
 
   public isRegistered(email: string): boolean {
     return !!this.members.getAll()
-      // .find(user =>{ console.log(user.email), user.email === email})
       .find((user: RegisteredUser) => user.email === email)
   }
 
@@ -94,10 +88,10 @@ export default class Shop {
   }
 
   public loadUser(): void {
-    if (localStorage.logedUser) {
-      const data: RegisteredUser = JSON.parse(localStorage.logedUser)
-      this.user = data
-    }
+    if (!localStorage.logedUser) return
+
+    const data: RegisteredUser = JSON.parse(localStorage.logedUser)
+    this.user = data
   }
 
   public logOut(): void {
@@ -106,8 +100,4 @@ export default class Shop {
     }
     this.user = new InvitedUser
   }
-
-  // public loadProduct(data: ProductInterface[]): void {
-
-  // }
 }
