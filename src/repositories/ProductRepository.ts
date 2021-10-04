@@ -16,6 +16,10 @@ class ProductRepository {
   public getById(id: string): (ProductInterface | undefined) {
     return this.items.find((item: (ProductInterface)) => item.id == id)
   }
+
+  public getByCategory(category: string): (ProductInterface[]) {
+    return this.items.filter((p: ProductInterface) => p.category.includes(category))
+  }
 }
 
 export default ProductRepository
