@@ -1,9 +1,12 @@
-import { ProductComment } from '../interfaces/types'
+import { ProductCommentInterface } from '../interfaces/types'
 import { differenceDays } from '../utils/utils'
 
-function commentItem(comment: ProductComment): string {
+function commentItem(comment: ProductCommentInterface): string {
   if (!comment) return `<h3>There was an error loading the comments :(</h3>`
 
+  /**
+   * Calcula los dias pasados entre la fecha del comentario y la actual.
+   */
   const daysAgo: number = differenceDays(comment.date)
 
   return `
