@@ -111,9 +111,9 @@ function productDetails(): void {
   }
 
   function addListenerCartRemove(): void {
-    const removeBtn = Array.from(document.getElementsByClassName('js-remove-from-cart')) as HTMLElement[]
+    const removeBtn = Array.from(document.getElementsByClassName('js-remove-from-cart')) as HTMLButtonElement[]
 
-    removeBtn.forEach((btn: HTMLElement) => {
+    removeBtn.forEach((btn: HTMLButtonElement) => {
       /**
        * Toma el ID del producto dentro del boton y busca el producto
        */
