@@ -80,7 +80,7 @@ function productDetails(): void {
   }
   
   function addListenerAddCart(product: ProductInterface): void {
-    const buyBtn = document.getElementById('add-cart') as HTMLElement
+    const buyBtn = document.getElementById('add-cart') as HTMLButtonElement
     const addedToCartMessage = document.getElementById('added-to-cart') as HTMLElement
 
     buyBtn.addEventListener('click', function (): void {
