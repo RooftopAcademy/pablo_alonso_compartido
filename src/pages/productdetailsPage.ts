@@ -36,8 +36,8 @@ function productDetails(): void {
      * - Finalmente buscamos el producto por el ID y lo guardamos
      */
     const productID: string = getProductIDFromPath(window.location.search)
-    const productRepository: ProductRepository = new ProductRepository(data)
-    const productFound: ProductInterface = productRepository.getById(productID)
+    const productRepository = new ProductRepository(data) as ProductRepository
+    const productFound: (ProductInterface | undefined) = productRepository.getById(productID)
 
     /**
      * Si no se encuentra el producto se redirige a la pagina notfound.
