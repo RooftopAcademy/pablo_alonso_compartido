@@ -14,6 +14,7 @@ import cartItem from '../components/cartItem'
 import Shop from '../entities/Shop'
 import Product from '../entities/Product'
 import { ProductInterface } from '../interfaces/types'
+import ProductRepository from '../repositories/ProductRepository'
 
 function productList(): void {
   // Ejercicio: Clase 14/09/2021 (2/3)
@@ -37,106 +38,147 @@ function productList(): void {
   addGoUpListener()
 
   function addGoUpListener(): void {
-    const goUp: (HTMLElement | null) = document.getElementById('go-up')
+    const goUp = document.getElementById('go-up') as HTMLElement
 
     window.addEventListener('scroll', function (): void {
-      if (!goUp) return
       if (isHalfPage()) return setDisplayFlex(goUp)
       return setDisplayNone(goUp)
     })
   }
-  // Ejercicio: Clase 16/09/2021
-  // Representamos la tienda con Shop, los productos estan dentro de catalogo y este a su vez en Shop
-  const shop: Shop = new Shop
 
-  const cartList: HTMLElement | null = document.getElementById('cart-list')
+
+  // Ejercicio: Clase 16/09/2021
+  // Representamos la tienda con Shop, los productos estan dentro de productsRepository y este a su vez en Shop
+  const shop: Shop = new Shop
+  const cartList = document.getElementById('cart-list') as HTMLElement
 
   const apiURL: string = 'https://my-json-server.typicode.com/Alonso-Pablo/api-nft/products'
 
+  /**
+   * - FetchProduct trae los datos de la API y ejecuta un callback
+   * - RenderStep son los pasos para que funcionen los eventos en la pagina
+   */
   fetchProduct(apiURL, renderStep)
 
   function renderStep(data: ProductInterface[]): void {
-    shop.loadProduct(data)
+    const products: ProductRepository = new ProductRepository(data)
 
-    renderProductsList()
+    /**
+     * Renderiza todos los productos y por categoria.
+     */
+    renderProductsList(products)
 
-    // Listener para el boton "Buy now"
-    addListenerAddCart()
+    /**
+     * Listener para el boton "Buy now"
+     */
+    addListenerAddCart(products)
 
-    // Listener para el icono de Carrito, abre o cierra la lista.
+    /**
+     * Listener para el icono de Carrito, abre o cierra la lista.
+     */
     addListenerDisplayCart()
-    
-    // Listener para Abrir la lista de menu cuando toca el anchor del mensaje al añadir algo al carrito.
+
+    /**
+     * Listener para Abrir la lista de menu cuando toca el anchor del mensaje al añadir algo al carrito.
+     */
     addListenerSeeCart()
   }
 
 
-  function renderProductsList(): void {
-    // secciones por categoria
+  function renderProductsList(products: ProductRepository): void {
+    /**
+     * Guardamos todas las secciones/categorias que van a contener a los productos.
+     */
     const allNfts = document.getElementById('all-nfts') as HTMLElement
     const mostValuableNfts = document.getElementById('most-valuable-nfts') as HTMLElement
     const colorfulNfts = document.getElementById('colorful-nfts') as HTMLElement
     const strangeNfts = document.getElementById('strange-nfts') as HTMLElement
 
-    // Si no hay productos en el catalogo se renderiza un mensaje de error.
-    if (!shop.getCatalogue().getAll().length) {
-      if (allNfts) injectSingleInDOM(undefined, allNfts, productItem)
-      if (mostValuableNfts) injectSingleInDOM(undefined, mostValuableNfts, productItem)
-      if (colorfulNfts) injectSingleInDOM(undefined, colorfulNfts, productItem)
-      if (strangeNfts) injectSingleInDOM(undefined, strangeNfts, productItem)
-    }
+    /**
+     * Injecta todos los productos
+     */
+    injectArrayInDOM(products.get(), allNfts, productItem)
 
-    // Injecta todos los nft sin filtros.
-    injectArrayInDOM(shop.getCatalogue().getAll(), allNfts, productItem)
-    // Injecta en el DOM todos los productos filtrados por su categoria.
-    injectArrayInDOM(shop.getCatalogue().getByCategory('most-valuable'), mostValuableNfts, productItem)
-    injectArrayInDOM(shop.getCatalogue().getByCategory('colorful'), colorfulNfts, productItem)
-    injectArrayInDOM(shop.getCatalogue().getByCategory('strange'), strangeNfts, productItem)
+    /**
+    * Injecta productos filtrados por su categoria
+    */
+    injectArrayInDOM(products.getByCategory('most-valuable'), mostValuableNfts, productItem)
+    injectArrayInDOM(products.getByCategory('colorful'), colorfulNfts, productItem)
+    injectArrayInDOM(products.getByCategory('strange'), strangeNfts, productItem)
   }
 
 
-  function addListenerAddCart(): void {
-    const buyBtn = Array.from(document.getElementsByClassName('js-add-to-cart')) as HTMLElement[]
-    const addedToCartMessage: HTMLElement | null = document.getElementById('added-to-cart')
+  function addListenerAddCart(products: ProductRepository): void {
+    const buyBtn = Array.from(document.getElementsByClassName('js-add-to-cart')) as HTMLButtonElement[]
+    const addedToCartMessage = document.getElementById('added-to-cart') as HTMLElement
 
-    buyBtn.forEach(function (btn: HTMLElement): void {
+    buyBtn.forEach(function (btn: HTMLButtonElement): void {
+      const productID = btn.dataset.productId as string
+      const productToAdd = products.getById(productID) as ProductInterface
+
       btn.addEventListener('click', function (): void {
-        if (!btn.dataset.productId) return
-        const productToAdd: Product | undefined = shop.getCatalogue().getById(btn.dataset.productId)
-
-        if (!productToAdd) return
+        /**
+         * Se agrega el producto al carrito.
+         */
         shop.getCart().add(productToAdd)
+
+        /**
+         * Refresca/renderiza la lista del carrito con lo que haya en Cart.
+         */
         renderProductCart()
 
-        if (!addedToCartMessage) return
+        /**
+         * Muestra temporalmente el mensaje de "Se añadió al carrito".
+         */
         toggleDisplayTemporarily(addedToCartMessage, 4000)
 
-        // Ejecuto ahora la funcion ya que antes no existia el boton de remover en el DOM
+        /**
+         * Ejecuto ahora la funcion ya que antes no existia el boton de remover en el DOM.
+         */
         addListenerCartRemove()
       })
     })
   }
 
-  // Injecta los productos en el carrito
   function renderProductCart(): void {
-    if (!cartList) return
     injectArrayInDOM(shop.getCart().getAll(), cartList, cartItem)
   }
 
   function addListenerCartRemove(): void {
-    const removeBtn = Array.from(document.getElementsByClassName('js-remove-from-cart')) as HTMLElement[]
+    const removeBtn = Array.from(document.getElementsByClassName('js-remove-from-cart')) as HTMLButtonElement[]
 
-    removeBtn.forEach((btn: HTMLElement) => {
+    removeBtn.forEach((btn: HTMLButtonElement) => {
+      /**
+       * Guarda el ID que habia dentro del boton.
+       */
+      const productID = btn.dataset.productId as string
+
+      /**
+       * Busca el producto a traves del ID.
+       */
+      const productToRemove = shop.getCart().getById(productID) as ProductInterface
+
+      /**
+       * Busca el index donde se encuentra el producto dentro del array del carrito.
+       */
+      const indexProductToRemove: number = shop.getCart().getAll().indexOf(productToRemove)
+
+      /**
+       * Guardamos en una variable el elemento padre que contiene al boton.
+       */
+      const parentElement = btn.parentElement as HTMLElement
+
       btn.addEventListener('click', function (): void {
-        if (!btn.dataset.productId) return
-        const productToRemove: (Product | undefined) = shop.getCart().getById(btn.dataset.productId)
 
-        if (!productToRemove) return
-        const indexProductToRemove: number = shop.getCart().getAll().indexOf(productToRemove)
+        /**
+         * Removemos el producto del carrito.
+         */
         shop.getCart().removeByIndex(indexProductToRemove)
 
-        // Para eliminar el nodo que contiene al boton en el DOM:
-        if (btn.parentElement) btn.parentElement.remove()
+        /**
+         * Removemos el item <li>...</li> de la lista del carrito.
+         */
+        parentElement.remove()
       })
     })
   }
@@ -144,8 +186,8 @@ function productList(): void {
 
   function addListenerDisplayCart(): void {
     const cartToggle = document.getElementById('cart-toggle') as HTMLElement
+
     cartToggle.addEventListener('click', function () {
-      if (!cartList) return
       if (cartList.classList.contains('d-none')) return setDisplayFlex(cartList)
       return setDisplayNone(cartList)
     })
@@ -154,8 +196,8 @@ function productList(): void {
 
   function addListenerSeeCart(): void {
     const seeCart = document.getElementById('see-cart') as HTMLElement
+
     seeCart.addEventListener('click', function (): void {
-      if (!cartList) return
       setDisplayFlex(cartList)
     })
   }
