@@ -1,4 +1,3 @@
-import Shop from '../entities/Shop';
 import {
   toggleVisibilityTemporarily,
   setDisplayFlex,
@@ -6,46 +5,98 @@ import {
   isEqualString
 } from '../utils/utils'
 
+import Shop from '../entities/Shop';
+
 function index(): void {
   // Ejercicio: Clase 13/09/2021
   // Guardamos el nodo donde voy a extraer el dato
   saveDataAnchor()
   function saveDataAnchor(): void {
-    const anchor: HTMLElement | null = document.getElementById('a');
-    // Si el elemento con id = 'a' existe:
-    if (!anchor) return
+    const anchor = document.getElementById('a') as HTMLElement
     // Guardo el dato en una variable
     const data: string = anchor.innerText;
     // Reemplazo el dato en el elemento.
     anchor.innerText = data;
   }
 
+
+  /**
+   * Inicializamos Shop para poder usar sus metodos y propiedades
+   */
   const shop = new Shop
-  // Carga los usuarios guardados en localstorage para que esté actualizado.
+
+  /**
+   * Carga los usuarios guardados en localstorage para que esté actualizado.
+   */
   shop.loadMembers()
+
+  /**
+   * Ejecuta las funciones para eventos y renders necesarios para la App.
+   */
   renderStep()
 
   function renderStep() {
+    /**
+     * Listener para abrir o cerrar el menu de navegacion
+     */
     menuToggle()
+
+    /**
+     * Listener para 'submitear' el email
+     */
     addListenerSuscribe()
+
+    /**
+     * Carga el usuario logeado del localStorage solo si existe.
+     */
     shop.loadUser()
+
+    /**
+     * Si SÍ esta logeado:
+     */
     if (!shop.isLoged()) {
+      /**
+       * Abre o cierra el 'register' form
+       */
       registerToggle()
       registerCloser()
+
+      /**
+       * Abre o cierra el 'login' form
+       */
       loginToggle()
       loginCloser()
+
+      /**
+       * Listener para verificar el 'login' y registro
+       */
       addListenerRegisterForm()
       addListenerLoginForm()
     }
+
+    /**
+     * Si NO esta logeado:
+     * ToDo: Terminar esta seccion.
+     */
+
+    /**
+     * Listener para abrir o cerrar el menu de usuario 'logeado'
+     */
     const userToggleMenu = document.getElementById('user-toggle-menu') as HTMLElement
     setDisplayFlex(userToggleMenu)
+
+    /**
+     * Oculta
+     */
     const registerBtn = document.getElementById('register-btn') as HTMLElement
     const loginBtn = document.getElementById('login-btn') as HTMLElement
     setDisplayNone(registerBtn)
     setDisplayNone(loginBtn)
   }
 
-  // Al clickear el icono menu 'hambuguesa' baja o sube el menu
+  /**
+ * Listener para abrir o cerrar el menu de navegacion
+ */
   function menuToggle(): void {
     const navMenu = document.getElementById('nav-menu') as HTMLElement
     const menuOpener = document.getElementById('menu-opener') as HTMLElement
@@ -59,7 +110,9 @@ function index(): void {
     })
   }
 
-  // Al clickear el boton 'Sign Up' muestra/oculta el form.
+  /**
+   * Listener Al clickear el boton 'Sign Up' muestra/oculta el form.
+   */
   function registerToggle(): void {
     const registerBtn = document.getElementById('register-btn') as HTMLElement
     const registerMenu = document.getElementById('register-menu') as HTMLElement
@@ -69,6 +122,10 @@ function index(): void {
       return setDisplayNone(registerMenu)
     })
   }
+
+  /**
+   * Listener Al clickear el boton 'X' del sign up form, oculta el form de 'login' y 'register'.
+   */
   function registerCloser(): void {
     const registerCloser = document.getElementById('register-closer') as HTMLElement
     const registerMenu = document.getElementById('register-menu') as HTMLElement
@@ -81,7 +138,9 @@ function index(): void {
     })
   }
 
-
+  /**
+   * Listener Al clickear el boton 'Sign in' muestra/oculta el form.
+   */
   function loginToggle(): void {
     const loginBtn = document.getElementById('login-btn') as HTMLElement
     const loginMenu = document.getElementById('login-menu') as HTMLElement
@@ -91,6 +150,10 @@ function index(): void {
       return setDisplayNone(loginMenu)
     })
   }
+
+  /**
+   * Listener Al clickear el boton 'X' del sign in form, oculta el form de 'login' y 'register'.
+   */
   function loginCloser(): void {
     const loginCloser = document.getElementById('login-closer') as HTMLElement
     const loginMenu = document.getElementById('login-menu') as HTMLElement
@@ -103,7 +166,9 @@ function index(): void {
     })
   }
 
-
+  /**
+   * Verifica y guarda los datos validos para el registro
+   */
   function addListenerRegisterForm(): void {
     const signUpForm = document.getElementById('signup-form') as HTMLFormElement
     const inputUsername = document.getElementById('reg-user-name') as HTMLInputElement
@@ -116,7 +181,10 @@ function index(): void {
 
     signUpForm.addEventListener('submit', function(e: Event): void {
       e.preventDefault()
-      // Vacia el texto de confirmacion si es que hay.
+
+      /**
+       * Vacia el texto de confirmacion si es que hay.
+       */
       confirmContainer.innerHTML = ''
 
       const username: string = inputUsername.value.trim()
@@ -124,9 +192,15 @@ function index(): void {
       const password: string = inputPassword.value.trim()
       const confirmPasword: string = inputConfirmPassword.value.trim()
 
+      /**
+       * Ejecuta las verificaciones y se guardan las respuestas de las mismas.
+       */
       const okPass = isNotSamePassword(password, confirmPasword, alertContainer)
       const okEmail = isRegisteredEmail(email, alertContainer)
 
+      /**
+       * Si en este momento alguno de las dos verificaciones dio error no sigue.
+       */
       if (!okPass && okEmail) return
 
       confirmContainer.innerHTML = `Account created successfully!`
@@ -140,6 +214,11 @@ function index(): void {
 
   }
 
+  /**
+   * Verifica Si las password no son identicas.
+   * True = SÍ son identicas.
+   * False = NO son identicas.
+   */
   function isNotSamePassword(passA: string, passB: string, where: HTMLElement): boolean {
     if (!isEqualString(passA, passB)) {
       where.innerHTML = `Passwords don't match!`
@@ -149,6 +228,11 @@ function index(): void {
     return true
   }
 
+  /**
+   * Retorna true / false segun si el email ingresado ya esta registrados
+   * True = El email SÍ se encuentra registrado.
+   * False = El email NO se encuentra registrado.
+   */
   function isRegisteredEmail(email: string, where: HTMLElement): boolean {
     if (shop.isRegistered(email)) {
       where.innerHTML += `The email entered is already used.`
@@ -157,7 +241,9 @@ function index(): void {
     return true
   }
 
-
+  /**
+   * Verifica y guarda los datos validos para el inicio de sesion
+   */
   function addListenerLoginForm(): void {
     const singInForm = document.getElementById('signin-form') as HTMLFormElement
     const inputEmail = document.getElementById('log-user-email') as HTMLInputElement
@@ -168,29 +254,39 @@ function index(): void {
 
     singInForm.addEventListener('submit', function(e: Event): void {
       e.preventDefault()
-      // Vacia el texto de confirmacion si es que hay.
+      /**
+       * Vacia el texto de confirmacion o alerta, si es que lo hay.
+       */
       confirmcontainer.innerHTML = ''
       alertContainer.innerHTML = ''
 
       const email: string = inputEmail.value.trim()
       const password: string = inputPassword.value.trim()
 
+      /**
+       * Se intenta verificar el email y las contraseñas con las cuentas almacenadas en Shop
+       */
       shop.logInUser({email, password})
 
+      /**
+       * Si no esta logeado en este momento es porque esta mal el email o contraseña
+       */
       if (!shop.isLoged()) {
         shop.saveUser()
         alertContainer.innerHTML = `The email or password is not valid.`
         return
       }
+
       confirmcontainer.innerHTML = `Successfully logged in`
-      return
     })
   }
 
 
 
   // Ejercicio: Clase 14/09/2021 (1/3)
-  // Validación de entrada de datos en un formulario
+  /**
+   * Validación de email del formulario
+   */
   function addListenerSuscribe (): void {
     const newsLetter = document.getElementById('news-letter') as HTMLFormElement
     const inputEmail = newsLetter.querySelector('input[name=email]') as HTMLInputElement
