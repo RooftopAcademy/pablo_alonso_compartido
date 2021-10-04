@@ -1,4 +1,4 @@
-import { ProductComment } from '../interfaces/types'
+import { ProductCommentInterface } from '../interfaces/types'
 
 export default class Product {
 
@@ -8,7 +8,7 @@ export default class Product {
   private _author: string = ''
   private _description: string = ''
   private _price: number = 0
-  private _comment: ProductComment[] = []
+  private _comment: ProductCommentInterface[] = []
   private _category: string[] = []
   private _isAvaliable: boolean = true
 
@@ -60,10 +60,10 @@ export default class Product {
     return this._price
   }
 
-  public set comment(comment: ProductComment[]) {
+  public set comment(comment: ProductCommentInterface[]) {
     this._comment = comment
   }
-  public get comment(): ProductComment[] {
+  public get comment(): ProductCommentInterface[] {
     return this._comment
   }
 
