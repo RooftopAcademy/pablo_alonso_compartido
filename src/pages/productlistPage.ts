@@ -18,19 +18,19 @@ import ProductRepository from '../repositories/ProductRepository'
 
 function productList(): void {
   // Ejercicio: Clase 14/09/2021 (2/3)
-  addSoldOutListener()
+  // addSoldOutListener()
 
-  function addSoldOutListener(): void {
-    const soldOut: NodeListOf<HTMLElement> = document.querySelectorAll('.sold-out')
-    const notAvaliable: HTMLElement | null = document.getElementById('not-avaliable')
+  // function addSoldOutListener(): void {
+  //   const soldOut: NodeListOf<HTMLElement> = document.querySelectorAll('.sold-out')
+  //   const notAvaliable: HTMLElement | null = document.getElementById('not-avaliable')
 
-    // Verificamos que existan las entidades
-    if (!(soldOut.length > 0 && notAvaliable)) return
+  //   // Verificamos que existan las entidades
+  //   if (!(soldOut.length > 0 && notAvaliable)) return
 
-    soldOut.forEach((el: HTMLElement): void => el.addEventListener('click', function(): void {
-      toggleDisplayTemporarily(notAvaliable, 3000)
-    }));
-  }
+  //   soldOut.forEach((el: HTMLElement): void => el.addEventListener('click', function(): void {
+  //     toggleDisplayTemporarily(notAvaliable, 3000)
+  //   }));
+  // }
 
 
   // Ejercicio: Clase 14/09/2021 (3/3)
