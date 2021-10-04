@@ -114,26 +114,32 @@ function productDetails(): void {
     const removeBtn = Array.from(document.getElementsByClassName('js-remove-from-cart')) as HTMLElement[]
 
     removeBtn.forEach((btn: HTMLElement) => {
+      /**
+       * Toma el ID del producto dentro del boton y busca el producto
+       */
+      const productToRemove = shop.getCart().getById(btn.dataset.productId) as ProductInterface
+
+      /**
+       * Luego de encontrarlo buscamos el index donde se encuentra en el carrito.
+       */
+      const indexProductToRemove: number = shop.getCart().getAll().indexOf(productToRemove)
+
+      /**
+       * Guardamos en una variable el elemento padre que contiene al boton.
+       */
+      const parentElement = btn.parentElement as HTMLElement
+
       btn.addEventListener('click', function (): void {
-        /**
-         * Toma el ID del producto dentro del boton y busca el producto
-         */
-        const productToRemove = shop.getCart().getById(btn.dataset.productId) as ProductInterface
 
         /**
-         * Luego de encontrarlo buscamos el index donde se encuentra en el carrito.
-         */
-        const indexProductToRemove: number = shop.getCart().getAll().indexOf(productToRemove)
-
-        /**
-         * Finalmente removemos el producto del carrito.
+         * Removemos el producto del carrito.
          */
         shop.getCart().removeByIndex(indexProductToRemove)
 
         /**
          * Removemos el item <li>...</li> de la lista del carrito.
          */
-        if (btn.parentElement) btn.parentElement.remove()
+         parentElement.remove()
       })
     })
   }
