@@ -16,8 +16,6 @@ import {
 export default class Shop {
 
   private cart: Cart = new Cart
-  // private catalogue: Catalogue = new Catalogue
-  // usuarios registrados / users / registeredUsers
   private members: Members = new Members
   private user: (InvitedUser | RegisteredUser) = new InvitedUser
 
