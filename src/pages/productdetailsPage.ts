@@ -119,9 +119,14 @@ function productDetails(): void {
 
     removeBtn.forEach((btn: HTMLButtonElement) => {
       /**
+       * Guarda el ID que habia dentro del boton.
+       */
+       const productID = btn.dataset.productId as string
+
+      /**
        * Toma el ID del producto dentro del boton y busca el producto
        */
-      const productToRemove = shop.getCart().getById(btn.dataset.productId) as ProductInterface
+      const productToRemove = shop.getCart().getById(productID) as ProductInterface
 
       /**
        * Luego de encontrarlo buscamos el index donde se encuentra en el carrito.
