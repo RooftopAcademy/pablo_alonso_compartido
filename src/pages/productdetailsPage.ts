@@ -8,13 +8,17 @@ import {
   getProductIDFromPath
 } from '../utils/utils'
 
-  import productDetail from '../components/productDetail'
-  import commentItem from '../components/commentItem'
-  import cartItem from '../components/cartItem'
+import productDetail from '../components/productDetail'
+import commentItem from '../components/commentItem'
+import cartItem from '../components/cartItem'
 
-  import Shop from '../entities/Shop'
-  import ProductRepository from '../repositories/ProductRepository'
-  import {ProductInterface, ProductCommentInterface } from '../interfaces/types'
+import Shop from '../entities/Shop'
+import ProductRepository from '../repositories/ProductRepository'
+
+import {
+  ProductInterface,
+  ProductCommentInterface
+} from '../interfaces/types'
 
 function productDetails(): void {
 
