@@ -1,4 +1,3 @@
-import Product from "../entities/Product"
 import { ProductInterface } from "../interfaces/types"
 
 function productItem(product: ProductInterface | undefined): string {
