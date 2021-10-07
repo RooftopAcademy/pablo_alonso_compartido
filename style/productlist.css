@@ -260,6 +260,15 @@ body {
   margin-top: 2em;
   margin-bottom: 2em;
 }
+.filter {
+  width: 90%;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #333333;
+}
+.filter-label {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
 .category {
   width: 100%;
   display: flex;
