@@ -141,13 +141,30 @@ function productList(): void {
   }
 
   function renderProductCart(): void {
-    injectArrayInDOM(shop.getCart().getAll(), cartList, cartItem)
+    /**
+     * Array de productos en la instancia de Cart.
+     */
+    const productInCart: ProductInterface[] = shop.getCart().getAll()
+
+    /**
+     * 
+     * Guardamos los IDs de los productos que existen en la lista del carrito del DOM.
+     */
+    const productInCartList: string[] = Array.from(cartList.children).map(({id}): string => id)
+
+    productInCart.forEach((product: ProductInterface): void => {
+      /**
+       * Si el ID del producto a añadir ya esta entre los productos en la lista 
+       */
+      if (productInCartList.includes(product.id)) return
+      cartList.innerHTML += cartItem(product)
+    })
   }
 
   function addListenerCartRemove(): void {
     const removeBtn = Array.from(document.getElementsByClassName('js-remove-from-cart')) as HTMLButtonElement[]
 
-    removeBtn.forEach((btn: HTMLButtonElement) => {
+    removeBtn.forEach((btn: HTMLButtonElement): void => {
       /**
        * Guarda el ID que habia dentro del boton.
        */
