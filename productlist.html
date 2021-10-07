@@ -162,6 +162,20 @@
 
         <section class="category">
           <h2 class="category--title">All NFTs</h2>
+
+          <div class="filter">
+            <label class="filter-label" for="filter-select">Sort by: </label>
+            <select name="filter" id="filter-select">
+              <option value="no-order">No order</option>
+              <option value="title">Title (A - Z)&#11015;</option>
+              <option value="title-desc">Title (Z - A)&#11014;</option>
+              <option value="author">Author (A - Z)&#11015;</option>
+              <option value="author-desc">Author (Z - A)&#11014;</option>
+              <option value="price">Price &#11015;</option>
+              <option value="price-desc">Price &#11014;</option>
+            </select>
+          </div>
+
           <section class="nft--container" id="all-nfts">
             <!-- Inject code here -->
           </section>
