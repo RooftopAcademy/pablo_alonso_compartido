@@ -1,6 +1,6 @@
-import Product from "../classes/Product"
+import { ProductInterface } from '../interfaces/types'
 
-function cartItem(product: Product): string {
+function cartItem(product: ProductInterface): string {
   return `
   <li class="cart-item" id="${product.id}">
     <img class="cart-thumbnail" src="${product.picture}" alt="${product.title}< by ${product.author}">

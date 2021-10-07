@@ -1,19 +1,19 @@
-import Product from "./Product"
+import { ProductInterface } from "../interfaces/types"
 
 export default class Cart {
 
-  private products: Product[] = []
+  private products: ProductInterface[] = []
 
 
-  public add(p: Product): void {
+  public add(p: ProductInterface): void {
     this.products.push(p)
   }
 
-  public getAll(): Product[] {
+  public getAll(): ProductInterface[] {
     return this.products
   }
 
-  public getById(id: string): (Product | undefined) {
+  public getById(id: string): (ProductInterface | undefined) {
     return this.products.find(p => p.id === id)
   }
 

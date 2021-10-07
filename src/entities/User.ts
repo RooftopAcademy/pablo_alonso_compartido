@@ -7,6 +7,7 @@ export default class User {
   public get canBuy(): boolean {
     return this._canBuy
   }
+  
   public get canComment(): boolean {
     return this._canComment
   }
