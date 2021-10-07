@@ -4,7 +4,6 @@ import {
   fetchProduct,
   setDisplayFlex,
   injectArrayInDOM,
-  injectSingleInDOM,
   isHalfPage
 } from '../utils/utils'
 
@@ -12,7 +11,7 @@ import productItem from '../components/productItem'
 import cartItem from '../components/cartItem'
 
 import Shop from '../entities/Shop'
-import Product from '../entities/Product'
+import Catalogue from '../entities/Catalogue'
 import { ProductInterface } from '../interfaces/types'
 import ProductRepository from '../repositories/ProductRepository'
 
@@ -63,11 +62,15 @@ function productList(): void {
   function renderStep(data: ProductInterface[]): void {
     const products: ProductRepository = new ProductRepository(data)
 
+    const catalogue: Catalogue = new Catalogue
+    catalogue.add(products.get())
+
     /**
      * Renderiza todos los productos y por categoria.
      */
-    renderProductsList(products)
+    renderProductsList(products, catalogue)
 
+    addListenerFilterSelect(catalogue)
     /**
      * Listener para el boton "Buy now"
      */
@@ -85,7 +88,7 @@ function productList(): void {
   }
 
 
-  function renderProductsList(products: ProductRepository): void {
+  function renderProductsList(products: ProductRepository, catalogue: Catalogue): void {
     /**
      * Guardamos todas las secciones/categorias que van a contener a los productos.
      */
@@ -95,8 +98,8 @@ function productList(): void {
     const strangeNfts = document.getElementById('strange-nfts') as HTMLElement
 
     /**
-     * Injecta todos los productos
-     */
+    * Injecta todos los productos
+    */
     injectArrayInDOM(products.get(), allNfts, productItem)
 
     /**
@@ -107,6 +110,67 @@ function productList(): void {
     injectArrayInDOM(products.getByCategory('strange'), strangeNfts, productItem)
   }
 
+  function addListenerFilterSelect(catalogue: Catalogue) {
+    const allNfts = document.getElementById('all-nfts') as HTMLElement
+    const selectSort = document.getElementById('filter-select') as HTMLSelectElement
+
+    selectSort.addEventListener('change', function () {
+      switch (selectSort.value) {
+        /**
+        * Injecta productos filtrados segun el titulo
+        * en el primer caso es de la 'A' a la 'Z' y el segundo de la 'Z' a la 'A'
+        */
+        case 'title':
+          allNfts.innerHTML = ''
+          catalogue.sortByTitle()
+            .forEach((item: ProductInterface) => allNfts.innerHTML += productItem(item))
+          break;
+        case 'title-desc':
+          allNfts.innerHTML = ''
+          catalogue.sortByTitle('desc')
+            .forEach((item: ProductInterface) => allNfts.innerHTML += productItem(item))
+          break;
+
+        /**
+        * Injecta productos filtrados segun el autor
+        * en el primer caso es de la 'A' a la 'Z' y el segundo de la 'Z' a la 'A'
+        */
+        case 'author':
+          allNfts.innerHTML = ''
+          catalogue.sortByAuthor()
+            .forEach((item: ProductInterface) => allNfts.innerHTML += productItem(item))
+          break;
+        case 'author-desc':
+          allNfts.innerHTML = ''
+          catalogue.sortByAuthor('desc')
+            .forEach((item: ProductInterface) => allNfts.innerHTML += productItem(item))
+          break;
+
+        /**
+        * Injecta productos filtrados segun el precio
+        * en el primer caso es de Mayor a menor y el segundo de menor a Mayor
+        */
+        case 'price':
+          allNfts.innerHTML = ''
+          catalogue.sortByPrice()
+            .forEach((item: ProductInterface) => allNfts.innerHTML += productItem(item))
+          break;
+        case 'price-desc':
+          allNfts.innerHTML = ''
+          catalogue.sortByPrice('desc')
+            .forEach((item: ProductInterface) => allNfts.innerHTML += productItem(item))
+          break;
+
+        /**
+        * Injecta todos los productos sin criterio alguno.
+        */
+        default:
+          allNfts.innerHTML = ''
+          catalogue.get()
+            .forEach((item: ProductInterface) => allNfts.innerHTML += productItem(item))
+       }
+    })
+  }
 
   function addListenerAddCart(products: ProductRepository): void {
     const buyBtn = Array.from(document.getElementsByClassName('js-add-to-cart')) as HTMLButtonElement[]
