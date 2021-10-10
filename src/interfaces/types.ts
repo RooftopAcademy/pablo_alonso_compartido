@@ -27,3 +27,21 @@ export interface LogData {
   email: string
   password: string
 }
+
+
+export interface CompareByProps {
+  a: {[property: string]: string}
+  b: {[property: string]: string}
+  keys: string[]
+  mode: number[]
+  i: number
+}
+
+enum OrderMode {
+  asc = 1,
+  desc = -1,
+}
+
+export type OrderModeInterface = {
+  [a: string]: OrderMode
+}
