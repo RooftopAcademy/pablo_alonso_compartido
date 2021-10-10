@@ -163,18 +163,21 @@
         <section class="category">
           <h2 class="category--title">All NFTs</h2>
 
-          <div class="filter">
-            <label class="filter-label" for="filter-select">Sort by: </label>
-            <select name="filter" id="filter-select">
-              <option value="no-order">No order</option>
-              <option value="title">Title (A - Z)&#11015;</option>
-              <option value="title-desc">Title (Z - A)&#11014;</option>
-              <option value="author">Author (A - Z)&#11015;</option>
-              <option value="author-desc">Author (Z - A)&#11014;</option>
-              <option value="price">Price &#11015;</option>
-              <option value="price-desc">Price &#11014;</option>
-            </select>
-          </div>
+          <form class="filter" id="filter">
+            <h2 class="filter-title">Filter by:</h2>
+
+            <label class="btn filter-label filter-inactive" for="order-by-title" id="label-order-by-title">Title &#11015;</label>
+            <input class="d-none filter-check" type="checkbox" name="title" id="order-by-title">
+
+            <label class="btn filter-label filter-inactive" for="order-by-author" id="label-order-by-author">Author &#11015;</label>
+            <input class="d-none filter-check" type="checkbox" name="author" id="order-by-author">
+
+            <label class="btn filter-label filter-inactive" for="order-by-price" id="label-order-by-price">Price &#11015;</label>
+            <input class="d-none filter-check" type="checkbox" name="price" id="order-by-price">
+
+            <!-- <button class="btn filter-label" id="order-all">Filter</button> -->
+
+          </form>
 
           <section class="nft--container" id="all-nfts">
             <!-- Inject code here -->
