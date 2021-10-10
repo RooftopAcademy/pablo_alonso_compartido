@@ -261,13 +261,31 @@ body {
   margin-bottom: 2em;
 }
 .filter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 90%;
+  margin: 1.6rem 0;
   padding-bottom: 2rem;
   border-bottom: 1px solid #333333;
 }
+.filter-title {
+  text-align: center;
+  margin-right: 1.4rem;
+}
 .filter-label {
+  height: 100%;
+  box-sizing: border-box;
   font-size: 1.4rem;
   font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+}
+.filter-active {
+  border: 1px solid white;
+}
+.filter-inactive {
+  border: 1px solid #333333;
 }
 .category {
   width: 100%;
