@@ -12,25 +12,10 @@ import cartItem from '../components/cartItem'
 
 import Shop from '../entities/Shop'
 import Catalogue from '../entities/Catalogue'
-import { OrderModeInterface, ProductInterface } from '../interfaces/types'
+import { OrderMode, OrderModeInterface, ProductInterface } from '../interfaces/types'
 import ProductRepository from '../repositories/ProductRepository'
 
 function productList(): void {
-  // Ejercicio: Clase 14/09/2021 (2/3)
-  // addSoldOutListener()
-
-  // function addSoldOutListener(): void {
-  //   const soldOut: NodeListOf<HTMLElement> = document.querySelectorAll('.sold-out')
-  //   const notAvaliable: HTMLElement | null = document.getElementById('not-avaliable')
-
-  //   // Verificamos que existan las entidades
-  //   if (!(soldOut.length > 0 && notAvaliable)) return
-
-  //   soldOut.forEach((el: HTMLElement): void => el.addEventListener('click', function(): void {
-  //     toggleDisplayTemporarily(notAvaliable, 3000)
-  //   }));
-  // }
-
 
   // Ejercicio: Clase 14/09/2021 (3/3)
   // Verificamos que si el usuario scrollea debajo de mitad de pagina
@@ -139,9 +124,9 @@ function productList(): void {
      * Configuracion para el orden y las keys por las cuales se va a ordenar
      */
     const sortSettings: OrderModeInterface = {
-      'title': 1,
-      'author': 1,
-      'price': 1
+      'title': OrderMode.asc,
+      'author': OrderMode.asc,
+      'price': OrderMode.asc
     }
 
     /**
@@ -174,16 +159,17 @@ function productList(): void {
     }
 
     /**
-     * Cambia el color del borde del label si el input esta checked o no
+     * Cambia el color del borde del label y su contenido si el input esta checked o no
      */
     function labelToggleStatus(check: boolean, label: HTMLElement, word: string) {
       if (check) {
         label.classList.replace('filter-inactive', 'filter-active')
-        label.innerHTML = `${word} &#11015;`
-      } else {
-        label.classList.replace('filter-active', 'filter-inactive')
         label.innerHTML = `${word} &#11014;`
+        return
       }
+      label.classList.replace('filter-active', 'filter-inactive')
+      label.innerHTML = `${word} &#11015;`
+      return
     }
   }
 
@@ -196,10 +182,10 @@ function productList(): void {
      */
     let newSettings: OrderModeInterface = {...sortSettings}
     if (check) {
-      newSettings[key] = 1
+      newSettings[key] = OrderMode.asc
       return newSettings
     }
-    newSettings[key] = -1
+    newSettings[key] = OrderMode.desc
     return newSettings
   }
 
