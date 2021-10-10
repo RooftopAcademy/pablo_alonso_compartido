@@ -177,7 +177,7 @@ function productList(): void {
     /**
      * Cambia el color del borde del label y su contenido si el input esta checked o no
      */
-    function labelToggleStatus(check: boolean, label: HTMLElement, word: string) {
+    function labelToggleStatus(check: boolean, label: HTMLElement, word: string): void {
       if (check) {
         label.classList.replace('filter-desc', 'filter-asc')
         label.innerHTML = `${word} &#11014;`
@@ -196,12 +196,15 @@ function productList(): void {
   function changeSortSettings(check: boolean, sortSettings: OrderModeInterface, key: string): OrderModeInterface {
     /**
      * Creamos un nuevo objeto a partir de otro para que pierda la referencia en memoria del anterior
+     * Y modificamos la configuracion original para no perder las configuraciones de los otros inputs al cambiar.
      */
-    let newSettings: OrderModeInterface = {...sortSettings}
+    const newSettings: OrderModeInterface = {...sortSettings}
     if (check) {
+      sortSettings[key] = OrderMode.asc
       newSettings[key] = OrderMode.asc
       return newSettings
     }
+    sortSettings[key] = OrderMode.desc
     newSettings[key] = OrderMode.desc
     return newSettings
   }
@@ -209,7 +212,7 @@ function productList(): void {
   /**
    * Ordena los productos segun la configuracion y los desplega dentro de un nodo html
    */
-  function sortProduct(catalogue: Catalogue, sortSettings: OrderModeInterface, where: HTMLElement) {
+  function sortProduct(catalogue: Catalogue, sortSettings: OrderModeInterface, where: HTMLElement): void {
     catalogue.setSort(sortSettings)
     where.innerHTML = ''
     catalogue.get().forEach((item: ProductInterface) => where.innerHTML += productItem(item))
