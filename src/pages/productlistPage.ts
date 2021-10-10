@@ -121,7 +121,7 @@ function productList(): void {
   /**
    * Listeners para aplicar filtros y ordenar los productos de la seccion 'All NFTs'
    */
-  function manageFilter(catalogue: Catalogue) {
+  function manageFilter(catalogue: Catalogue): void {
     /**
      * Seccion donde se va a injectar los productos
      */
@@ -154,13 +154,20 @@ function productList(): void {
     /**
      * Agrega listener para la logica del ordenamiento segun key y el inpout (checkbox)
      */
-    function addListenerFilter(input:HTMLInputElement, key: string) {
+    function addListenerFilter(input:HTMLInputElement, key: string): void {
       const label = document.getElementById('label-order-by-' + key) as HTMLElement
-      const capitalizatedWord = (key[0].toUpperCase() + key.substring(1))
-      const check = input.checked
-
-      input.addEventListener('change', function () {
+      const capitalizatedWord: string = (key[0].toUpperCase() + key.substring(1))
+      
+      input.addEventListener('change', function (): void {
+        const check: boolean = input.checked
+        /**
+         * Cambia el color del borde del label si el input esta checked o no
+         */
         labelToggleStatus(check, label, capitalizatedWord)
+
+        /**
+         * Ordena los productos segun la configuracion y los desplega dentro de un nodo html
+         */
         let newSortSettings: OrderModeInterface = changeSortSettings(check, sortSettings, key)
         sortProduct(catalogue, newSortSettings, allNftsSection)
       })
