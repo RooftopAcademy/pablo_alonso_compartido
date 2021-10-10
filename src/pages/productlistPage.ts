@@ -12,7 +12,7 @@ import cartItem from '../components/cartItem'
 
 import Shop from '../entities/Shop'
 import Catalogue from '../entities/Catalogue'
-import { ProductInterface } from '../interfaces/types'
+import { OrderModeInterface, ProductInterface } from '../interfaces/types'
 import ProductRepository from '../repositories/ProductRepository'
 
 function productList(): void {
@@ -68,9 +68,13 @@ function productList(): void {
     /**
      * Renderiza todos los productos y por categoria.
      */
-    renderProductsList(products, catalogue)
+    renderProductsList(products)
 
-    addListenerFilterSelect(catalogue)
+    /**
+     * Listeners para aplicar filtros y ordenar los productos de la seccion 'All NFTs'
+     */
+    manageFilter(catalogue)
+
     /**
      * Listener para el boton "Buy now"
      */
@@ -88,90 +92,124 @@ function productList(): void {
   }
 
 
-  function renderProductsList(products: ProductRepository, catalogue: Catalogue): void {
+  /**
+   * Renderiza todos los productos y por categoria.
+   */
+  function renderProductsList(products: ProductRepository): void {
     /**
      * Guardamos todas las secciones/categorias que van a contener a los productos.
      */
-    const allNfts = document.getElementById('all-nfts') as HTMLElement
-    const mostValuableNfts = document.getElementById('most-valuable-nfts') as HTMLElement
-    const colorfulNfts = document.getElementById('colorful-nfts') as HTMLElement
-    const strangeNfts = document.getElementById('strange-nfts') as HTMLElement
+    const allNftsSection = document.getElementById('all-nfts') as HTMLElement
+    const mostValuableSection = document.getElementById('most-valuable-nfts') as HTMLElement
+    const colorfulSection = document.getElementById('colorful-nfts') as HTMLElement
+    const strangeSection = document.getElementById('strange-nfts') as HTMLElement
 
     /**
     * Injecta todos los productos
     */
-    injectArrayInDOM(products.get(), allNfts, productItem)
+    injectArrayInDOM(products.get(), allNftsSection, productItem)
 
     /**
     * Injecta productos filtrados por su categoria
     */
-    injectArrayInDOM(products.getByCategory('most-valuable'), mostValuableNfts, productItem)
-    injectArrayInDOM(products.getByCategory('colorful'), colorfulNfts, productItem)
-    injectArrayInDOM(products.getByCategory('strange'), strangeNfts, productItem)
+    injectArrayInDOM(products.getByCategory('most-valuable'), mostValuableSection, productItem)
+    injectArrayInDOM(products.getByCategory('colorful'), colorfulSection, productItem)
+    injectArrayInDOM(products.getByCategory('strange'), strangeSection, productItem)
   }
 
-  function addListenerFilterSelect(catalogue: Catalogue) {
-    const allNfts = document.getElementById('all-nfts') as HTMLElement
-    const selectSort = document.getElementById('filter-select') as HTMLSelectElement
 
-    selectSort.addEventListener('change', function () {
-      switch (selectSort.value) {
-        /**
-        * Injecta productos filtrados segun el titulo
-        * en el primer caso es de la 'A' a la 'Z' y el segundo de la 'Z' a la 'A'
-        */
-        case 'title':
-          allNfts.innerHTML = ''
-          catalogue.sortByTitle()
-            .forEach((item: ProductInterface) => allNfts.innerHTML += productItem(item))
-          break;
-        case 'title-desc':
-          allNfts.innerHTML = ''
-          catalogue.sortByTitle('desc')
-            .forEach((item: ProductInterface) => allNfts.innerHTML += productItem(item))
-          break;
+  /**
+   * Listeners para aplicar filtros y ordenar los productos de la seccion 'All NFTs'
+   */
+  function manageFilter(catalogue: Catalogue) {
+    /**
+     * Seccion donde se va a injectar los productos
+     */
+    const allNftsSection = document.getElementById('all-nfts') as HTMLElement
 
-        /**
-        * Injecta productos filtrados segun el autor
-        * en el primer caso es de la 'A' a la 'Z' y el segundo de la 'Z' a la 'A'
-        */
-        case 'author':
-          allNfts.innerHTML = ''
-          catalogue.sortByAuthor()
-            .forEach((item: ProductInterface) => allNfts.innerHTML += productItem(item))
-          break;
-        case 'author-desc':
-          allNfts.innerHTML = ''
-          catalogue.sortByAuthor('desc')
-            .forEach((item: ProductInterface) => allNfts.innerHTML += productItem(item))
-          break;
+    /**
+     * De donde se saca los datos para la configuracion del orden (sortSettings)
+     */
+    const filterForm = document.getElementById('filter') as HTMLFormElement
+    const filterTitle = filterForm.title as unknown as HTMLInputElement
+    const filterAuthor = filterForm.author as unknown as HTMLInputElement
+    const filterPrice = filterForm.price as unknown as HTMLInputElement
 
-        /**
-        * Injecta productos filtrados segun el precio
-        * en el primer caso es de Mayor a menor y el segundo de menor a Mayor
-        */
-        case 'price':
-          allNfts.innerHTML = ''
-          catalogue.sortByPrice()
-            .forEach((item: ProductInterface) => allNfts.innerHTML += productItem(item))
-          break;
-        case 'price-desc':
-          allNfts.innerHTML = ''
-          catalogue.sortByPrice('desc')
-            .forEach((item: ProductInterface) => allNfts.innerHTML += productItem(item))
-          break;
+    /**
+     * Configuracion para el orden y las keys por las cuales se va a ordenar
+     */
+    const sortSettings: OrderModeInterface = {
+      'title': 1,
+      'author': 1,
+      'price': 1
+    }
 
-        /**
-        * Injecta todos los productos sin criterio alguno.
-        */
-        default:
-          allNfts.innerHTML = ''
-          catalogue.get()
-            .forEach((item: ProductInterface) => allNfts.innerHTML += productItem(item))
-       }
-    })
+    /**
+     * Agrega listener para la logica del ordenamiento segun key y el input (checkbox)
+     */
+    addListenerFilter(filterTitle, 'title')
+    addListenerFilter(filterAuthor, 'author')
+    addListenerFilter(filterPrice, 'price')
+
+    /**
+     * Agrega listener para la logica del ordenamiento segun key y el inpout (checkbox)
+     */
+    function addListenerFilter(input:HTMLInputElement, key: string) {
+      const label = document.getElementById('label-order-by-' + key) as HTMLElement
+      const capitalizatedWord = (key[0].toUpperCase() + key.substring(1))
+      const check = input.checked
+
+      input.addEventListener('change', function () {
+        labelToggleStatus(check, label, capitalizatedWord)
+        let newSortSettings: OrderModeInterface = changeSortSettings(check, sortSettings, key)
+        sortProduct(catalogue, newSortSettings, allNftsSection)
+      })
+    }
+
+    /**
+     * Cambia el color del borde del label si el input esta checked o no
+     */
+    function labelToggleStatus(check: boolean, label: HTMLElement, word: string) {
+      if (check) {
+        label.classList.replace('filter-inactive', 'filter-active')
+        label.innerHTML = `${word} &#11015;`
+      } else {
+        label.classList.replace('filter-active', 'filter-inactive')
+        label.innerHTML = `${word} &#11014;`
+      }
+    }
   }
 
+  /**
+   * Cambia la configuracion del ordenamiento dependiendo del input checkeado y la key que representa
+   */
+  function changeSortSettings(check: boolean, sortSettings: OrderModeInterface, key: string): OrderModeInterface {
+    /**
+     * Creamos un nuevo objeto a partir de otro para que pierda la referencia en memoria del anterior
+     */
+    let newSettings: OrderModeInterface = {...sortSettings}
+    if (check) {
+      newSettings[key] = 1
+      return newSettings
+    }
+    newSettings[key] = -1
+    return newSettings
+  }
+
+  /**
+   * Ordena los productos segun la configuracion y los desplega dentro de un nodo html
+   */
+  function sortProduct(catalogue: Catalogue, sortSettings: OrderModeInterface, where: HTMLElement) {
+    catalogue.setSort(sortSettings)
+    where.innerHTML = ''
+    console.log('se ejecuto')
+    catalogue.get().forEach((item: ProductInterface) => where.innerHTML += productItem(item))
+  }
+
+
+  /**
+   * Listener para el boton "Buy now"
+   */
   function addListenerAddCart(products: ProductRepository): void {
     const buyBtn = Array.from(document.getElementsByClassName('js-add-to-cart')) as HTMLButtonElement[]
     const addedToCartMessage = document.getElementById('added-to-cart') as HTMLElement
@@ -264,7 +302,10 @@ function productList(): void {
     })
   }
 
-
+  
+  /**
+   * Listener para el icono de Carrito, abre o cierra la lista.
+   */
   function addListenerDisplayCart(): void {
     const cartToggle = document.getElementById('cart-toggle') as HTMLElement
 
@@ -275,6 +316,9 @@ function productList(): void {
   }
 
 
+  /**
+   * Listener para Abrir la lista de menu cuando toca el anchor del mensaje al añadir algo al carrito.
+   */
   function addListenerSeeCart(): void {
     const seeCart = document.getElementById('see-cart') as HTMLElement
 
