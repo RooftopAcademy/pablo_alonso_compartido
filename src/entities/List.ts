@@ -27,8 +27,7 @@ export default abstract class List {
     /**
      * Si el las keys y el modo ya se solicitaron antes se retorna.
      */
-    console.log(obj)
-    if (this.cache.has(obj)) return console.error('YA ESTABA')
+    if (this.cache.has(obj)) return
 
     /**
      * Se guardan las keys para usarlas como criterio de ordenamiento.
@@ -52,11 +51,9 @@ export default abstract class List {
     this.cache.set(obj, this.result)
   }
 
-  // public orderBy(sorted: ProductInterface[], order?: 'desc' | 'asc'): ProductInterface[] {
-  //   return (order==='desc')
-  //     ? sorted.reverse()
-  //     : sorted
-  // }
+  /**
+   * Ordena segun un una propiedad del objeto y un modo: 1 'ascendente'; -1 'descendente';
+   */
   public sortBy(keys: string[], mode: number[]): any[] {
     let i = 0
     return [...this.result].sort((a,b) => this.compareBy({a, b, keys, mode, i}))
