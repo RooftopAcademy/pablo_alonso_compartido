@@ -130,7 +130,7 @@ function productList(): void {
     }
 
     /**
-     * Agrega listener para la logica del ordenamiento segun key y el input (checkbox)
+     * Agrega listener a cada input, agrega la logica del ordenamiento segun key y el input (checkbox)
      */
     addListenerFilter(filterTitle, 'title')
     addListenerFilter(filterAuthor, 'author')
@@ -140,11 +140,27 @@ function productList(): void {
      * Agrega listener para la logica del ordenamiento segun key y el inpout (checkbox)
      */
     function addListenerFilter(input:HTMLInputElement, key: string): void {
+      /**
+       * Se guarda el tag label a partir de su id completado con la key.
+       */
       const label = document.getElementById('label-order-by-' + key) as HTMLElement
+      /**
+       * Modificamos la primera letra de la key a mayuscula.
+       */
       const capitalizatedWord: string = (key[0].toUpperCase() + key.substring(1))
       
       input.addEventListener('change', function (): void {
+        /**
+         * Guardamos el estado del input checked.
+         */
         const check: boolean = input.checked
+
+        /**
+         * Al primer cambio necesitamos quitarle la clase por defecto 'filter-inactive' al label que representa el input checked.
+         * para que luego podamos intercambiar entre 'filter-asc' y 'filter-desc'
+         */
+        if (label.classList.contains('filter-inactive')) label.classList.replace('filter-inactive', 'filter-asc')
+
         /**
          * Cambia el color del borde del label si el input esta checked o no
          */
@@ -163,11 +179,12 @@ function productList(): void {
      */
     function labelToggleStatus(check: boolean, label: HTMLElement, word: string) {
       if (check) {
-        label.classList.replace('filter-inactive', 'filter-active')
+        label.classList.replace('filter-desc', 'filter-asc')
         label.innerHTML = `${word} &#11014;`
         return
       }
-      label.classList.replace('filter-active', 'filter-inactive')
+
+      label.classList.replace('filter-asc', 'filter-desc')
       label.innerHTML = `${word} &#11015;`
       return
     }
