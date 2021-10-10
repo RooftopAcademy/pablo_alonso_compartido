@@ -37,7 +37,7 @@ export interface CompareByProps {
   i: number
 }
 
-enum OrderMode {
+export enum OrderMode {
   asc = 1,
   desc = -1,
 }
