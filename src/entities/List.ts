@@ -7,14 +7,14 @@ export default abstract class List {
 
   public items: any[]
   public result: any[]
-  public cache: Map<OrderModeInterface, any[]>
-  public keysAndOrder: OrderModeInterface
+  public cache: Map<string, any[]>
+  public keysAndOrder: string
 
   constructor() {
     this.items = []
     this.result = []
     this.cache = new Map
-    this.keysAndOrder = {'default': 1}
+    this.keysAndOrder = ''
   }
 
   setSort(obj: OrderModeInterface) {
@@ -22,12 +22,12 @@ export default abstract class List {
     /**
      * Se setea las keys y el modo de ordenamiento (ascendente o descendente).
      */
-    this.keysAndOrder = obj
+    this.keysAndOrder = obj.toString()
 
     /**
      * Si el las keys y el modo ya se solicitaron antes se retorna.
      */
-    if (this.cache.has(obj)) return
+    if ( this.cache.has(obj.toString()) ) return
 
     /**
      * Se guardan las keys para usarlas como criterio de ordenamiento.
@@ -48,7 +48,7 @@ export default abstract class List {
     /**
      * Se guarda en el cache las keys y el modo de ordenamiento, y el resultado del ordenamiento
      */
-    this.cache.set(obj, this.result)
+    this.cache.set(obj.toString(), this.result)
   }
 
   /**
