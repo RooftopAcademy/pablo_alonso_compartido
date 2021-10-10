@@ -195,7 +195,6 @@ function productList(): void {
   function sortProduct(catalogue: Catalogue, sortSettings: OrderModeInterface, where: HTMLElement) {
     catalogue.setSort(sortSettings)
     where.innerHTML = ''
-    console.log('se ejecuto')
     catalogue.get().forEach((item: ProductInterface) => where.innerHTML += productItem(item))
   }
 
@@ -242,7 +241,6 @@ function productList(): void {
     const productInCart: ProductInterface[] = shop.getCart().getAll()
 
     /**
-     * 
      * Guardamos los IDs de los productos que existen en la lista del carrito del DOM.
      */
     const productInCartList: string[] = Array.from(cartList.children).map(({id}): string => id)
