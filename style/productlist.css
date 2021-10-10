@@ -281,8 +281,11 @@ body {
   cursor: pointer;
   text-align: center;
 }
-.filter-active {
+.filter-asc {
   border: 1px solid white;
+}
+.filter-desc {
+  border: 1px solid gray;
 }
 .filter-inactive {
   border: 1px solid #333333;
