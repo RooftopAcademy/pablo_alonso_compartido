@@ -1,133 +1,100 @@
 const data: ProductInterface[] = [
   {
-    "id": "v5tgwWfv32te5gf8GcvX",
-    "picture": "assets/nft/i8tgeWfv32te5gf8GcvX.jpg",
-    "title": "Replicator",
-    "author": "Beeple",
-    "description": "Lorem ipsum bla bla bla...",
-    "price": 4000000,
-    "comments": [
-    ],
-    "category": [
-      "most-valuable",
-      "colorful"
-    ],
+    "id": "",
+    "picture": "",
+    "title": "A",
+    "author": "Bb",
+    "description": "",
+    "price": 50,
+    "comments": [],
+    "category": [],
     "isAvaliable": true
   },
   {
-    "id": "v5tgwWfv32te5gf8GcvX",
-    "picture": "assets/nft/i8tgeWfv32te5gf8GcvX.jpg",
-    "title": "Replicator",
-    "author": "Beeple",
-    "description": "Lorem ipsum bla bla bla...",
-    "price": 5000000,
-    "comments": [
-    ],
-    "category": [
-      "most-valuable",
-      "colorful"
-    ],
+    "id": "",
+    "picture": "",
+    "title": "A",
+    "author": "Bb",
+    "description": "",
+    "price": 40,
+    "comments": [],
+    "category": [],
     "isAvaliable": true
   },
   {
-    "id": "v5tgwWfv32te5gf8GcvX",
-    "picture": "assets/nft/i8tgeWfv32te5gf8GcvX.jpg",
-    "title": "Replicator",
-    "author": "Beeple",
-    "description": "Lorem ipsum bla bla bla...",
-    "price": 3000000,
-    "comments": [
-    ],
-    "category": [
-      "most-valuable",
-      "colorful"
-    ],
+    "id": "",
+    "picture": "",
+    "title": "B",
+    "author": "Ae",
+    "description": "",
+    "price": 60,
+    "comments": [],
+    "category": [],
     "isAvaliable": true
   },
   {
-    "id": "v5tgwWfv32te5gf8GcvX",
-    "picture": "assets/nft/i8tgeWfv32te5gf8GcvX.jpg",
-    "title": "Replicator",
-    "author": "Aeeple",
-    "description": "Lorem ipsum bla bla bla...",
-    "price": 4000000,
-    "comments": [
-    ],
-    "category": [
-      "most-valuable",
-      "colorful"
-    ],
+    "id": "",
+    "picture": "",
+    "title": "B",
+    "author": "Ae",
+    "description": "",
+    "price": 40,
+    "comments": [],
+    "category": [],
     "isAvaliable": true
   },
   {
-    "id": "CdeG4by6YE826o0RegX1",
-    "picture": "assets/nft/CdeG4by6YE826o0RegX1.png",
-    "title": "Replicator",
-    "author": "Mas Dog Jones",
-    "description": "Lorem ipsum bla bla bla...",
-    "price": 4114000,
-    "comments": [
-    ],
-    "category": [
-      "most-valuable",
-      "strange"
-    ],
+    "id": "",
+    "picture": "",
+    "title": "B",
+    "author": "Ab",
+    "description": "",
+    "price": 41,
+    "comments": [],
+    "category": [],
     "isAvaliable": true
   },
   {
-    "id": "RmJ5Di91zS04t21LmuuW",
-    "picture": "assets/nft/RmJ5Di91zS04t21LmuuW.png",
-    "title": "Everydays - The First 5000 Days",
-    "author": "Beeple",
-    "description": "Lorem ipsum bla bla bla...",
-    "price": 69346250,
-    "comments": [
-    ],
-    "category": [
-      "most-valuable",
-      "colorful"
-    ],
+    "id": "",
+    "picture": "",
+    "title": "Z",
+    "author": "Be",
+    "description": "",
+    "price": 69,
+    "comments": [],
+    "category": [],
     "isAvaliable": true
   },
   {
-    "id": "9EfJ41XbxZ8U5Yfry0lI",
-    "picture": "assets/nft/9EfJ41XbxZ8U5Yfry0lI.png",
-    "title": "CROSSROAD",
-    "author": "Beeple",
-    "description": "Lorem ipsum bla bla bla...",
-    "price": 6666660,
-    "comments": [
-    ],
-    "category": [
-      "colorful",
-      "strange"
-    ],
+    "id": "",
+    "picture": "",
+    "title": "C",
+    "author": "Be",
+    "description": "",
+    "price": 66,
+    "comments": [],
+    "category": [],
     "isAvaliable": true
   },
   {
-    "id": "i8tgeWfv32te5gf8GcvX",
-    "picture": "assets/nft/i8tgeWfv32te5gf8GcvX.jpg",
-    "title": "Ocean Front",
-    "author": "Beeple",
-    "description": "Lorem ipsum bla bla bla...",
-    "price": 6000000,
-    "comments": [
-    ],
-    "category": [
-      "most-valuable",
-      "colorful"
-    ],
+    "id": "",
+    "picture": "",
+    "title": "Z",
+    "author": "Be",
+    "description": "",
+    "price": 60,
+    "comments": [],
+    "category": [],
     "isAvaliable": true
   },
   {
-    "id": "t5y7Id2bRT93CxZXuQaB",
-    "picture": "assets/nft/t5y7Id2bRT93CxZXuQaB.png",
-    "title": "World Wide Web source code",
-    "author": "Sir Tim Berners-Lee",
-    "description": "Lorem ipsum bla bla bla...",
-    "price": 5430000,
-    "comments": [
-    ],
+    "id": "",
+    "picture": "",
+    "title": "D",
+    "author": "Si",
+    "description": "",
+    "price": 54,
+    "comments": [],
     "category": [],
     "isAvaliable": true
   }
@@ -253,11 +220,21 @@ export default class Catalogue extends List {
 }
 
 const catalogue = new Catalogue(data)
-// catalogue.add(data)
 
 catalogue.setSort({
   'title': OrderMode.asc,
   'author': OrderMode.asc,
   'price': OrderMode.asc
 })
+console.log(`
+_____________________________________________________
+__ DISORDERED PRODUCTS:
+_____________________________________________________
+`)
+console.table(data)
+console.log(`
+_____________________________________________________
+__ ORDERED PRODUCTS:
+_____________________________________________________
+`)
 console.table(catalogue.get())
