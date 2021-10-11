@@ -137,39 +137,12 @@ function productList(): void {
     addListenerFilter(filterTitle, 'title')
     addListenerFilter(filterAuthor, 'author')
     addListenerFilter(filterPrice, 'price')
+
+    /**
+     * Listener para limpiar los filtros y dejar todo sin ordenar.
+     * Cambia el aspecto de los labels, y su contenido.
+     */
     clearFilters()
-
-    function clearFilters() {
-  
-      const labels: HTMLLabelElement[] = []
-      const labelTitle = document.getElementById('label-order-by-title') as HTMLLabelElement
-      const labelAuthor = document.getElementById('label-order-by-author') as HTMLLabelElement
-      const labelPrice = document.getElementById('label-order-by-price') as HTMLLabelElement
-
-      const defaultTextLabel = [
-        'Title',
-        'Author',
-        'Price',
-      ]
-
-      labels.push(labelTitle)
-      labels.push(labelAuthor)
-      labels.push(labelPrice)
-
-      cleanFilters.addEventListener('click', function(e: Event): void {
-        e.preventDefault()
-
-        const sortedProducts: ProductInterface[] = catalogue.get()
-        postSortedProduct(sortedProducts, allNftsSection)
-
-        labels.forEach((label, i) =>{
-          label.innerHTML = defaultTextLabel[i]
-          if (label.classList.contains('filter-asc')) return label.classList.replace('filter-asc', 'filter-inactive')
-          if (label.classList.contains('filter-desc')) return label.classList.replace('filter-desc', 'filter-inactive')
-        } )
-  
-      })
-    }
 
     /**
      * Agrega listener para la logica del ordenamiento segun key y el inpout (checkbox)
@@ -227,6 +200,42 @@ function productList(): void {
       label.classList.replace('filter-asc', 'filter-desc')
       label.innerHTML = `${word} &#11015;`
       return
+    }
+
+    /**
+     * Listener para limpiar los filtros y dejar todo sin ordenar.
+     * Cambia el aspecto de los labels, y su contenido.
+     */
+    function clearFilters() {
+  
+      const labels: HTMLLabelElement[] = []
+      const labelTitle = document.getElementById('label-order-by-title') as HTMLLabelElement
+      const labelAuthor = document.getElementById('label-order-by-author') as HTMLLabelElement
+      const labelPrice = document.getElementById('label-order-by-price') as HTMLLabelElement
+
+      const defaultTextLabel = [
+        'Title',
+        'Author',
+        'Price',
+      ]
+
+      labels.push(labelTitle)
+      labels.push(labelAuthor)
+      labels.push(labelPrice)
+
+      cleanFilters.addEventListener('click', function(e: Event): void {
+        e.preventDefault()
+
+        const sortedProducts: ProductInterface[] = catalogue.get()
+        postSortedProduct(sortedProducts, allNftsSection)
+
+        labels.forEach((label, i) =>{
+          label.innerHTML = defaultTextLabel[i]
+          if (label.classList.contains('filter-asc')) return label.classList.replace('filter-asc', 'filter-inactive')
+          if (label.classList.contains('filter-desc')) return label.classList.replace('filter-desc', 'filter-inactive')
+        } )
+  
+      })
     }
   }
 
