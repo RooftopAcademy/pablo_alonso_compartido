@@ -162,11 +162,12 @@ function productList(): void {
        * Se guarda el nodo label a partir de su id completado con la key.
        */
       const label = document.getElementById('label-order-by-' + key) as HTMLLabelElement
+
       /**
        * Modificamos la primera letra de la key a mayuscula.
        */
       const capitalizatedWord: string = (key[0].toUpperCase() + key.substring(1))
-      
+
       input.addEventListener('change', function (): void {
         /**
          * Guardamos el estado del input checked.
@@ -185,9 +186,15 @@ function productList(): void {
         labelToggleStatus(check, label, capitalizatedWord)
 
         /**
-         * Ordena los productos segun la configuracion y los desplega dentro de un nodo html.
+         * Obtenemos la nueva configuracion a partir del cambio del input y de lo guardado en memoria (sortSettings)
          */
         let newSortSettings: OrderModeInterface = changeSortSettings(check, sortSettings, key)
+
+        /**
+         * Pedimos que ordenen los productos segun el nuevo setting.
+         * Esto se guarda en cache y lo pedimos mas adelante.
+         */
+        catalogue.setSort(newSortSettings)
 
         /**
          * Obtenemos los productos desordenados como estaban al inicio.
@@ -291,7 +298,8 @@ function productList(): void {
   }
 
   /**
-   * Ordena los productos segun la configuracion y los desplega dentro de un nodo html
+   * Postea los productos en el nodo html donde le decimos.
+   * Antes de postear, limpia el contenido del nodo
    */
   function postSortedProduct(sortedProducts: ProductInterface[], where: HTMLElement): void {
     where.innerHTML = ''
