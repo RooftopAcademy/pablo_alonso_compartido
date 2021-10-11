@@ -162,6 +162,28 @@
 
         <section class="category">
           <h2 class="category--title">All NFTs</h2>
+
+          <form class="filter" id="filter">
+            <h2 class="filter-title">Filter by:</h2>
+
+            <label class="btn filter-label filter-inactive" for="order-by-title" id="label-order-by-title">Title</label>
+            <input class="d-none filter-check" type="checkbox" name="title" id="order-by-title">
+
+            <label class="btn filter-label filter-inactive" for="order-by-author" id="label-order-by-author">Author</label>
+            <input class="d-none filter-check" type="checkbox" name="author" id="order-by-author">
+
+            <label class="btn filter-label filter-inactive" for="order-by-price" id="label-order-by-price">Price</label>
+            <input class="d-none filter-check" type="checkbox" name="price" id="order-by-price">
+
+            <button class="btn filter-clean" id="filter-clean" type="reset">
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="23" viewBox="0 0 30 23" fill="none">
+              <path d="M21.0104 5.48959L8.98956 17.5104" stroke="white" stroke-width="3"></path>
+              <path d="M21.0104 17.5104L8.98956 5.48959" stroke="white" stroke-width="3"></path>
+            </svg>
+            </button>
+
+          </form>
+
           <section class="nft--container" id="all-nfts">
             <!-- Inject code here -->
           </section>

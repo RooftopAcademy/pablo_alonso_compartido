@@ -1,6 +1,6 @@
-import Product from "../entities/Product"
+import { ProductInterface } from "../interfaces/types"
 
-function productItem(product: Product | undefined): string {
+function productItem(product: ProductInterface | undefined): string {
   // Si product es undefined injecta un mensaje de error
   if (!product) return `<article class="nft"><h3>There was an error loading the products :(</h3></article>`
 

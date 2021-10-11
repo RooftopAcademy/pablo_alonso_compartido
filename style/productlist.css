@@ -260,6 +260,47 @@ body {
   margin-top: 2em;
   margin-bottom: 2em;
 }
+.filter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  margin: 1.6rem 0;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #333333;
+  user-select: none;
+}
+.filter-title {
+  text-align: center;
+  margin-right: 1.4rem;
+}
+.filter-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 88px;
+  height: 40px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+}
+.filter-clean {
+  font-weight: 900;
+  background-color: #1A1A1A;
+  color: white;
+
+}
+.filter-asc {
+  border: 1px solid white;
+}
+.filter-desc {
+  border: 1px solid gray;
+}
+.filter-inactive {
+  border: 1px solid #333333;
+}
 .category {
   width: 100%;
   display: flex;
