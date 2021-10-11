@@ -275,12 +275,22 @@ body {
   margin-right: 1.4rem;
 }
 .filter-label {
-  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   box-sizing: border-box;
+  width: 88px;
+  height: 40px;
   font-size: 1.4rem;
   font-weight: 700;
   cursor: pointer;
   text-align: center;
+}
+.filter-clean {
+  font-weight: 900;
+  background-color: #1A1A1A;
+  color: white;
+
 }
 .filter-asc {
   border: 1px solid white;
