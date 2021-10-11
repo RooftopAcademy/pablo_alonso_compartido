@@ -111,22 +111,24 @@ function productList(): void {
      * Seccion donde se va a injectar los productos
      */
     const allNftsSection = document.getElementById('all-nfts') as HTMLElement
-
+    
     /**
-     * De donde se saca los datos para la configuracion del orden (sortSettings)
+     * Donde se saca los datos para la configuracion del orden (sortSettings)
      */
     const filterForm = document.getElementById('filter') as HTMLFormElement
     const filterTitle = filterForm.title as unknown as HTMLInputElement
     const filterAuthor = filterForm.author as unknown as HTMLInputElement
     const filterPrice = filterForm.price as unknown as HTMLInputElement
-
+    
+    const cleanFilters = document.getElementById('filter-clean') as HTMLButtonElement
+    
     /**
      * Configuracion para el orden y las keys por las cuales se va a ordenar
      */
     const sortSettings: OrderModeInterface = {
-      'title': OrderMode.asc,
-      'author': OrderMode.asc,
-      'price': OrderMode.asc
+      'title': 0,
+      'author': 0,
+      'price': 0
     }
 
     /**
@@ -135,15 +137,48 @@ function productList(): void {
     addListenerFilter(filterTitle, 'title')
     addListenerFilter(filterAuthor, 'author')
     addListenerFilter(filterPrice, 'price')
+    clearFilters()
+
+    function clearFilters() {
+  
+      const labels: HTMLLabelElement[] = []
+      const labelTitle = document.getElementById('label-order-by-title') as HTMLLabelElement
+      const labelAuthor = document.getElementById('label-order-by-author') as HTMLLabelElement
+      const labelPrice = document.getElementById('label-order-by-price') as HTMLLabelElement
+
+      const defaultTextLabel = [
+        'Title',
+        'Author',
+        'Price',
+      ]
+
+      labels.push(labelTitle)
+      labels.push(labelAuthor)
+      labels.push(labelPrice)
+
+      cleanFilters.addEventListener('click', function(e: Event): void {
+        e.preventDefault()
+
+        const sortedProducts: ProductInterface[] = catalogue.get()
+        postSortedProduct(sortedProducts, allNftsSection)
+
+        labels.forEach((label, i) =>{
+          label.innerHTML = defaultTextLabel[i]
+          if (label.classList.contains('filter-asc')) return label.classList.replace('filter-asc', 'filter-inactive')
+          if (label.classList.contains('filter-desc')) return label.classList.replace('filter-desc', 'filter-inactive')
+        } )
+  
+      })
+    }
 
     /**
      * Agrega listener para la logica del ordenamiento segun key y el inpout (checkbox)
      */
     function addListenerFilter(input:HTMLInputElement, key: string): void {
       /**
-       * Se guarda el tag label a partir de su id completado con la key.
+       * Se guarda el nodo label a partir de su id completado con la key.
        */
-      const label = document.getElementById('label-order-by-' + key) as HTMLElement
+      const label = document.getElementById('label-order-by-' + key) as HTMLLabelElement
       /**
        * Modificamos la primera letra de la key a mayuscula.
        */
@@ -170,8 +205,13 @@ function productList(): void {
          * Ordena los productos segun la configuracion y los desplega dentro de un nodo html
          */
         let newSortSettings: OrderModeInterface = changeSortSettings(check, sortSettings, key)
-        sortProduct(catalogue, newSortSettings, allNftsSection)
+
+        catalogue.setSort(newSortSettings)
+        const sortedProducts = catalogue.getSort(newSortSettings)
+
+        postSortedProduct(sortedProducts, allNftsSection)
       })
+
     }
 
     /**
@@ -212,10 +252,9 @@ function productList(): void {
   /**
    * Ordena los productos segun la configuracion y los desplega dentro de un nodo html
    */
-  function sortProduct(catalogue: Catalogue, sortSettings: OrderModeInterface, where: HTMLElement): void {
-    catalogue.setSort(sortSettings)
+  function postSortedProduct(sortedProducts: ProductInterface[], where: HTMLElement): void {
     where.innerHTML = ''
-    catalogue.get().forEach((item: ProductInterface) => where.innerHTML += productItem(item))
+    sortedProducts.forEach((item: ProductInterface) => where.innerHTML += productItem(item))
   }
 
 
