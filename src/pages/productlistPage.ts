@@ -123,13 +123,23 @@ function productList(): void {
     const cleanFilters = document.getElementById('filter-clean') as HTMLButtonElement
     
     /**
-     * Configuracion para el orden y las keys por las cuales se va a ordenar
+     * Configuracion por las keys por las cuales se va a ordenar
+     * 0 = No se ordena
+     * 1 = Se ordena de forma 'ascendente'
+     * -1 = Se ordena de forma 'descendente'
+     * Este sortSettings va a servir para memorizar el orden de la key al generar un nuevo sortSettings a partir de este.
      */
     const sortSettings: OrderModeInterface = {
-      'title': 0,
-      'author': 0,
-      'price': 0
+      'title': OrderMode.none,
+      'author': OrderMode.none,
+      'price': OrderMode.none,
     }
+
+    /**
+     * Guardamos en memoria todos los productos sin ordenar
+     * Para usarlo luego con el boton 'clean filters'
+     */
+    catalogue.setSort(sortSettings)
 
     /**
      * Agrega listener a cada input, agrega la logica del ordenamiento segun key y el input (checkbox)
@@ -175,13 +185,18 @@ function productList(): void {
         labelToggleStatus(check, label, capitalizatedWord)
 
         /**
-         * Ordena los productos segun la configuracion y los desplega dentro de un nodo html
+         * Ordena los productos segun la configuracion y los desplega dentro de un nodo html.
          */
         let newSortSettings: OrderModeInterface = changeSortSettings(check, sortSettings, key)
 
-        catalogue.setSort(newSortSettings)
+        /**
+         * Obtenemos los productos desordenados como estaban al inicio.
+         */
         const sortedProducts = catalogue.getSort(newSortSettings)
 
+        /**
+         * Injectamos los productos ordenados en el DOM
+         */
         postSortedProduct(sortedProducts, allNftsSection)
       })
 
@@ -213,27 +228,44 @@ function productList(): void {
       const labelAuthor = document.getElementById('label-order-by-author') as HTMLLabelElement
       const labelPrice = document.getElementById('label-order-by-price') as HTMLLabelElement
 
+      labels.push(labelTitle)
+      labels.push(labelAuthor)
+      labels.push(labelPrice)
+
       const defaultTextLabel = [
         'Title',
         'Author',
         'Price',
       ]
 
-      labels.push(labelTitle)
-      labels.push(labelAuthor)
-      labels.push(labelPrice)
-
       cleanFilters.addEventListener('click', function(e: Event): void {
         e.preventDefault()
 
-        const sortedProducts: ProductInterface[] = catalogue.get()
-        postSortedProduct(sortedProducts, allNftsSection)
+        /**
+         * 'Reseteamos' a 0 todos los atributos
+         */
+        sortSettings.title = OrderMode.none
+        sortSettings.author = OrderMode.none
+        sortSettings.price = OrderMode.none
 
-        labels.forEach((label, i) =>{
+        /**
+         * Obtenemos los productos desordenados como estaban en el principio
+         */
+        const unsortedProducts: ProductInterface[] = catalogue.getSort(sortSettings)
+
+        /**
+         * Injectamos los productos desordenados en el DOM
+         */
+        postSortedProduct(unsortedProducts, allNftsSection)
+
+        /**
+         * 'Reseteamos' el aspecto de todos los labels de los inputs
+         */
+        labels.forEach((label, i) => {
           label.innerHTML = defaultTextLabel[i]
           if (label.classList.contains('filter-asc')) return label.classList.replace('filter-asc', 'filter-inactive')
           if (label.classList.contains('filter-desc')) return label.classList.replace('filter-desc', 'filter-inactive')
-        } )
+        })
   
       })
     }
