@@ -6,13 +6,13 @@ const PATH: string = window.location.pathname;
 
 (function app(path: string) : void {
   switch (path) {
-    case '/pablo_alonso_compartido/index.html':
+    case '/':
       index()
       break
-    case '/pablo_alonso_compartido/productlist.html':
+    case '/list':
       productList()
       break
-    case '/pablo_alonso_compartido/productdetails.html':
+    case '/details':
       productDetails()
       break
   }
