@@ -10,7 +10,7 @@ function productItem(product: ProductInterface | undefined): string {
     <h2 class="nft--title">${product.title}</h2>
     <p class="nft--author">${product.author}</p>
     <div class="nft--anchors">
-      <a class="anchor details" href="productdetails.html?product=${product.id}">Details</a>
+      <a class="anchor details" href="/details?product=${product.id}">Details</a>
       <button class="btn buy-now js-add-to-cart" data-product-id="${product.id}">Buy now</button>
     </div>
   </article>
