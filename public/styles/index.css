@@ -9,6 +9,16 @@ body {
   font-family: 'Inter', 'Comic sans', Courier, monospace;
   /* Sí, comic sans, no soy psicotapa btw */
   scroll-behavior: smooth;
+  scrollbar-color: gray;
+  scrollbar-width: thin;
+}
+body::-webkit-scrollbar {
+  width: 5px;
+  background-color: #0F0F0F;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border-radius: 1px;
 }
 
 .d-none {

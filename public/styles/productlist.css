@@ -9,6 +9,16 @@ body {
   font-family: 'Inter', 'Comic sans', Courier, monospace;
   /* Sí, comic sans, no soy psicotapa btw */
   scroll-behavior: smooth;
+  scrollbar-color: gray;
+  scrollbar-width: thin;
+}
+body::-webkit-scrollbar {
+  width: 5px;
+  background-color: #0F0F0F;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border-radius: 1px;
 }
 
 .d-none {
@@ -138,6 +148,18 @@ body {
     background-color: #0F0F0F;
     border-radius: 0 0 4px 4px;
     padding: 1.4rem;
+    scrollbar-color: gray;
+    scrollbar-width: thin;
+  }
+  .cart-list::-webkit-scrollbar {
+    width: 5px;
+    height: 8px;
+    background-color: #0F0F0F
+  }
+  .cart-list::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 2px;
+    border: 1px solid #0F0F0F;
   }
   .cart-item {
     min-height: 100px;
