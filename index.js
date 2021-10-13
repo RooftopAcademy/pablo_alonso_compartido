@@ -1,11 +1,10 @@
 const express = require('express')
 
 const app = express(),
-      pagesPath = `${__dirname}/views/`,
+      pagesPath = `${__dirname}/src/views/`,
       port = 3006
 
 app.use(express.static('public/'))
-
 
 app.get('/', (req, res) => {
   res.sendFile(pagesPath + 'index.html')
