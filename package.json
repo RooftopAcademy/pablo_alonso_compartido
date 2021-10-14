@@ -8,7 +8,7 @@
     "build": "webpack",
     "test": "npx tsc tests/Foo.ts && node tests/Foo.js",
     "node-sv": "nodemon ejercicios_semana-6/app.js",
-    "server": "nodemon index.js"
+    "server": "nodemon index.js PORT=3006"
   },
   "repository": {
     "type": "git",
