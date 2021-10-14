@@ -8,7 +8,7 @@
     "build": "webpack",
     "test": "npx tsc tests/Foo.ts && node tests/Foo.js",
     "node-sv": "nodemon ejercicios_semana-6/app.js",
-    "server": "nodemon index.js PORT=3006"
+    "server": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@types/uuid": "^8.3.1",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "uuid": "^8.3.2"
   }

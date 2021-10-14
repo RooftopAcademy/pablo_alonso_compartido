@@ -1,17 +1,21 @@
 const express = require('express')
 const path = require('path')
 const fs = require('fs')
+const dotenv = require('dotenv')
+dotenv.config()
 
 const app = express(),
+
       /**
        * Declaramos la ruta donde se encuentran los archivos .html
        */
       pagesPath = path.resolve('src', 'views'),
+
       /**
        * Declaramos el puerto que vamos a usar
        * Se utiliza el numero introducido por script en package.json (PORT=3006)
        */
-      PORT = process.argv[2].slice(5)
+      PORT = process.env.PORT
 
 
 /**
@@ -34,7 +38,9 @@ app.use(express.static('public'))
  */
 app.get('/', (req, res) => {
   const page = path.join(pagesPath, 'index.html')
-  res.sendFile(page)
+  res.sendFile(page, {
+    hola: '123'
+  })
 })
 
 app.get('/list', (req, res) => {
@@ -52,7 +58,9 @@ app.get('/details', (req, res) => {
  */
 app.get('/api/products', (req, res) => {
   const products = getFile('data.json')
-  res.send(products)
+  products
+    ? res.send(products)
+    : res.status(400).end()
 })
 
 app.get('/api/products/:id', (req, res) => {
@@ -66,7 +74,7 @@ app.get('/api/products/:id', (req, res) => {
   const product = products.find(p => p.id === id)
   product
     ? res.send(product)
-    : res.sendFile(path.join(pagesPath, 'notfound.html'))
+    : res.status(404).json({"error": true, "message": "That product not exist"}).end()
 })
 
 /**
