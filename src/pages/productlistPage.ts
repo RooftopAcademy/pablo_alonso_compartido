@@ -58,7 +58,7 @@ function productList(): void {
     /**
      * Listeners para aplicar filtros y ordenar los productos de la seccion 'All NFTs'
      */
-    manageFilter(catalogue)
+    manageFilter(catalogue, products)
 
     /**
      * Listener para el boton "Buy now"
@@ -106,7 +106,7 @@ function productList(): void {
   /**
    * Listeners para aplicar filtros y ordenar los productos de la seccion 'All NFTs'
    */
-  function manageFilter(catalogue: Catalogue): void {
+  function manageFilter(catalogue: Catalogue, products: ProductRepository): void {
     /**
      * Seccion donde se va a injectar los productos
      */
@@ -205,6 +205,11 @@ function productList(): void {
          * Injectamos los productos ordenados en el DOM
          */
         postSortedProduct(sortedProducts, allNftsSection)
+
+        /**
+         * Listener para el boton "Buy now"
+         */
+        addListenerAddCart(products)
       })
 
     }
@@ -273,7 +278,11 @@ function productList(): void {
           if (label.classList.contains('filter-asc')) return label.classList.replace('filter-asc', 'filter-inactive')
           if (label.classList.contains('filter-desc')) return label.classList.replace('filter-desc', 'filter-inactive')
         })
-  
+
+        /**
+         * Listener para el boton "Buy now"
+         */
+        addListenerAddCart(products)
       })
     }
   }
