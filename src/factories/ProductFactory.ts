@@ -1,5 +1,5 @@
 import Product from '../entities/Product'
-import {ProductInterface} from '../interfaces/types'
+import { ProductInterface } from '../interfaces/types'
 
 class ProductFactory {
   static create(item: ProductInterface) {
