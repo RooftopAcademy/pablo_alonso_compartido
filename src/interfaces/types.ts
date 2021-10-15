@@ -17,7 +17,7 @@ export interface ProductCommentInterface {
   message: string
 }
 
-export interface UserInterface {
+export interface RegisteredUserInterface {
   name: string
   email: string
   password: string
