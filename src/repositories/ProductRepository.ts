@@ -1,5 +1,5 @@
-import {ProductInterface} from '../interfaces/types'
 import ProductFactory from '../factories/ProductFactory'
+import { ProductInterface } from '../interfaces/types'
 
 class ProductRepository {
   private items : ProductInterface[] = []
@@ -9,7 +9,7 @@ class ProductRepository {
   }
 
 
-  public get(): ProductInterface[] {
+  public get(): (ProductInterface[]) {
     return this.items
   }
 
