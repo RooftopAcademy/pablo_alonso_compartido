@@ -23,7 +23,18 @@ export interface RegisteredUserInterface {
   password: string
 }
 
-export interface LogData {
+export interface RegisteredUserLocalStorageInterface {
+  _id: string
+  _canBuy: boolean
+  _canComment: boolean
+  _name: string
+  _email: string
+  _password: string
+  _productsInCart: []
+  _purchasedProducts: []
+}
+
+export interface LogDataInterface {
   email: string
   password: string
 }
