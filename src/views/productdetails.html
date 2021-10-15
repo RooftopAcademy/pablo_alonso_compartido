@@ -9,10 +9,10 @@
     <title>NFT Shop - Product Details</title>
     <meta name="description" content="NFT Shop es un lugar donde puedes vender y comprar NFTs únicos de manera segura.">
     <meta name="keywords" content="NFT - Buy NFT - Sell NFT">
-    <link rel="icon" href='favicon.svg' />
+    <link rel="icon" href='images/favicon.svg' />
 
-    <link rel="stylesheet" href="style/normalize.css">
-    <link rel="stylesheet" href="style/notfound.css">
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/productdetails.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,33 +57,68 @@
             <a class="menu--link" href="/list">PRODUCT LIST</a>
           </li>
         </ul>
+
+        <button class="cart" id="cart-toggle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="26" viewBox="0 0 28 24" fill="none">
+            <path d="M0.347652 10.0859C0.158864 8.95318 0.960551 7.89447 2.10204 7.76907L21.1101 5.68086C21.7822 5.60703 22.3715 5.19863 22.6766 4.59526L24.1014 1.77726C24.5793 0.832109 25.7758 0.517218 26.657 1.1047V1.1047C27.4175 1.61165 27.6655 2.61503 27.2289 3.4179L26.2546 5.20921C26.1278 5.4424 26.0487 5.69851 26.0219 5.9626L24.6767 19.2022C24.573 20.2232 23.7132 21 22.687 21H3.86092C2.88324 21 2.04886 20.2932 1.88813 19.3288L0.347652 10.0859Z" fill="white"/>
+            <circle cx="20" cy="21" r="3" fill="white"/>
+            <circle cx="7" cy="21" r="3" fill="white"/>
+          </svg>
+        </button>
+
+        <ul class="d-none cart-list" id="cart-list">
+          <!-- Inject code here -->
+          <li class="d-flex cart-empty" id="cart-empty-msg">
+            <p class="cart-empty--text">The cart is empty</p>
+          </li>
+        </ul>
   
       </nav>
     </header>
   
     <main class="main">
+
+      <div class="d-none message" id="not-avaliable">
+        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
+          <rect x="3.68785" y="0.500015" width="21.6547" height="3.93721" transform="rotate(45 3.68785 0.500015)" fill="white"/>
+          <rect x="19" y="3.28405" width="21.6547" height="3.93721" transform="rotate(135 19 3.28405)" fill="white"/>
+        </svg>
+        <p class="message--text">Uophs! Unfortunately the NFT you want to see is not available.</p>
+      </div>
+
+      <div class="d-none message" id="added-to-cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="26" viewBox="0 0 28 24" fill="none">
+          <path d="M0.347652 10.0859C0.158864 8.95318 0.960551 7.89447 2.10204 7.76907L21.1101 5.68086C21.7822 5.60703 22.3715 5.19863 22.6766 4.59526L24.1014 1.77726C24.5793 0.832109 25.7758 0.517218 26.657 1.1047V1.1047C27.4175 1.61165 27.6655 2.61503 27.2289 3.4179L26.2546 5.20921C26.1278 5.4424 26.0487 5.69851 26.0219 5.9626L24.6767 19.2022C24.573 20.2232 23.7132 21 22.687 21H3.86092C2.88324 21 2.04886 20.2932 1.88813 19.3288L0.347652 10.0859Z" fill="white"/>
+          <circle cx="20" cy="21" r="3" fill="white"/>
+          <circle cx="7" cy="21" r="3" fill="white"/>
+        </svg>
+        <p class="message--text">The NTF has been added to the cart!</p>
+        <a class="anchor see-cart" href="#cart-toggle" id="see-cart">See the Cart</a>
+      </div>
+
       <article class="article">
-        <div class="tentacle-svg">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 130" fill="none">
-            <path d="M35.8853 125C35.8853 113.013 37.1465 103.571 39.6688 96.6749C41.3518 92.0184 43.2 90.1738 45.2071 82.9599C47.2143 75.746 48.8537 79.5116 51.9363 78.5714C61.2 75.746 57.5541 67.9921 64.7771 64.6552C72 61.3182 62.8968 54.3411 69.2484 50.6158C73.0742 48.3718 72 36.0695 65.6559 37.4384C59.3117 38.8073 58.2952 32.0197 54.3439 32.0197C49.758 32.0197 46.8458 38.8073 43.2229 37.4384C39.6 36.0695 36 28.8556 25.2 36.0695C25.2 36.0695 0 60.9038 0 52.0936C0 43.2834 4.96816 22.9064 14.4459 13.7931C23.9236 4.5977 37.2229 0 54.3439 0C71.3885 0 84.5732 4.22824 93.8981 12.6847C103.299 21.1412 108 33.1691 108 48.7685C108 55.5829 106.739 61.7816 104.217 67.3645C101.694 72.9475 97.6433 78.6535 92.0637 84.4828L78.879 97.6601C75.1338 101.519 72.535 105.501 71.0828 109.606C69.6306 113.629 68.828 118.76 68.6752 125C68.6752 125 60.6497 129.5 51.9363 129.5C43.2229 129.5 35.8853 125 35.8853 125Z" fill="#1A1A1A"/>
-            <path d="M38 125C38 113.013 37.9777 105.397 40.5 98.5C42.183 93.8435 43.4929 91.6966 45.5 84.4827C47.5071 77.2688 49.4175 81.4401 52.5 80.5C61.7637 77.6746 58.2771 70.7015 65.5 67.3645C72.7229 64.0275 66.1484 54.7253 72.5 51C76.3258 48.756 72.8441 33.6311 66.5 35C60.1559 36.3689 63.5 30.8823 56 30C47.5 29 47.1229 36.3689 43.5 35C39.8771 33.6311 36.8 26.7861 26 34C26 34 -0.5 59.0369 4 48.7684C8.5 38.5 14.5 33 19.5 28.5C24.5 24 36.379 17 53.5 17C70.5446 17 73 20 80.5 25.5C88 31 87.5 36.9007 87.5 52.5C87.5 59.3145 83.0223 61.7816 80.5 67.3645C77.9777 72.9474 73.5796 74.1708 68 80L52.5 90.5C48.7548 94.3588 44.9522 98.8949 43.5 103C42.0478 107.023 43.5 111 45.5 117C47.5 123 48.5 123 47.5 126.5C46.5 130 38 125 38 125Z" fill="#0F0F0F"/>
-            <ellipse cx="77.6853" cy="38.3153" rx="3.18363" ry="4.4081" transform="rotate(-23.6659 77.6853 38.3153)" fill="#333333"/>
-            <ellipse cx="93.7809" cy="21.2616" rx="4.25676" ry="5.89397" transform="rotate(-33.0181 93.7809 21.2616)" fill="#333333"/>
-            <ellipse cx="67.0437" cy="95.4039" rx="4.77968" ry="6.61802" transform="rotate(16.4317 67.0437 95.4039)" fill="#333333"/>
-            <ellipse cx="44.6192" cy="29.9797" rx="2.34871" ry="3.25206" transform="rotate(28.6109 44.6192 29.9797)" fill="#333333"/>
-            <ellipse cx="16.6561" cy="37.9206" rx="1.7237" ry="2.38666" transform="rotate(49.7699 16.6561 37.9206)" fill="#333333"/>
-            <ellipse cx="64.9897" cy="29.9188" rx="2.34871" ry="3.25206" transform="rotate(-48.1826 64.9897 29.9188)" fill="#333333"/>
-            <ellipse cx="74.8723" cy="56.9292" rx="3.74628" ry="5.18715" transform="rotate(13.7562 74.8723 56.9292)" fill="#333333"/>
-            <ellipse cx="48.5738" cy="82.9152" rx="1.21006" ry="1.67547" transform="rotate(13.7562 48.5738 82.9152)" fill="#333333"/>
-            <ellipse cx="55.0642" cy="108.654" rx="2.26838" ry="3.14084" transform="rotate(16.4317 55.0642 108.654)" fill="#333333"/>
+
+        <div class="article--svg">
+          <svg xmlns="http://www.w3.org/2000/svg" width="216" height="86" viewBox="0 0 216 86" fill="none">
+            <path d="M32.0682 58C40.9318 58 46.5568 52.5455 46.5568 43.4545C46.5568 34.3636 40.9318 28.9091 31.9545 28.9091H20.875V58H32.0682ZM28.7727 51.2955V35.6136H31.5568C36.1023 35.6136 38.6023 37.375 38.6023 43.4545C38.6023 49.5341 36.1023 51.2955 31.7841 51.2955H28.7727ZM50.2109 58H71.12V51.6364H58.1087V46.6364H70.0973V40.2727H58.1087V35.2727H71.1768V28.9091H50.2109V58ZM74.2983 35.2727H83.0483V58H90.8324V35.2727H99.5824V28.9091H74.2983V35.2727ZM106.401 58L108.077 52.4318H117.679L119.355 58H127.878L118.276 28.9091H107.48L97.8778 58H106.401ZM109.866 46.5227L112.764 36.9205H112.991L115.889 46.5227H109.866ZM138.577 28.9091H130.68V58H138.577V28.9091ZM142.32 58H161.979V51.6364H150.218V28.9091H142.32V58ZM180.854 38H188.411C188.382 32.2898 183.979 28.5114 176.933 28.5114C170.016 28.5114 165.129 32.233 165.172 37.7727C165.158 42.3182 168.311 44.8466 173.467 45.9545L176.365 46.5795C179.604 47.2898 180.712 48.0994 180.74 49.4205C180.712 50.8551 179.405 51.8636 176.876 51.8636C173.851 51.8636 172.061 50.4432 171.933 47.7727H164.433C164.462 55.0739 169.405 58.3409 176.99 58.3409C184.362 58.3409 188.78 55.1591 188.808 49.4205C188.78 44.9886 186.138 41.8778 179.717 40.5L177.331 39.9886C174.575 39.4062 173.339 38.5966 173.411 37.2045C173.425 35.9261 174.49 34.9886 176.933 34.9886C179.49 34.9886 180.697 36.1108 180.854 38Z" fill="white"/>
+            <rect x="2" y="2" width="212" height="82" rx="2" stroke="white" stroke-width="4"/>
           </svg>
         </div>
-        <h1 class="article--title">Error 404 - NOT FOUND</h1>
-        <a class="anchor go-back" href="/list">Go Back</a>
+
+        <article class="nft" id="nft">
+          <!-- Inject code here-->
+        </article>
+
       </article>
 
-    </main>
+      <section class="comments">
+        <h2 class="comments-title">Comments</h2>
+        <ul id="comments-list">
+          <!-- Inject code here -->
+        </ul>
+      </section>
 
+    </main>
     <footer class="footer">
       <div class="footer--container">
         <a href="/">
@@ -97,5 +132,6 @@
       </div>
     </footer>
 
+    <script src="scripts/bundle.js"></script>
   </body>
 </html>
