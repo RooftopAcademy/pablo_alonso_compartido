@@ -25,7 +25,7 @@ function productDetails(): void {
   const shop: Shop = new Shop
   const cartList = document.getElementById('cart-list') as HTMLElement
 
-  const apiURL: string = 'https://my-json-server.typicode.com/Alonso-Pablo/api-nft/products'
+  const apiURL: string = 'http://localhost:3006/api/products'
 
   /**
    * - FetchProduct trae los datos de la API y ejecuta un callback
