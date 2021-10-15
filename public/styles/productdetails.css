@@ -46,11 +46,12 @@ body::-webkit-scrollbar-thumb {
 }
 
 .message {
+  box-sizing: border-box;
+  width: 90%;
+  max-width: 500px;
   position: fixed;
   top: 70px;
-  left: calc(50% - 130px);
   flex-direction: column;
-  align-self: center;
   justify-content: space-evenly;
   align-items: center;
   background-color: #333333;
@@ -397,19 +398,10 @@ body::-webkit-scrollbar-thumb {
       margin: 0;
     }
     .message {
-      position: fixed;
-      top: 75px;
-      left: calc(53% - 260px);
+      left: calc(53% - 250px);
       flex-direction: row;
-      align-self: center;
       justify-content: center;
       align-items: center;
-      background-color: #333333;
-      padding: 2em 4em;
-      border-radius: 4px;
-      font-size: 1.4rem;
-      font-weight: 700;
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     }
     .message--text {
       padding-left: 1em;
