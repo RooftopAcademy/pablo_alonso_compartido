@@ -2,10 +2,21 @@ import {
   toggleVisibilityTemporarily,
   setDisplayFlex,
   setDisplayNone,
-  isEqualString
 } from '../utils/utils'
 
+import {
+  getLoggedUserLocalStorage,
+  isRegistered,
+  isSamePassword,
+  loadUsers,
+  logInUser,
+  saveUser,
+  setLoggedUserLocalStorage,
+} from '../helpers/helpers'
+
+import RegisteredUserRepository from '../repositories/RegisteredUserRepository'
 import Shop from '../entities/Shop';
+import InvitedUser from '../entities/InvitedUser';
 
 function index(): void {
   // Ejercicio: Clase 13/09/2021
@@ -25,10 +36,8 @@ function index(): void {
    */
   const shop = new Shop
 
-  /**
-   * Carga los usuarios guardados en localstorage para que esté actualizado.
-   */
-  shop.loadMembers()
+  const registeredUsers: RegisteredUserRepository = new RegisteredUserRepository()
+
 
   /**
    * Ejecuta las funciones para eventos y renders necesarios para la App.
@@ -37,29 +46,79 @@ function index(): void {
 
   function renderStep() {
     /**
-     * Listener para abrir o cerrar el menu de navegacion
-     */
-    menuToggle()
-
-    /**
      * Listener para 'submitear' el email
      */
     addListenerSuscribe()
 
     /**
-     * Carga el usuario logeado del localStorage solo si existe.
+     * Listener para abrir o cerrar el menu de navegacion
      */
-    shop.loadUser()
+    navMenuToggle()
 
     /**
-     * Si SÍ esta logeado:
+     * Carga usuarios registrados del localStorage. Solo si existe.
      */
-    if (!shop.isLoged()) {
+    loadUsers(registeredUsers)
+
+    /**
+     * Carga la sesion del usuario logeado. Solo si existe.
+     */
+    getLoggedUserLocalStorage(shop)
+
+
+    if (shop.isLoged()) {
+      /**
+       * Oculta los botones 'Sign up' y 'Sign in'
+       */
+      const registerBtn = document.getElementById('register-btn') as HTMLElement
+      const loginBtn = document.getElementById('login-btn') as HTMLElement
+      setDisplayNone(registerBtn)
+      setDisplayNone(loginBtn)
+
+      /**
+       * Muestra el boton toggler del menu de usuario.
+       */
+      const userToggleMenu = document.getElementById('user-toggle-menu') as HTMLElement
+      setDisplayFlex(userToggleMenu)
+
+      /**
+       * Listener para abrir o cerrar el menu de usuario 'logeado'
+       */
+      const userMenu = document.getElementById('user-menu') as HTMLElement
+      userToggleMenu.addEventListener('click', function():void {
+        if (userMenu.classList.contains('d-none')) return setDisplayFlex(userMenu)
+        return setDisplayNone(userMenu)
+      })
+
+      /**
+       * Listener para hacer 'log out' de la sesion.
+       */
+      const signOut = document.getElementById('sign-out') as HTMLButtonElement
+      signOut.addEventListener('click', function(): void {
+        /**
+         * Borramos la sesion del LocalStorage
+         */
+        localStorage.removeItem('logedUser')
+
+        /**
+         * Seteamos el user a usuario invitado
+         */
+        shop.setUser(new InvitedUser)
+
+        /**
+         * Refrescamos la pagina
+         */
+        location.reload()
+      })
+    } else {
+      /**
+       * Si SÍ esta logeado:
+       */
       /**
        * Abre o cierra el 'register' form
        */
-      registerToggle()
       registerCloser()
+      registerToggle()
 
       /**
        * Abre o cierra el 'login' form
@@ -68,36 +127,22 @@ function index(): void {
       loginCloser()
 
       /**
-       * Listener para verificar el 'login' y registro
+       * Listener para verificar el from de 'login' y registro
        */
-      addListenerRegisterForm()
-      addListenerLoginForm()
+      registerForm()
+      LoginForm()
+      const userToggleMenu = document.getElementById('user-toggle-menu') as HTMLElement
+      setDisplayNone(userToggleMenu)
+
     }
-
-    /**
-     * Si NO esta logeado:
-     * ToDo: Terminar esta seccion.
-     */
-
-    /**
-     * Listener para abrir o cerrar el menu de usuario 'logeado'
-     */
-    const userToggleMenu = document.getElementById('user-toggle-menu') as HTMLElement
-    setDisplayFlex(userToggleMenu)
-
-    /**
-     * Oculta
-     */
-    const registerBtn = document.getElementById('register-btn') as HTMLElement
-    const loginBtn = document.getElementById('login-btn') as HTMLElement
-    setDisplayNone(registerBtn)
-    setDisplayNone(loginBtn)
   }
 
+
+
   /**
- * Listener para abrir o cerrar el menu de navegacion
- */
-  function menuToggle(): void {
+   * Listener para abrir o cerrar el menu de navegacion
+   */
+  function navMenuToggle(): void {
     const navMenu = document.getElementById('nav-menu') as HTMLElement
     const menuOpener = document.getElementById('menu-opener') as HTMLElement
     const menuCloser = document.getElementById('menu-closer') as HTMLElement
@@ -166,15 +211,12 @@ function index(): void {
     })
   }
 
+
   /**
    * Verifica y guarda los datos validos para el registro
    */
-  function addListenerRegisterForm(): void {
+  function registerForm(): void {
     const signUpForm = document.getElementById('signup-form') as HTMLFormElement
-    const inputUsername = document.getElementById('reg-user-name') as HTMLInputElement
-    const inputEmail = document.getElementById('reg-user-email') as HTMLInputElement
-    const inputPassword = document.getElementById('reg-user-password') as HTMLInputElement
-    const inputConfirmPassword = document.getElementById('reg-user-confirm-password') as HTMLInputElement
 
     const alertContainer = document.getElementById('register-alert') as HTMLElement
     const confirmContainer = document.getElementById('register-confirm') as HTMLElement
@@ -187,67 +229,62 @@ function index(): void {
        */
       confirmContainer.innerHTML = ''
 
-      const username: string = inputUsername.value.trim()
-      const email: string = inputEmail.value.trim()
-      const password: string = inputPassword.value.trim()
-      const confirmPasword: string = inputConfirmPassword.value.trim()
+      const name: string = signUpForm['user-name'].value.trim()
+      const email: string = signUpForm['user-email'].value.trim()
+      const password: string = signUpForm['user-password'].value.trim()
+      const confirmPasword: string = signUpForm['user-confirm-password'].value.trim()
 
       /**
-       * Ejecuta las verificaciones y se guardan las respuestas de las mismas.
+       * Verifica si la password son las mismas o si el email ya esta registrado.
+       * Si hay algun error lo imprime en el DOM.
        */
-      const okPass = isNotSamePassword(password, confirmPasword, alertContainer)
-      const okEmail = isRegisteredEmail(email, alertContainer)
+      if (!isSamePassword(password, confirmPasword)) {
+        alertContainer.innerHTML = `Passwords don't match!`
+        return
+      }
+      alertContainer.innerHTML = ''
 
-      /**
-       * Si en este momento alguno de las dos verificaciones dio error no sigue.
-       */
-      if (!okPass && okEmail) return
+
+      if (isRegistered(registeredUsers, email)) {
+        alertContainer.innerHTML += `Email is already in use!`
+        return
+      }
+      // alertContainer.innerHTML = ''
+
 
       confirmContainer.innerHTML = `Account created successfully!`
-      shop.registerUser({
-        name: username,
-        email: email,
-        password: password
+
+      /**
+       * Añadimos al usuario recien registrado al repositorio.
+       */
+      registeredUsers.add({
+        name,
+        email,
+        password,
       })
-      shop.saveMembers()
+
+      /**
+       * Guardamos el usuario recien registrado en el LocalStorage
+       */
+      saveUser(registeredUsers, email)
+
+      /**
+       * Limpiamos todos los campos al ser exitoso el registro
+       */
+      signUpForm['user-name'].value = ''
+      signUpForm['user-email'].value = ''
+      signUpForm['user-password'].value = ''
+      signUpForm['user-confirm-password'].value = ''
     })
-
   }
 
-  /**
-   * Verifica Si las password no son identicas.
-   * True = SÍ son identicas.
-   * False = NO son identicas.
-   */
-  function isNotSamePassword(passA: string, passB: string, where: HTMLElement): boolean {
-    if (!isEqualString(passA, passB)) {
-      where.innerHTML = `Passwords don't match!`
-      return false
-    }
-    where.innerHTML = ``
-    return true
-  }
 
-  /**
-   * Retorna true / false segun si el email ingresado ya esta registrados
-   * True = El email SÍ se encuentra registrado.
-   * False = El email NO se encuentra registrado.
-   */
-  function isRegisteredEmail(email: string, where: HTMLElement): boolean {
-    if (shop.isRegistered(email)) {
-      where.innerHTML += `The email entered is already used.`
-      return false
-    }
-    return true
-  }
 
   /**
    * Verifica y guarda los datos validos para el inicio de sesion
    */
-  function addListenerLoginForm(): void {
+  function LoginForm(): void {
     const singInForm = document.getElementById('signin-form') as HTMLFormElement
-    const inputEmail = document.getElementById('log-user-email') as HTMLInputElement
-    const inputPassword = document.getElementById('log-user-password') as HTMLInputElement
 
     const alertContainer = document.getElementById('login-alert') as HTMLElement
     const confirmcontainer = document.getElementById('login-confirm') as HTMLElement
@@ -260,26 +297,37 @@ function index(): void {
       confirmcontainer.innerHTML = ''
       alertContainer.innerHTML = ''
 
-      const email: string = inputEmail.value.trim()
-      const password: string = inputPassword.value.trim()
+      const email: string = singInForm['user-email'].value.trim()
+      const password: string = singInForm['user-password'].value.trim()
 
       /**
        * Se intenta verificar el email y las contraseñas con las cuentas almacenadas en Shop
        */
-      shop.logInUser({email, password})
+      logInUser(shop, registeredUsers, {email, password})
 
       /**
        * Si no esta logeado en este momento es porque esta mal el email o contraseña
        */
       if (!shop.isLoged()) {
-        shop.saveUser()
         alertContainer.innerHTML = `The email or password is not valid.`
         return
       }
 
-      confirmcontainer.innerHTML = `Successfully logged in`
+      /**
+       * Se guarda la sesion del usuario en el LocalStorage
+       */
+      setLoggedUserLocalStorage(shop)
+      confirmcontainer.innerHTML = `Successfully logged in. Redirecting...`
+
+      /**
+       * Se refresca la pagina para que aparezca el toggler de user menu y desaparezca los botones de iniciar sesion y registrarse.
+       */
+      setTimeout(()=> {
+        location.reload()
+      }, 1000)
     })
   }
+
 
 
 

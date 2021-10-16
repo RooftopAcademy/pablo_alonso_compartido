@@ -33,19 +33,21 @@
         </svg>
       </a>
       
-      <ul class="menu-closed" id="nav-menu">
+      <ul class="d-flex menu-closed" id="nav-menu">
         <li class="menu--li" id="li">
           <a class="menu--link" href="/" id="a">HOME</a>
         </li>
-        <li class="menu--li">
+        <li class="d-flex menu--li">
           <a class="menu--link" href="/list">PRODUCT LIST</a>
+        </li>
+        <li class="d-flex menu--li" id="login-btn">
+          <button class="d-flex btn login" >
+            Sign in
+          </button>
         </li>
       </ul>
 
-      <button class="d-flex btn login" id="login-btn">
-        Sign in
-      </button>
-      
+
       <button class="d-flex btn register" id="register-btn">
         Sign Up
       </button>
@@ -82,16 +84,18 @@
 
   <main class="main">
 
-    <section>
-      <ul>
-        <li>Sign out</li>
-      </ul>
-    </section>
+    <ul class="d-none user-menu" id="user-menu">
+      <li class="user-menu--item">
+        <button class="btn sign-out" id="sign-out">
+          Sign out
+        </button>
+      </li>
+    </ul>
 
     <section class="d-none sign-menu" id="register-menu">
       <form class="sign-form" id="signup-form">
 
-        <button class="sign-closer" id="register-closer">
+        <button class="sign-closer" id="register-closer" type="button">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 19 19" fill="none">
             <rect x="3.68785" y="0.500015" width="21.6547" height="3.93721" transform="rotate(45 3.68785 0.500015)" fill="white"/>
             <rect x="19" y="3.28405" width="21.6547" height="3.93721" transform="rotate(135 19 3.28405)" fill="white"/>
@@ -143,9 +147,9 @@
           <!-- Inject code here -->
         </div>
 
-        <button class="btn sign-btn" type="submit">Create account</button>
+        <button class="btn sign-btn" id="register-submit" type="submit">Create account</button>
 
-        <button class="btn sign-btn already-account">I already have an account</button>
+        <button class="btn sign-btn already-account" type="button">I already have an account</button>
 
         <p class="notice">
           By creating an account, you agree to the Terms of Service. For more information about NFT Shop's privacy practices, see the NFT Shop Privacy Statement. We'll occasionally send you account-related emails.
@@ -193,7 +197,7 @@
 
         <button class="btn sign-btn" type="submit">Sign in</button>
 
-        <button class="btn sign-btn already-account">I do not have an account</button>
+        <button class="btn sign-btn already-account" type="button">I do not have an account</button>
 
 
 

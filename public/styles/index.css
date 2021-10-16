@@ -135,7 +135,6 @@ body::-webkit-scrollbar-thumb {
     z-index: 500;
   }
     .menu--li {
-      display: flex;
       width: 90%;
       justify-content: center;
       margin: .8em 0;
@@ -160,6 +159,29 @@ body::-webkit-scrollbar-thumb {
     }
 
   /* user-menu */
+  .user-menu {
+    position: absolute;
+    width: 100%;
+    top: 60px;
+    right: 0;
+    background-color: #0F0F0F;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+  }
+  .user-menu--item {
+    display: flex;
+    width: 90%;
+    justify-content: flex-end;
+  }
+  .sign-out {
+    font-size: 1.5rem;
+    font-weight: 900;
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+  }
+
   .user-toggle-menu {
     position: relative;
     padding: 0;
@@ -171,7 +193,6 @@ body::-webkit-scrollbar-thumb {
   }
   .login {
     position: relative;
-    margin-right: 1.6rem;
     font-size: 1.5rem;
     font-weight: 900;
     background-color: #1A1A1A;
@@ -218,9 +239,18 @@ body::-webkit-scrollbar-thumb {
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   overflow-y: scroll;
+  scrollbar-color: gray;
+  scrollbar-width: thin;
+}
+.sign-form::-webkit-scrollbar {
+  width: 5px;
+  background-color: #0F0F0F;
+}
+.sign-form::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border-radius: 1px;
 }
 .sign-closer {
   position: absolute;
@@ -233,7 +263,6 @@ body::-webkit-scrollbar-thumb {
 .sign-title {
   font-size: 2.6rem;
   margin: 4rem 0;
-  padding-top: 10rem;
 }
 .sign-label {
   font-size: 1.4rem;
@@ -263,6 +292,7 @@ body::-webkit-scrollbar-thumb {
   width: 90%;
   margin: 1.6rem 0;
   color: gray;
+  text-align: center;
 }
 
 .article {
@@ -380,11 +410,12 @@ body::-webkit-scrollbar-thumb {
       position: static;
       display: flex;
       flex-direction: row;
+      justify-content: flex-end;
       transform: translateY(0);
       padding: 0;
     }
     .menu--li {
-      width: 20%;
+      max-width: 200px;
       margin: 0;
       white-space: nowrap;
     }

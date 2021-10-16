@@ -32,6 +32,7 @@ function getFile(fileName, filePath = '') {
  * (Archivos que no hace falta que sean procesados antes de mostrarse al usuario.)
  */
 app.use(express.static('public'))
+app.use(express.urlencoded())
 
 /**
  * Endpoints para las peticiones de paginas web.
@@ -52,6 +53,7 @@ app.get('/details', (req, res) => {
   const page = path.join(pagesPath, 'productdetails.html')
   res.sendFile(page)
 })
+
 
 /**
  * Endpoints para las peticiones de datos de producto
