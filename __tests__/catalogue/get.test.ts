@@ -1,5 +1,5 @@
-import Catalogue from '../src/entities/Catalogue';
-import { ProductInterface } from '../src/interfaces/types'
+import Catalogue from '../../src/entities/Catalogue';
+import { ProductInterface } from '../../src/interfaces/types'
 
 const productExample: ProductInterface[] = [
 	{
@@ -28,13 +28,16 @@ const productExample: ProductInterface[] = [
 		"isAvaliable": true,
 		notAvaliable: function() { this.isAvaliable=false },
 	},
-];
+]
 
-describe('Test Catalogue', () => {
-	test('return same items, instance.itemsp === p', () => {
-		const a = new Catalogue()
-		a.add(productExample)
+describe('Test method get from Catalogue', () => {
+	test('return same items', () => {
+		const catalogue = new Catalogue()
 
-		expect(JSON.stringify(a.get())).toBe(JSON.stringify(productExample))
+		/**
+		 * Agregamos los productos de ejemplo
+		 */
+		catalogue.add(productExample)
+		expect(JSON.stringify(catalogue.get())).toBe(JSON.stringify(productExample))
 	})
 })
