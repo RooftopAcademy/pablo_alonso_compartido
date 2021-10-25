@@ -6,10 +6,11 @@
   "scripts": {
     "watch": "webpack --watch",
     "build": "webpack",
-    "test": "jest --verbose",
     "compile": "tsc",
     "node-sv": "nodemon ejercicios_semana-6/app.js",
-    "server": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "NODE_ENV=test jest --verbose"
   },
   "repository": {
     "type": "git",
