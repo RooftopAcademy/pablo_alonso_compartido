@@ -1,4 +1,4 @@
-import { ProductInterface } from "../interfaces/types"
+import { ProductInterface } from '../interfaces/types'
 
 function productItem(product: ProductInterface | undefined): string {
   // Si product es undefined injecta un mensaje de error
