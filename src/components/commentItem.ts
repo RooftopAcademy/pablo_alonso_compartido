@@ -1,7 +1,7 @@
 import { ProductCommentInterface } from '../interfaces/types'
 import { differenceDays } from '../utils/utils'
 
-function commentItem(comment: ProductCommentInterface): string {
+function commentItem(comment: ProductCommentInterface | undefined): string {
   if (!comment) return `<h3>There was an error loading the comments :(</h3>`
 
   /**
