@@ -6,10 +6,9 @@
   "scripts": {
     "watch": "webpack --watch",
     "build": "webpack",
-    "compile": "tsc",
     "node-sv": "nodemon ejercicios_semana-6/app.js",
     "dev": "NODE_ENV=development nodemon index.js",
-    "start": "NODE_END=production node index.js",
+    "server": "NODE_END=production node index.js",
     "test": "NODE_ENV=test jest --verbose"
   },
   "repository": {
