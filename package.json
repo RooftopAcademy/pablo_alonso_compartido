@@ -6,9 +6,10 @@
   "scripts": {
     "watch": "webpack --watch",
     "build": "webpack",
-    "test": "npx tsc tests/Foo.ts && node tests/Foo.js",
     "node-sv": "nodemon ejercicios_semana-6/app.js",
-    "server": "nodemon index.js"
+    "dev": "NODE_ENV=development nodemon index.js",
+    "server": "NODE_END=production node index.js",
+    "test": "NODE_ENV=test jest --verbose"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,9 @@
   },
   "homepage": "https://github.com/RooftopAcademy/pablo_alonso_compartido#readme",
   "devDependencies": {
+    "@babel/preset-typescript": "^7.15.0",
+    "@types/jest": "^27.0.2",
+    "ts-jest": "^27.0.7",
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.3",
     "webpack": "^5.53.0",

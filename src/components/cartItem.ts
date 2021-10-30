@@ -3,7 +3,7 @@ import { ProductInterface } from '../interfaces/types'
 function cartItem(product: ProductInterface): string {
   return `
   <li class="cart-item" id="${product.id}">
-    <img class="cart-thumbnail" src="${product.picture}" alt="${product.title}< by ${product.author}">
+    <img class="cart-thumbnail" src="${product.picture}" alt="${product.title} by ${product.author}">
     <div class="cart-text">
       <p class="cart-title">${product.title}</p>
       <p class="cart-author">${product.author}</p>

@@ -1,15 +1,18 @@
-import { ProductCommentInterface } from '../interfaces/types'
-import { differenceDays } from '../utils/utils'
+import cartItem from '../../src/components/commentItem'
+import { ProductCommentInterface } from '../../src/interfaces/types'
+import { differenceDays } from '../../src/utils/utils'
 
-function commentItem(comment: ProductCommentInterface | undefined): string {
-  if (!comment) return `<h3>There was an error loading the comments :(</h3>`
+const testProduct : ProductCommentInterface = {
+  "date": "2021-09-21T01:03:25.010Z",
+  "username": "Username",
+  "message": "Lorem ipsum"
+}
 
-  /**
-   * Calcula los dias pasados entre la fecha del comentario y la actual.
-   */
-  const daysAgo: number = differenceDays(comment.date)
+const daysAgo: number = differenceDays(testProduct.date)
 
-  return `
+const errorMessage = '<h3>There was an error loading the comments :(</h3>'
+
+const expectedOutput = `
   <li class="comments-item">
     <div class="comments-pic">
       <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
@@ -20,13 +23,20 @@ function commentItem(comment: ProductCommentInterface | undefined): string {
     </div>
     <div class="comments-content">
       <div class="comments-header">
-        <p class="comments-user">${comment.username}</p>
+        <p class="comments-user">${testProduct.username}</p>
         <p class="comments-since">${daysAgo} days ago</p>
       </div>
-      <p class="comments-comment">${comment.message}</p>
+      <p class="comments-comment">${testProduct.message}</p>
     </div>
   </li>
   `
-}
 
-export default commentItem
+describe('Test productDetail return', () => {
+  test('return error message', () => {
+    expect(cartItem(undefined)).toBe(errorMessage)
+  })
+
+  test('return an html structure', () => {
+    expect(cartItem(testProduct)).toBe(expectedOutput)
+  })
+})
