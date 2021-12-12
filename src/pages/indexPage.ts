@@ -28,7 +28,7 @@ function index(): void {
     const data: string = anchor.innerText;
     // Reemplazo el dato en el elemento.
     anchor.innerText = data;
-  }
+  };
 
 
   /**
